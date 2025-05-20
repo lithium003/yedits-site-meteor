@@ -31,7 +31,7 @@ Meteor.methods({
         ...doc.data()
       }));
 
-      console.log(results); // Or return to client via a Meteor method
+      // console.log(results); // Or return to client via a Meteor method
       return results;
     } catch (error) {
       console.error('Error fetching top comps:', error);
