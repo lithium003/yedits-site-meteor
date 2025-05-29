@@ -21,12 +21,16 @@ export const CompItem = ({ data }) => {
   return (
     <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
       <img
-        className="w-full h-[200px] rounded-xl object-cover"
+        className="w-full h-[200px] rounded-xl object-cover mb-1"
         src={mod_art_path}
-        alt="title"
+        alt={name}
       />
-      <p className="bg-red-500 text-center w-full">{name}</p>
-      <p className="bg-gray-500 text-center w-full">{yeditor_name}</p>
+      <p className="bg-red-500 text-center text-md font-bold truncate mb-0 w-full">
+        {name}
+      </p>
+      <p className="bg-gray-500 text-center text-md truncate w-full">
+        {yeditor_name}
+      </p>
     </div>
   );
 };

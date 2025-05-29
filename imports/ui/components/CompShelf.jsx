@@ -24,7 +24,7 @@ export const CompShelf = () => {
     <>
       <div className="flex flex-nowrap">
         {data.map(item => (
-          <div key={item.name}>
+          <div className="px-1" key={item.name}>
             <CompItem data={item} />
           </div>
         ))}
