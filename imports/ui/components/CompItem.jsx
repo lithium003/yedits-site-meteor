@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 
 export const CompItem = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState({
+    name: 'MISSING NAME',
+    yeditor_name: 'MISSING YEDITOR',
+    art_path: 'MISSING PATH'
+  });
 
   useEffect(() => {
     // On first component render
