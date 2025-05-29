@@ -18,10 +18,10 @@ export const HelloContainer = () => (
             Hello
           </Link>
           <Link
-            to="SkillTree/"
+            to="Yedits/"
             className="block text-white hover:bg-gray-600 px-3 py-2 rounded"
           >
-            SkillTree
+            Yedits
           </Link>
           <Link
             to="url_param/"

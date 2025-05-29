@@ -1,5 +1,5 @@
 {
-  "name": "meteor-skeleton",
+  "name": "yedits-site",
   "private": true,
   "scripts": {
     "setup": "meteor npm install && node -e \"require('fs').writeFileSync('settings.json', JSON.stringify({public:{publicKeyName1:'publicKey1'},private:{privateKeyName1:'privateKey1',},privateKeyName2:'privateKey2'}, null, 2))\"",

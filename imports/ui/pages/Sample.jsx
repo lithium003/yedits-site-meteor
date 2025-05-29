@@ -9,7 +9,7 @@ import { Fallback } from '/imports/ui/components/Fallback';
 export const Sample = () => (
   <>
     <Helmet>
-      <title>SkillTree - Sample</title>
+      <title>Yedits - Sample</title>
     </Helmet>
     <div className="p-2">
       <h1 className="text-3xl font-bold mt-2">Sample Page</h1>

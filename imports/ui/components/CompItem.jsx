@@ -1,24 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
 
-export const CompItem = () => {
-  const [data, setData] = useState({
-    name: 'MISSING NAME',
-    yeditor_name: 'MISSING YEDITOR',
-    art_path: 'MISSING PATH'
-  });
-
-  useEffect(() => {
-    // On first component render
-    Meteor.call('getTop5Comps', (err, result) => {
-      if (err) {
-        console.error('Failed to fetch comps:', err);
-      } else {
-        setData(result[0]); // store first item
-      }
-    });
-  }, []);
-
+export const CompItem = ({ data }) => {
   function convertPath(input) {
     // Remove the leading '/static'
     let output = input.replace(/^\/static/, '');
