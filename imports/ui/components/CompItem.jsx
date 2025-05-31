@@ -20,26 +20,28 @@ export const CompItem = ({ comp }) => {
   const mod_art_path = convertPath(art_path);
 
   return (
-    <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
-      <Link to={`/comp/${id}`}>
-        <img
-          className="w-full h-[200px] rounded-xl object-cover mb-1"
-          src={mod_art_path}
-          alt={name}
-        />
-      </Link>
-      <Link
-        to={`/comp/${id}`}
-        className="bg-red-500 text-center text-md font-bold truncate mb-0 w-full"
-      >
-        {name}
-      </Link>
-      <Link
-        to={`/yeditor/${yeditor}`}
-        className="bg-gray-500 text-center text-md truncate w-full"
-      >
-        {yeditor_name}
-      </Link>
-    </div>
+    <>
+      <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
+        <Link to={`/comp/${id}`}>
+          <img
+            className="w-full h-[200px] rounded-xl object-cover mb-1"
+            src={mod_art_path}
+            alt={name}
+          />
+        </Link>
+        <Link
+          to={`/comp/${id}`}
+          className="bg-red-500 text-center text-md font-bold truncate mb-0 w-full"
+        >
+          {name}
+        </Link>
+        <Link
+          to={`/yeditor/${yeditor}`}
+          className="bg-gray-500 text-center text-md truncate w-full"
+        >
+          {yeditor_name}
+        </Link>
+      </div>
+    </>
   );
 };
