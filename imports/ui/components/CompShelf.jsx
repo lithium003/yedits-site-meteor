@@ -5,8 +5,10 @@ import { CompItem } from './CompItem';
 export const CompShelf = () => {
   const [data, setData] = useState([
     {
+      id: 'MISSING ID',
       name: 'MISSING NAME',
-      yeditor_name: 'MISSING YEDITOR',
+      yeditor: 'MISSING YEDITOR ID',
+      yeditor_name: 'MISSING YEDITOR NAME',
       art_path: 'MISSING PATH'
     }
   ]);
@@ -16,7 +18,7 @@ export const CompShelf = () => {
       if (err) {
         console.error('Failed to fetch comps:', err);
       } else {
-        setData(Array.from(result)); // store first item
+        setData(Array.from(result));
       }
     });
   }, []);
@@ -24,8 +26,8 @@ export const CompShelf = () => {
     <>
       <div className="flex flex-nowrap">
         {data.map(item => (
-          <div className="px-1" key={item.name}>
-            <CompItem data={item} />
+          <div className="px-1" key={item.id}>
+            <CompItem comp={item} />
           </div>
         ))}
       </div>
