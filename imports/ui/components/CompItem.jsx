@@ -31,15 +31,15 @@ export const CompItem = ({ comp }) => {
         </Link>
         <Link
           to={`/comp/${id}`}
-          className="bg-red-500 text-center text-md font-bold truncate mb-0 w-full"
+          className="text-center text-md font-bold truncate mb-0 w-full"
         >
           {name}
         </Link>
         <Link
           to={`/yeditor/${yeditor}`}
-          className="bg-gray-500 text-center text-md truncate w-full"
+          className="text-gray-400 text-md truncate"
         >
-          {yeditor_name}
+          <span className="hover:underline">{yeditor_name}</span>
         </Link>
       </div>
     </>
