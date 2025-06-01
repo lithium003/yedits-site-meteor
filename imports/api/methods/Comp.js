@@ -23,7 +23,7 @@ Meteor.methods({
       const snapshot = await db
         .collection(COMPS)
         .orderBy('rating', 'desc')
-        .limit(5)
+        .limit(10)
         .get();
 
       const results = snapshot.docs.map(doc => ({
