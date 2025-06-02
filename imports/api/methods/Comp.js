@@ -16,6 +16,19 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
+function convertPath(input) {
+  // Remove the leading '/static'
+  let output = input.replace(/^\/static/, '');
+
+  // Replace all backslashes with forward slashes
+  output = output.replace(/\\/g, '/');
+
+  // Remove the trailing '.webp' extension
+  output = output.replace(/\.webp$/, '');
+
+  return output;
+}
+
 // Define Meteor Methods for SampleCollection (client-side calls)
 Meteor.methods({
   async getTop5Comps() {
@@ -36,6 +49,25 @@ Meteor.methods({
     } catch (error) {
       console.error('Error fetching top comps:', error);
       throw new Meteor.Error('firebase-error', 'Failed to fetch top comps');
+    }
+  },
+
+  async getComp(id) {
+    try {
+      const doc = await db.collection(COMPS).doc(id).get();
+
+      const data = doc.data();
+      if (data.art_path) {
+        data.art_path = convertPath(data.art_path);
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching top comps:', error);
+      throw new Meteor.Error(
+        'firebase-error',
+        `Failed to fetch comp with id ${id}`
+      );
     }
   }
 });
