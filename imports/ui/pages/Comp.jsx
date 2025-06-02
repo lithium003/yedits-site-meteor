@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { CompInfo } from '../components/CompInfo';
+import { Tracklist } from '../components/Tracklist';
 
 export const Comp = () => {
   const { comp_id } = useParams();
@@ -38,6 +39,7 @@ export const Comp = () => {
         <title>{comp.name} - Yedits</title>
       </Helmet>
       <CompInfo comp={comp} />
+      <Tracklist comp={comp} />
     </>
   );
 };
