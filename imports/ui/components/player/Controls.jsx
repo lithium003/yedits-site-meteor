@@ -12,7 +12,8 @@ import {
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const Controls = () => {
-  const { currentTrack, audioRef } = useAudioPlayerContext();
+  const { currentTrack, audioRef, setDuration, progressBarRef } =
+    useAudioPlayerContext();
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,10 +26,24 @@ export const Controls = () => {
     }
   }, [isPlaying, audioRef]);
 
+  const onLoadedMetadata = () => {
+    console.log('abc');
+    console.log(audioRef.current?.duration);
+    const seconds = audioRef.current?.duration;
+    if (seconds !== undefined) {
+      setDuration(seconds);
+      progressBarRef.current.max = seconds.toString();
+    }
+  };
+
   return (
     <>
       <div className="flex gap-4 items-center">
-        <audio src={currentTrack.src} ref={audioRef} />
+        <audio
+          src={currentTrack.src}
+          ref={audioRef}
+          onLoadedMetadata={onLoadedMetadata}
+        />
         <button onClick={() => {}}>
           <BsSkipStartFill size={20} />
         </button>

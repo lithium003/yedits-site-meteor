@@ -16,11 +16,19 @@ export const AudioPlayerProvider = ({ children, tracks }) => {
     ];
   }
   const [currentTrack, setCurrentTrack] = useState(tracks[0]);
+  const [timeProgress, setTimeProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
+  const progressBarRef = useRef(null);
   const contextValue = {
     currentTrack,
     setCurrentTrack,
-    audioRef
+    audioRef,
+    progressBarRef,
+    timeProgress,
+    setTimeProgress,
+    duration,
+    setDuration
   };
   return (
     <AudioPlayerContext.Provider value={contextValue}>
