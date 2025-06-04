@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BsFillFastForwardFill,
   BsFillPauseFill,
@@ -12,15 +12,23 @@ import {
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const Controls = () => {
-  const { currentTrack } = useAudioPlayerContext();
+  const { currentTrack, audioRef } = useAudioPlayerContext();
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current?.play();
+    } else {
+      audioRef.current?.pause();
+    }
+  }, [isPlaying, audioRef]);
+
   return (
     <>
       <div className="flex gap-4 items-center">
-        <audio src={currentTrack.src} />
+        <audio src={currentTrack.src} ref={audioRef} />
         <button onClick={() => {}}>
           <BsSkipStartFill size={20} />
         </button>

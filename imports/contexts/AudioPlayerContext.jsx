@@ -1,12 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  Dispatch,
-  SetStateAction
-} from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 
 const AudioPlayerContext = createContext(undefined);
 export const AudioPlayerProvider = ({ children, tracks }) => {
@@ -23,9 +16,11 @@ export const AudioPlayerProvider = ({ children, tracks }) => {
     ];
   }
   const [currentTrack, setCurrentTrack] = useState(tracks[0]);
+  const audioRef = useRef(null);
   const contextValue = {
     currentTrack,
-    setCurrentTrack
+    setCurrentTrack,
+    audioRef
   };
   return (
     <AudioPlayerContext.Provider value={contextValue}>

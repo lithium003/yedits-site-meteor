@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 // JSX UI
 import { NavBar } from '/imports/ui/components/NavBar';
 import { Fallback } from '/imports/ui/components/Fallback';
+import { AudioPlayer } from './components/player/AudioPlayer';
 
 export const App = () => (
   <>
@@ -14,5 +15,6 @@ export const App = () => (
         <Outlet /> {/* Renders the matched child (pages) route here */}
       </Suspense>
     </main>
+    <AudioPlayer />
   </>
 );

@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { CompInfo } from '../components/CompInfo';
 import { Tracklist } from '../components/Tracklist';
-import { AudioPlayer } from '../components/player/AudioPlayer';
 
 export const Comp = () => {
   const { comp_id } = useParams();
@@ -39,7 +38,6 @@ export const Comp = () => {
       <Helmet>
         <title>{comp.name} - Yedits</title>
       </Helmet>
-      <AudioPlayer />
       <CompInfo comp={comp} />
       <Tracklist comp={comp} />
     </>
