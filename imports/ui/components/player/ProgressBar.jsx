@@ -2,13 +2,20 @@ import React from 'react';
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const ProgressBar = () => {
-  const { progressBarRef, audioRef, timeProgress, duration } =
+  const { progressBarRef, audioRef, timeProgress, duration, setTimeProgress } =
     useAudioPlayerContext();
+
   const handleProgressChange = () => {
     console.log('test');
     if (audioRef.current && progressBarRef.current) {
       const newTime = Number(progressBarRef.current.value);
       audioRef.current.currentTime = newTime;
+      setTimeProgress(newTime);
+      // If progress bar changes while audio is on pause
+      progressBarRef.current.style.setProperty(
+        '--range-progress',
+        `${(newTime / duration) * 100}%`
+      );
     }
   };
 
