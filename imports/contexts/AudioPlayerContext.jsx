@@ -20,6 +20,7 @@ export const AudioPlayerProvider = ({ children, tracks }) => {
   const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const progressBarRef = useRef(null);
 
@@ -34,7 +35,9 @@ export const AudioPlayerProvider = ({ children, tracks }) => {
     setDuration,
     setTrackIndex,
     queue,
-    setQueue
+    setQueue,
+    isPlaying,
+    setIsPlaying
   };
 
   return (

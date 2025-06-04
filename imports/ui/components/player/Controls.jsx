@@ -22,11 +22,11 @@ export const Controls = () => {
     setTrackIndex,
     setCurrentTrack,
     queue,
-    setQueue
+    isPlaying,
+    setIsPlaying
   } = useAudioPlayerContext();
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const playAnimationRef = useRef(null);
 
   const updateProgress = useCallback(() => {

@@ -4,7 +4,12 @@ import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
 
 export const PlayList = () => {
-  const { currentTrack, queue } = useAudioPlayerContext();
+  const { currentTrack, queue, setIsPlaying, setCurrentTrack } =
+    useAudioPlayerContext();
+  const handleClick = track => {
+    setCurrentTrack(track);
+    setIsPlaying(true);
+  };
 
   return (
     <>
@@ -15,6 +20,13 @@ export const PlayList = () => {
             className={`flex items-center gap-3 p-[0.5rem_10pm] cursor-pointer ${
               currentTrack.title === track.title ? 'bg-[#a66646]' : ''
             }`}
+            tabIndex={0}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleClick(track);
+              }
+            }}
+            onClick={() => handleClick(track)}
           >
             <div className="w-16 h-16 flex items-center justify-center bg-gray-200 rounded-sm overflow-hidden">
               {track.thumbnail ? (
