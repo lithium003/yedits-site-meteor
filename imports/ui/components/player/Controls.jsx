@@ -12,16 +12,26 @@ import {
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const Controls = () => {
-  const { currentTrack, audioRef, setDuration, duration, setTimeProgress, progressBarRef } =
-    useAudioPlayerContext();
+  const {
+    currentTrack,
+    audioRef,
+    setDuration,
+    duration,
+    setTimeProgress,
+    progressBarRef,
+    setTrackIndex,
+    setCurrentTrack,
+    queue,
+    setQueue
+  } = useAudioPlayerContext();
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const playAnimationRef = useRef(null);
 
-  const updateProgress = useCallback(() =>{
+  const updateProgress = useCallback(() => {
     if (audioRef.current && progressBarRef.current && duration) {
-      const currentTime= audioRef.current.currentTime;
+      const currentTime = audioRef.current.currentTime;
       setTimeProgress(currentTime);
       progressBarRef.current.value = currentTime.toString();
       progressBarRef.current.style.setProperty(
@@ -29,9 +39,9 @@ export const Controls = () => {
         `${(currentTime / duration) * 100}%`
       );
     }
-  }, [duration,setTimeProgress, audioRef, progressBarRef]);
+  }, [duration, setTimeProgress, audioRef, progressBarRef]);
 
-  const startAnimation = useCallback(() =>{
+  const startAnimation = useCallback(() => {
     if (audioRef.current && progressBarRef.current && duration) {
       const animate = () => {
         updateProgress();
@@ -54,7 +64,7 @@ export const Controls = () => {
       updateProgress(); // Ensure progress is updated immediately when paused
     }
     return () => {
-      if (playAnimationRef.current !== null ) {
+      if (playAnimationRef.current !== null) {
         cancelAnimationFrame(playAnimationRef.current);
       }
     };
@@ -70,10 +80,43 @@ export const Controls = () => {
     }
   };
 
-  const skipForward = () => {};
-  const skipBackward = () => {};
-  const handlePrevious = () => {};
-  const handleNext = () => {};
+  const skipForward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime += 15;
+      updateProgress();
+    }
+  };
+
+  const skipBackward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime -= 15;
+      updateProgress();
+    }
+  };
+
+  const handlePrevious = useCallback(() => {
+    setTrackIndex(prev => {
+      const newIndex = isShuffle
+        ? Math.floor(Math.random() * queue.length)
+        : prev === 0
+          ? queue.length - 1 // Loop back around if at first track
+          : prev - 1;
+      setCurrentTrack(queue[newIndex]);
+      return newIndex;
+    });
+  }, [isShuffle, setCurrentTrack, setTrackIndex]);
+
+  const handleNext = useCallback(() => {
+    setTrackIndex(prev => {
+      const newIndex = isShuffle
+        ? Math.floor(Math.random() * queue.length)
+        : prev >= queue.length - 1
+          ? 0
+          : prev + 1;
+      setCurrentTrack(queue[newIndex]);
+      return newIndex;
+    });
+  }, [isShuffle, setCurrentTrack, setTrackIndex, queue]);
 
   return (
     <>
