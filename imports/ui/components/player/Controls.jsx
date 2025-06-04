@@ -118,6 +118,24 @@ export const Controls = () => {
     });
   }, [isShuffle, setCurrentTrack, setTrackIndex, queue]);
 
+  useEffect(() => {
+    const currentAudioRef = audioRef.current;
+    if (currentAudioRef) {
+      currentAudioRef.onended = () => {
+        if (isRepeat) {
+          currentAudioRef.play();
+        } else {
+          handleNext();
+        }
+      };
+    }
+    return () => {
+      if (currentAudioRef) {
+        currentAudioRef.onended = null;
+      }
+    };
+  }, [isRepeat, handleNext, audioRef]);
+
   return (
     <>
       <div className="flex gap-4 items-center">

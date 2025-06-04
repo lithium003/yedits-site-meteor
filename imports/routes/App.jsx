@@ -23,6 +23,20 @@ export const AppRoutes = [
             author: 'Akimbo',
             thumbnail:
               '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
+          },
+          {
+            title: 'SLIDE',
+            src: '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/1._SLIDE.mp3',
+            author: 'Akimbo',
+            thumbnail:
+              '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
+          },
+          {
+            title: 'PROMOTION',
+            src: '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/4._PROMOTION.mp3',
+            author: 'Akimbo',
+            thumbnail:
+              '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
           }
         ]}
       >
