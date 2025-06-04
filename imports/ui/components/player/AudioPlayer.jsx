@@ -30,7 +30,6 @@ export const AudioPlayer = () => {
       >
         <div className="bg-[#4c4848] text-white max-h-72 overflow-y-auto">
           <PlayList />
-          <span>DRAWER</span>
         </div>
       </div>
     </div>
