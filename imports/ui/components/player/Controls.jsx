@@ -70,6 +70,11 @@ export const Controls = () => {
     }
   };
 
+  const skipForward = () => {};
+  const skipBackward = () => {};
+  const handlePrevious = () => {};
+  const handleNext = () => {};
+
   return (
     <>
       <div className="flex gap-4 items-center">
@@ -78,10 +83,10 @@ export const Controls = () => {
           ref={audioRef}
           onLoadedMetadata={onLoadedMetadata}
         />
-        <button onClick={() => {}}>
+        <button onClick={handlePrevious}>
           <BsSkipStartFill size={20} />
         </button>
-        <button onClick={() => {}}>
+        <button onClick={skipBackward}>
           <BsFillRewindFill size={20} />
         </button>
         <button onClick={() => setIsPlaying(prev => !prev)}>
@@ -91,10 +96,10 @@ export const Controls = () => {
             <BsFillPlayFill size={30} />
           )}
         </button>
-        <button onClick={() => {}}>
+        <button onClick={skipForward}>
           <BsFillFastForwardFill size={20} />
         </button>
-        <button onClick={() => {}}>
+        <button onClick={handleNext}>
           <BsSkipEndFill size={20} />
         </button>
         <button onClick={() => setIsShuffle(prev => !prev)}>
