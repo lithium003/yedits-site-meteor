@@ -18,7 +18,7 @@ export const PlayList = () => {
           <li
             key={index}
             className={`flex items-center gap-3 p-[0.5rem_10pm] cursor-pointer ${
-              currentTrack.title === track.title ? 'bg-[#a66646]' : ''
+              currentTrack.name === track.name ? 'bg-[#a66646]' : ''
             }`}
             tabIndex={0}
             onKeyDown={e => {
@@ -29,11 +29,11 @@ export const PlayList = () => {
             onClick={() => handleClick(track)}
           >
             <div className="w-16 h-16 flex items-center justify-center bg-gray-200 rounded-sm overflow-hidden">
-              {track.thumbnail ? (
+              {track.art_path ? (
                 <img
                   className="w-full h-full object-cover"
-                  src={track.thumbnail}
-                  alt={track.title}
+                  src={track.art_path}
+                  alt={track.name}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full bg-gray-300 rounded-md">
@@ -44,8 +44,8 @@ export const PlayList = () => {
               )}
             </div>
             <div>
-              <p className="font-bold text-sm">{track.title}</p>
-              <p className="text-sm text-gray-400">{track.author}</p>
+              <p className="font-bold text-sm">{track.name}</p>
+              <p className="text-sm text-gray-400">{track.yeditor_name}</p>
             </div>
           </li>
         ))}

@@ -8,11 +8,11 @@ export const TrackInfo = () => {
     <>
       <div className="flex items-center gap-4">
         <div className="w-24 h-24 flex itesm-center justiofy-center bg-gray-200 rounded-md overflow-hidden">
-          {currentTrack.thumbnail ? (
+          {currentTrack.art_path ? (
             <img
               className="w-full h-full object-cover"
-              src={currentTrack.thumbnail}
-              alt={currentTrack.title}
+              src={currentTrack.art_path}
+              alt={currentTrack.name}
             />
           ) : (
             <div className="flex items-center justify-center w-full h-full bg-gray-300 rounded-md">
@@ -24,9 +24,9 @@ export const TrackInfo = () => {
         </div>
         <div>
           <p className="font-bold lg:truncate lg:max-w-64">
-            {currentTrack.title}
+            {currentTrack.name}
           </p>
-          <p className="text-sm text-gray-400">{currentTrack.author}</p>
+          <p className="text-sm text-gray-400">{currentTrack.yeditor_name}</p>
         </div>
       </div>
     </>

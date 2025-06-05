@@ -90,6 +90,10 @@ Meteor.methods({
           data.art_path = convertPath(data.art_path);
         }
 
+        if (data.filepath) {
+          data.filepath = convertPath(data.filepath);
+        }
+
         return {
           id: doc.id,
           ...data

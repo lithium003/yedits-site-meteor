@@ -6,6 +6,8 @@ import { ProgressBar } from './ProgressBar';
 import { VolumeControl } from './VolumeControl';
 import { PlayList } from './PlayList';
 
+// https://blog.logrocket.com/building-audio-player-react/
+
 export const AudioPlayer = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   return (

@@ -140,7 +140,7 @@ export const Controls = () => {
     <>
       <div className="flex gap-4 items-center">
         <audio
-          src={currentTrack.src}
+          src={currentTrack.filepath}
           ref={audioRef}
           onLoadedMetadata={onLoadedMetadata}
         />

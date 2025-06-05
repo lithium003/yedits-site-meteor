@@ -18,25 +18,23 @@ export const AppRoutes = [
       <AudioPlayerProvider
         tracks={[
           {
-            title: 'DEAD',
-            src: '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/9._DEAD.mp3',
-            author: 'Akimbo',
-            thumbnail:
-              '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
-          },
-          {
-            title: 'SLIDE',
-            src: '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/1._SLIDE.mp3',
-            author: 'Akimbo',
-            thumbnail:
-              '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
-          },
-          {
-            title: 'PROMOTION',
-            src: '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/4._PROMOTION.mp3',
-            author: 'Akimbo',
-            thumbnail:
-              '/music/phIrTLTu5s5UnL3WqQdW/U82L7c84vyb6qoE0elFy/Vultures_2.png'
+            art_path:
+              '/music/phIrTLTu5s5UnL3WqQdW/I5hcOLF6HaAwlOnNKH88/yen.jpg.webp',
+            artist: 'nl4AjnR2vjmPNHRFziPP',
+            comp: 'I5hcOLF6HaAwlOnNKH88',
+            era: 'YEBU',
+            filepath:
+              '/music/phIrTLTu5s5UnL3WqQdW/I5hcOLF6HaAwlOnNKH88/03_BOBBY_DIGITAL.mp3',
+            length: '2:22',
+            name: 'BOBBY DIGITAL',
+            name_reverse_search: 'latigidybbob',
+            name_search: 'bobbydigital',
+            number: '3',
+            rating: 7,
+            release_date: new Date('2025-03-07T00:00:00.000Z'),
+            tags: ['Rework'],
+            yeditor: 'phIrTLTu5s5UnL3WqQdW',
+            yeditor_name: 'Akimbo'
           }
         ]}
       >
