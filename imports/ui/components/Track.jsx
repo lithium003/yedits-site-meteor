@@ -3,7 +3,8 @@ import { useAudioPlayerContext } from '../../contexts/AudioPlayerContext';
 
 export const Track = ({ edit }) => {
   const { filepath, number, name, length } = edit;
-  const { currentTrack, setCurrentTrack, queue, setQueue } = useAudioPlayerContext();
+  const { currentTrack, setCurrentTrack, queue, setQueue } =
+    useAudioPlayerContext();
 
   const handlePlay = () => {
     setCurrentTrack(edit);
@@ -16,7 +17,7 @@ export const Track = ({ edit }) => {
   return (
     <>
       <div
-        className="flex items-center justify-between text-white font-mono"
+        className="flex items-center justify-between text-white font-mono hover:bg-gray-700 px-4 py-2 rounded cursor-pointer"
         onClick={handlePlay}
       >
         <span className="w-8 text-center">{number}</span>

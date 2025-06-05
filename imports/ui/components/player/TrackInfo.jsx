@@ -7,7 +7,7 @@ export const TrackInfo = () => {
   return (
     <>
       <div className="flex items-center gap-4">
-        <div className="w-24 h-24 flex itesm-center justiofy-center bg-gray-200 rounded-md overflow-hidden">
+        <div className="w-24 h-24 flex items-center justify-center bg-gray-200 rounded-md overflow-hidden">
           {currentTrack.art_path ? (
             <img
               className="w-full h-full object-cover"
@@ -22,7 +22,7 @@ export const TrackInfo = () => {
             </div>
           )}
         </div>
-        <div>
+        <div className="max-w-[200px] min-w-[200px]">
           <p className="font-bold lg:truncate lg:max-w-64">
             {currentTrack.name}
           </p>

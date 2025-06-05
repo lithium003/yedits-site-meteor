@@ -33,7 +33,7 @@ export const Tracklist = ({ comp }) => {
   return (
     <>
       <div
-        className="flex flex-col space-y-2 overflow-y-auto h-96
+        className="flex flex-col overflow-y-auto h-96
         [&::-webkit-scrollbar]:w-2
         [&::-webkit-scrollbar-track]:rounded-full
         [&::-webkit-scrollbar-track]:bg-black
