@@ -3,10 +3,10 @@ import { useAudioPlayerContext } from '../../contexts/AudioPlayerContext';
 
 export const Track = ({ edit }) => {
   const { filepath, number, name, length } = edit;
-  const { queue, setQueue } = useAudioPlayerContext();
+  const { currentTrack, setCurrentTrack, queue, setQueue } = useAudioPlayerContext();
 
   const handlePlay = () => {
-    setQueue([edit]);
+    setCurrentTrack(edit);
   };
 
   const handleAddToQueue = () => {
