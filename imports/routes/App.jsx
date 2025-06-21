@@ -9,6 +9,7 @@ import { SampleRoutes } from '/imports/routes/pages/Sample';
 import { NotFoundRoutes } from '/imports/routes/pages/NotFound';
 import { CompRoutes } from './pages/Comp';
 import { AudioPlayerProvider } from '../contexts/AudioPlayerContext';
+import { SearchRoutes } from './pages/Search';
 
 // Define Routes for App JSX layout
 export const AppRoutes = [
@@ -46,6 +47,7 @@ export const AppRoutes = [
       ...HomeRoutes,
       ...SampleRoutes,
       ...CompRoutes,
+      ...SearchRoutes,
       ...NotFoundRoutes // * Last for Page not found
     ]
   }
