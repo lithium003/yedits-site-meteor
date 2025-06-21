@@ -1,33 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { COMPS, EDITS } from '/imports/api/collections/AvailableCollections';
-import admin from 'firebase-admin';
-
-const { projectId, clientEmail, privateKey } = Meteor.settings.private.firebase;
-
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId,
-      clientEmail,
-      privateKey: privateKey.replace(/\\n/g, '\n')
-    })
-  });
-}
-
-const db = admin.firestore();
-
-function convertPath(input) {
-  // Remove the leading '/static'
-  let output = input.replace(/^\/static/, '');
-
-  // Replace all backslashes with forward slashes
-  output = output.replace(/\\/g, '/');
-
-  // Remove the trailing '.webp' extension
-  output = output.replace(/\.webp$/, '');
-
-  return output;
-}
+import { db } from '/server/Firestore';
+import { convertPath } from '/server/Firestore';
 
 // Define Meteor Methods for SampleCollection (client-side calls)
 Meteor.methods({
@@ -39,10 +13,22 @@ Meteor.methods({
         .limit(10)
         .get();
 
-      const results = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const results = snapshot.docs.map(doc => {
+        const data = doc.data();
+
+        if (data.art_path) {
+          data.art_path = convertPath(data.art_path);
+        }
+
+        if (data.filepath) {
+          data.filepath = convertPath(data.filepath);
+        }
+
+        return {
+          id: doc.id,
+          ...data
+        };
+      });
 
       // console.log(results); // Or return to client via a Meteor method
       return results;
