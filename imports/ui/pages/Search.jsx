@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
-import { CompItem } from '../components/CompItem';
 
 export const Search = () => {
   const [data, setData] = useState([]);
@@ -34,11 +33,6 @@ export const Search = () => {
     <>
       <div>Search</div>
       <CompShelf items={data} />
-      {/*{data.map(item => (*/}
-      {/*  <div className="px-1" key={item.id}>*/}
-      {/*    <CompItem comp={item} />*/}
-      {/*  </div>*/}
-      {/*))}*/}
       <button onClick={loadNext}>LOAD NEXT 3</button>
     </>
   );
