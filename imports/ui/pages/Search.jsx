@@ -33,11 +33,12 @@ export const Search = () => {
   return (
     <>
       <div>Search</div>
-      {data.map(item => (
-        <div className="px-1" key={item.id}>
-          <CompItem comp={item} />
-        </div>
-      ))}
+      <CompShelf items={data} />
+      {/*{data.map(item => (*/}
+      {/*  <div className="px-1" key={item.id}>*/}
+      {/*    <CompItem comp={item} />*/}
+      {/*  </div>*/}
+      {/*))}*/}
       <button onClick={loadNext}>LOAD NEXT 3</button>
     </>
   );
