@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { CompItem } from './CompItem';
 
-export const CompShelf = ({ items }) => {
+export const CompShelf = forwardRef(({ items }, ref) => {
   return (
     <>
       <div
+        ref={ref}
         className="flex flex-nowrap bg-black/50 py-3 px-1 rounded-xl overflow-auto
         [&::-webkit-scrollbar]:w-2
         [&::-webkit-scrollbar-track]:rounded-full
@@ -15,11 +16,11 @@ export const CompShelf = ({ items }) => {
         "
       >
         {items.map(item => (
-          <div className="px-1" key={item.id}>
+          <div className="shelf-item px-1" key={item.id}>
             <CompItem comp={item} />
           </div>
         ))}
       </div>
     </>
   );
-};
+});
