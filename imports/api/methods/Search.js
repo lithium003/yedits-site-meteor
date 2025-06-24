@@ -6,6 +6,7 @@ import { convertPath } from '/server/Firestore';
 Meteor.methods({
   async getCompResults(lastId = null) {
     const term_search = '';
+    const num_results = 5;
     try {
       console.log(lastId);
       let query = await db
@@ -15,7 +16,7 @@ Meteor.methods({
         .orderBy('rating', 'desc')
         .orderBy('name_search')
         .orderBy('__name__')
-        .limit(3);
+        .limit(num_results);
 
       // We need the actual document ID, but we modify its elements when we return them as a list.
       // TODO: Find a way to keep the doc so we don't have to get() it again
