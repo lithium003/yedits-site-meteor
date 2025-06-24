@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
+import { useParams } from 'react-router-dom';
 
 /**
  * UI for the Search page
@@ -9,34 +10,39 @@ export const Search = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const compShelfRef = useRef(null);
+  const { searchTerm } = useParams();
 
   /**
    * Loads the next few comps and scrolls to show them
    */
+
   const loadNext = () => {
     const lastId = data[data.length - 1]?.id;
     if (!lastId || isLoading) return;
 
     setIsLoading(true);
     const previousLength = data.length;
-
-    Meteor.call('getCompResults', lastId, (err, result) => {
-      if (err) {
-        console.error('Failed to fetch next comps:', err);
-        setIsLoading(false);
-      } else {
-        setData(prev => {
-          const newData = [...prev, ...result];
-          // Scroll to newly loaded items
-          setTimeout(() => {
-            scrollToEnd();
-            // scrollToNewItems(previousLength);
-            setIsLoading(false);
-          }, 100); // Small delay to ensure DOM is updated
-          return newData;
-        });
+    Meteor.call(
+      'getCompResults',
+      { searchTerm: searchTerm, lastId: lastId },
+      (err, result) => {
+        if (err) {
+          console.error('Failed to fetch next comps:', err);
+          setIsLoading(false);
+        } else {
+          setData(prev => {
+            const newData = [...prev, ...result];
+            // Scroll to newly loaded items
+            setTimeout(() => {
+              scrollToEnd();
+              // scrollToNewItems(previousLength);
+              setIsLoading(false);
+            }, 100); // Small delay to ensure DOM is updated
+            return newData;
+          });
+        }
       }
-    });
+    );
   };
 
   /**
@@ -86,8 +92,8 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    // On first component render
-    Meteor.call('getCompResults', (err, result) => {
+    // On first component render, get items with no 'lastItem'
+    Meteor.call('getCompResults', { searchTerm: searchTerm }, (err, result) => {
       if (err) {
         console.error('Failed to fetch comps:', err);
       } else {
@@ -98,13 +104,20 @@ export const Search = () => {
 
   return (
     <>
-      <div>Search</div>
-      <CompShelf
-        ref={compShelfRef}
-        items={data}
-        onLoadNext={loadNext}
-        scrollToStart={scrollToStart}
-      />
+      <div className="flex justify-center w-full">
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold mb-2">
+            Comps matching "{searchTerm}"
+          </h1>
+
+          <CompShelf
+            ref={compShelfRef}
+            items={data}
+            onLoadNext={loadNext}
+            scrollToStart={scrollToStart}
+          />
+        </div>
+      </div>
     </>
   );
 };

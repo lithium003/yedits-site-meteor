@@ -1,22 +1,20 @@
 import { Meteor } from 'meteor/meteor';
-import { COMPS, EDITS } from '/imports/api/collections/AvailableCollections';
-import { db } from '/server/Firestore';
-import { convertPath } from '/server/Firestore';
+import { COMPS } from '/imports/api/collections/AvailableCollections';
+import { convertPath, db } from '/server/Firestore';
 
 Meteor.methods({
-  async getCompResults(lastId = null) {
-    const term_search = '';
-    const num_results = 5;
+  async getCompResults({ searchTerm = '', lastId = null }) {
+    const numResults = 5;
     try {
       console.log(lastId);
       let query = await db
         .collection(COMPS)
-        .where('name_search', '>=', term_search)
-        .where('name_search', '<=', term_search + '\uf8ff')
+        .where('name_search', '>=', searchTerm)
+        .where('name_search', '<=', searchTerm + '\uf8ff')
         .orderBy('rating', 'desc')
         .orderBy('name_search')
         .orderBy('__name__')
-        .limit(num_results);
+        .limit(numResults);
 
       // We need the actual document ID, but we modify its elements when we return them as a list.
       // TODO: Find a way to keep the doc so we don't have to get() it again
@@ -44,7 +42,7 @@ Meteor.methods({
         };
       });
 
-      console.log(results); // Or return to client via a Meteor method
+      // console.log(results); // Or return to client via a Meteor method
       return results;
     } catch (error) {
       console.error('Error fetching top comps:', error);
