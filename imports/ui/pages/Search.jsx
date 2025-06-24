@@ -29,7 +29,8 @@ export const Search = () => {
           const newData = [...prev, ...result];
           // Scroll to newly loaded items
           setTimeout(() => {
-            scrollToNewItems(previousLength);
+            scrollToEnd();
+            // scrollToNewItems(previousLength);
             setIsLoading(false);
           }, 100); // Small delay to ensure DOM is updated
           return newData;
@@ -38,6 +39,34 @@ export const Search = () => {
     });
   };
 
+  /**
+   * Scroll to end to show all new items
+   */
+  const scrollToEnd = () => {
+    if (!compShelfRef.current) return;
+
+    compShelfRef.current.scrollTo({
+      left: compShelfRef.current.scrollWidth,
+      behavior: 'smooth'
+    });
+  };
+
+  /**
+   * Scroll to start of CompShelf
+   */
+  const scrollToStart = () => {
+    if (!compShelfRef.current) return;
+
+    compShelfRef.current.scrollTo({
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  /**
+   * Scroll to the start of the newly loaded items
+   * @param previousLength the number of items in the shelf before loading more
+   */
   const scrollToNewItems = previousLength => {
     if (!compShelfRef.current) return;
     const shelfElement = compShelfRef.current;
@@ -52,7 +81,7 @@ export const Search = () => {
         inline: 'start'
       });
     } else {
-      // Fallback: scroll to show new content area
+      // Fallback: scroll to show new content area TODO?
     }
   };
 
@@ -70,10 +99,12 @@ export const Search = () => {
   return (
     <>
       <div>Search</div>
-      <CompShelf ref={compShelfRef} items={data} />
-      <button className="bg-amber-700" onClick={loadNext} disabled={isLoading}>
-        {isLoading ? 'Loading...' : 'Load More'}
-      </button>
+      <CompShelf
+        ref={compShelfRef}
+        items={data}
+        onLoadNext={loadNext}
+        scrollToStart={scrollToStart}
+      />
     </>
   );
 };

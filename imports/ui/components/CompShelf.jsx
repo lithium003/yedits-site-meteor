@@ -1,33 +1,61 @@
 import React, { forwardRef } from 'react';
 import { CompItem } from './CompItem';
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 
-export const CompShelf = forwardRef(({ items }, ref) => {
-  // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
-  const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
+export const CompShelf = forwardRef(
+  ({ items, onLoadNext, scrollToStart }, ref) => {
+    // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
+    const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
+    return (
+      <>
+        <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 px-2 bg-black/50 rounded-xl">
+          {/* Scroll to Start button TODO turn these into components and pass the function/icon*/}
+          {scrollToStart && (
+            <div className="shelf-item flex-shrink-0 flex items-center">
+              <button
+                onClick={scrollToStart}
+                className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
+              >
+                <RiArrowLeftDoubleLine />
+              </button>
+            </div>
+          )}
 
-  return (
-    <>
-      <div
-        ref={ref}
-        style={{ width: `${shelfWidth}px` }}
-        className="flex flex-nowrap overflow-x-auto bg-black/50 py-3 px-2 rounded-xl
-        [&::-webkit-scrollbar]:w-2
-        [&::-webkit-scrollbar-track]:rounded-full
-        [&::-webkit-scrollbar-track]:bg-black
-        [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:bg-gray-500
-        [&::-webkit-scrollbar-thumb:hover]:bg-gray-600
-        "
-      >
-        {items.map(item => (
           <div
-            className="shelf-item flex-shrink-0 first:ml-0 ml-2 mr-2 last:mr-0"
-            key={item.id}
+            ref={ref}
+            style={{ width: `${shelfWidth}px` }}
+            className="flex flex-nowrap py-3 px-2 overflow-x-auto
+            [&::-webkit-scrollbar]:w-2
+            [&::-webkit-scrollbar-track]:rounded-full
+            [&::-webkit-scrollbar-track]:bg-black
+            [&::-webkit-scrollbar-thumb]:rounded-full
+            [&::-webkit-scrollbar-thumb]:bg-gray-500
+            [&::-webkit-scrollbar-thumb:hover]:bg-gray-600
+            "
           >
-            <CompItem comp={item} />
+            {items.map(item => (
+              <div
+                className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
+                key={item.id}
+              >
+                <CompItem comp={item} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </>
-  );
-});
+
+          {/* Load Next button */}
+          {onLoadNext && (
+            <div className="shelf-item flex-shrink-0 flex items-center">
+              <button
+                onClick={onLoadNext}
+                className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
+              >
+                <RiArrowRightDoubleLine />
+              </button>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+);
