@@ -4,6 +4,4 @@ import React from 'react';
 import { Search } from '/imports/ui/pages/Search';
 
 // Define Routes for Sample JSX Searchonent
-export const SearchRoutes = [
-  { path: '/search/:searchTerm?', element: <Search /> }
-];
+export const SearchRoutes = [{ path: '/search', element: <Search /> }];

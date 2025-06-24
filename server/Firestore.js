@@ -17,6 +17,7 @@ console.log('Firebase initialized');
 
 export const db = admin.firestore();
 
+// TODO move these to a Utils file
 export function convertPath(input) {
   // Remove the leading '/static'
   let output = input.replace(/^\/static/, '');

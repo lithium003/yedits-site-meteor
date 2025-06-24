@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
-import { useParams } from 'react-router-dom';
+import { searchableName } from '/imports/utils/stringUtils';
 
 /**
  * UI for the Search page
@@ -10,8 +12,22 @@ export const Search = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const compShelfRef = useRef(null);
-  const { searchTerm } = useParams();
 
+  const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+  console.log('URL search term:', searchParams.get('q')); // Debug line
+  console.log('State search term:', searchTerm); // Debug line
+
+  // TODO i think this causes hydration issues, check browser console
+  useEffect(() => {
+    // This will run whenever the URL parameters change
+    const urlSearchTerm = searchParams.get('q');
+    if (urlSearchTerm !== null) {
+      setSearchTerm(urlSearchTerm);
+    }
+  }, [searchParams]);
+  console.log('URL search term after:', searchParams.get('q')); // Debug line
+  console.log('State search term after:', searchTerm); // Debug line
   /**
    * Loads the next few comps and scrolls to show them
    */
@@ -24,7 +40,7 @@ export const Search = () => {
     const previousLength = data.length;
     Meteor.call(
       'getCompResults',
-      { searchTerm: searchTerm, lastId: lastId },
+      { searchTerm: searchableName(searchTerm), lastId: lastId },
       (err, result) => {
         if (err) {
           console.error('Failed to fetch next comps:', err);
@@ -93,13 +109,17 @@ export const Search = () => {
 
   useEffect(() => {
     // On first component render, get items with no 'lastItem'
-    Meteor.call('getCompResults', { searchTerm: searchTerm }, (err, result) => {
-      if (err) {
-        console.error('Failed to fetch comps:', err);
-      } else {
-        setData(Array.from(result));
+    Meteor.call(
+      'getCompResults',
+      { searchTerm: searchableName(searchTerm) },
+      (err, result) => {
+        if (err) {
+          console.error('Failed to fetch comps:', err);
+        } else {
+          setData(Array.from(result));
+        }
       }
-    });
+    );
   }, []);
 
   return (
