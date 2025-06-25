@@ -13,21 +13,17 @@ export const Search = () => {
   const [isLoading, setIsLoading] = useState(false);
   const compShelfRef = useRef(null);
 
+  // Get search term from url
   const [searchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
-  console.log('URL search term:', searchParams.get('q')); // Debug line
-  console.log('State search term:', searchTerm); // Debug line
+  const searchTerm = searchParams.get('q') ?? '';
 
-  // TODO i think this causes hydration issues, check browser console
+  // Hydration problems can occur when the client renders data before server-side rendering can finish.
+  // If this happens, make the client-side rendering dependent on isMounted being true.
+  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
-    // This will run whenever the URL parameters change
-    const urlSearchTerm = searchParams.get('q');
-    if (urlSearchTerm !== null) {
-      setSearchTerm(urlSearchTerm);
-    }
-  }, [searchParams]);
-  console.log('URL search term after:', searchParams.get('q')); // Debug line
-  console.log('State search term after:', searchTerm); // Debug line
+    setIsMounted(true);
+  }, []);
+
   /**
    * Loads the next few comps and scrolls to show them
    */
@@ -124,12 +120,13 @@ export const Search = () => {
 
   return (
     <>
+      {/* Horizontally centers the page */}
       <div className="flex justify-center w-full">
+        {/* Ensures everything is stacked vertically */}
         <div className="flex flex-col">
           <h1 className="text-xl font-bold mb-2">
-            Comps matching "{searchTerm}"
+            Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-
           <CompShelf
             ref={compShelfRef}
             items={data}
