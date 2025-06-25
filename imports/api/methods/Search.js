@@ -3,12 +3,16 @@ import { COMPS } from '/imports/api/collections/AvailableCollections';
 import { convertPath, db } from '/server/Firestore';
 
 Meteor.methods({
-  async getCompResults({ searchTerm = '', lastId = null }) {
+  async getSearchResults({
+    collection = COMPS,
+    searchTerm = '',
+    lastId = null
+  }) {
     const numResults = 5;
     try {
       console.log(lastId);
       let query = await db
-        .collection(COMPS)
+        .collection(collection)
         .where('name_search', '>=', searchTerm)
         .where('name_search', '<=', searchTerm + '\uf8ff')
         .orderBy('rating', 'desc')
@@ -20,7 +24,7 @@ Meteor.methods({
       // TODO: Find a way to keep the doc so we don't have to get() it again
       console.log('LASTID IS ', lastId);
       if (lastId) {
-        const lastDoc = await db.collection(COMPS).doc(lastId).get();
+        const lastDoc = await db.collection(collection).doc(lastId).get();
         query = query.startAfter(lastDoc);
       }
 
@@ -45,8 +49,8 @@ Meteor.methods({
       // console.log(results); // Or return to client via a Meteor method
       return results;
     } catch (error) {
-      console.error('Error fetching top comps:', error);
-      throw new Meteor.Error('firebase-error', 'Failed to fetch top comps');
+      console.error(`Error fetching results for ${collection}: ${error}`);
+      throw new Meteor.Error('firebase-error', 'Failed to fetch results');
     }
   }
 });

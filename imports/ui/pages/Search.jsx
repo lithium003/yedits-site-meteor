@@ -4,14 +4,17 @@ import { useSearchParams } from 'react-router-dom';
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
 import { searchableName } from '/imports/utils/stringUtils';
+import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 
 /**
  * UI for the Search page
  */
 export const Search = () => {
-  const [data, setData] = useState([]);
+  const [comps, setComps] = useState([]);
+  const [edits, setEdits] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const compShelfRef = useRef(null);
+  const compsShelfRef = useRef(null);
+  const editsShelfRef = useRef(null);
 
   // Get search term from url
   const [searchParams] = useSearchParams();
@@ -27,26 +30,30 @@ export const Search = () => {
   /**
    * Loads the next few comps and scrolls to show them
    */
-
-  const loadNext = () => {
-    const lastId = data[data.length - 1]?.id;
+  // TODO: a way to pass around the collection name, state variable, setter, and ref for each collection together
+  const loadNext = (collection, state, setState, shelfRef) => {
+    const lastId = state[state.length - 1]?.id;
     if (!lastId || isLoading) return;
 
     setIsLoading(true);
-    const previousLength = data.length;
+    const previousLength = state.length;
     Meteor.call(
-      'getCompResults',
-      { searchTerm: searchableName(searchTerm), lastId: lastId },
+      'getSearchResults',
+      {
+        collection: collection,
+        searchTerm: searchableName(searchTerm),
+        lastId: lastId
+      },
       (err, result) => {
         if (err) {
-          console.error('Failed to fetch next comps:', err);
+          console.error('Failed to fetch next results:', err);
           setIsLoading(false);
         } else {
-          setData(prev => {
+          setState(prev => {
             const newData = [...prev, ...result];
             // Scroll to newly loaded items
             setTimeout(() => {
-              scrollToEnd();
+              scrollToEnd(shelfRef);
               // scrollToNewItems(previousLength);
               setIsLoading(false);
             }, 100); // Small delay to ensure DOM is updated
@@ -60,11 +67,11 @@ export const Search = () => {
   /**
    * Scroll to end to show all new items
    */
-  const scrollToEnd = () => {
-    if (!compShelfRef.current) return;
+  const scrollToEnd = shelfRef => {
+    if (!shelfRef.current) return;
 
-    compShelfRef.current.scrollTo({
-      left: compShelfRef.current.scrollWidth,
+    shelfRef.current.scrollTo({
+      left: shelfRef.current.scrollWidth,
       behavior: 'smooth'
     });
   };
@@ -72,10 +79,10 @@ export const Search = () => {
   /**
    * Scroll to start of CompShelf
    */
-  const scrollToStart = () => {
-    if (!compShelfRef.current) return;
+  const scrollToStart = shelfRef => {
+    if (!shelfRef.current) return;
 
-    compShelfRef.current.scrollTo({
+    shelfRef.current.scrollTo({
       left: 0,
       behavior: 'smooth'
     });
@@ -86,8 +93,8 @@ export const Search = () => {
    * @param previousLength the number of items in the shelf before loading more
    */
   const scrollToNewItems = previousLength => {
-    if (!compShelfRef.current) return;
-    const shelfElement = compShelfRef.current;
+    if (!compsShelfRef.current) return;
+    const shelfElement = compsShelfRef.current;
 
     // Scroll to the first new item
     const firstNewItemIndex = previousLength;
@@ -105,17 +112,23 @@ export const Search = () => {
 
   useEffect(() => {
     // On first component render, get items with no 'lastItem'
-    Meteor.call(
-      'getCompResults',
-      { searchTerm: searchableName(searchTerm) },
-      (err, result) => {
-        if (err) {
-          console.error('Failed to fetch comps:', err);
-        } else {
-          setData(Array.from(result));
+    const searchCollections = [
+      { collection: COMPS, setState: setComps },
+      { collection: EDITS, setState: setEdits }
+    ];
+    searchCollections.forEach(type => {
+      Meteor.call(
+        'getSearchResults',
+        { collection: type.collection, searchTerm: searchableName(searchTerm) },
+        (err, result) => {
+          if (err) {
+            console.error('Failed to fetch results:', err);
+          } else {
+            type.setState(Array.from(result));
+          }
         }
-      }
-    );
+      );
+    });
   }, []);
 
   return (
@@ -127,11 +140,22 @@ export const Search = () => {
           <h1 className="text-xl font-bold mb-2">
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
+          {/* Comps Shelf */}
           <CompShelf
-            ref={compShelfRef}
-            items={data}
-            onLoadNext={loadNext}
-            scrollToStart={scrollToStart}
+            ref={compsShelfRef}
+            items={comps}
+            onLoadNext={() => loadNext(COMPS, comps, setComps, compsShelfRef)}
+            scrollToStart={() => scrollToStart(compsShelfRef)}
+          />
+          <h1 className="text-xl font-bold mb-2">
+            Edits matching {isMounted ? `"${searchTerm}"` : ''}
+          </h1>
+          {/* Edits Shelf */}
+          <CompShelf
+            ref={editsShelfRef}
+            items={edits}
+            onLoadNext={() => loadNext(EDITS, edits, setEdits, editsShelfRef)}
+            scrollToStart={() => scrollToStart(editsShelfRef)}
           />
         </div>
       </div>
