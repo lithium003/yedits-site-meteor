@@ -16,6 +16,18 @@ export const Search = () => {
   const compsShelfRef = useRef(null);
   const editsShelfRef = useRef(null);
 
+  const compsObj = {
+    collection: COMPS,
+    shelfRef: compsShelfRef,
+    state: comps,
+    setState: setComps
+  };
+  const editsObj = {
+    collection: EDITS,
+    shelfRef: editsShelfRef,
+    state: edits,
+    setState: setEdits
+  };
   // Get search term from url
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q') ?? '';
@@ -31,7 +43,7 @@ export const Search = () => {
    * Loads the next few comps and scrolls to show them
    */
   // TODO: a way to pass around the collection name, state variable, setter, and ref for each collection together
-  const loadNext = (collection, state, setState, shelfRef) => {
+  const loadNext = ({ collection, shelfRef, state, setState }) => {
     const lastId = state[state.length - 1]?.id;
     if (!lastId || isLoading) return;
 
@@ -112,11 +124,8 @@ export const Search = () => {
 
   useEffect(() => {
     // On first component render, get items with no 'lastItem'
-    const searchCollections = [
-      { collection: COMPS, setState: setComps },
-      { collection: EDITS, setState: setEdits }
-    ];
-    searchCollections.forEach(type => {
+    const objects = [compsObj, editsObj];
+    objects.forEach(type => {
       Meteor.call(
         'getSearchResults',
         { collection: type.collection, searchTerm: searchableName(searchTerm) },
@@ -144,7 +153,7 @@ export const Search = () => {
           <CompShelf
             ref={compsShelfRef}
             items={comps}
-            onLoadNext={() => loadNext(COMPS, comps, setComps, compsShelfRef)}
+            onLoadNext={() => loadNext(compsObj)}
             scrollToStart={() => scrollToStart(compsShelfRef)}
           />
           <h1 className="text-xl font-bold mb-2">
@@ -154,7 +163,7 @@ export const Search = () => {
           <CompShelf
             ref={editsShelfRef}
             items={edits}
-            onLoadNext={() => loadNext(EDITS, edits, setEdits, editsShelfRef)}
+            onLoadNext={() => loadNext(editsObj)}
             scrollToStart={() => scrollToStart(editsShelfRef)}
           />
         </div>
