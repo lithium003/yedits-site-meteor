@@ -8,13 +8,15 @@ import { AudioPlayer } from './components/player/AudioPlayer';
 
 export const App = () => (
   <>
-    <NavBar />
-    <main>
-      {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
-      <Suspense fallback={<Fallback />}>
-        <Outlet /> {/* Renders the matched child (pages) route here */}
-      </Suspense>
-    </main>
-    <AudioPlayer />
+    <div className="">
+      <NavBar />
+      <main>
+        {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
+        <Suspense fallback={<Fallback />}>
+          <Outlet /> {/* Renders the matched child (pages) route here */}
+        </Suspense>
+      </main>
+      <AudioPlayer />
+    </div>
   </>
 );
