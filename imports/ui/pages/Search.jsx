@@ -129,7 +129,7 @@ export const Search = () => {
         }
       );
     });
-  }, []);
+  }, [searchParams]);
 
   return (
     <>
