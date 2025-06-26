@@ -38,7 +38,7 @@ export const CompShelf = forwardRef(
                 className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
                 key={item.id}
               >
-                <CompItem comp={item} />
+                <CompItem data={item} />
               </div>
             ))}
           </div>
