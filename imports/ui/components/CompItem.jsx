@@ -5,10 +5,13 @@ export const CompItem = ({ data }) => {
   // Destructure fields from the first item.
   // `comp` refers to the comp id and is only defined if an *edit* is passed in
   const { id, name, yeditor, yeditor_name, art_path, comp } = data;
+
+  // For edits, link to its comp with the given edit highlighted.
+  const pageLink = comp ? `/comp/${comp}?h=${id}` : `/comp/${id}`;
   return (
     <>
       <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
-        <Link to={`/comp/${comp ? comp : id}`}>
+        <Link to={pageLink}>
           <img
             className="w-full h-[200px] rounded-xl object-cover mb-1"
             src={art_path}
@@ -16,7 +19,7 @@ export const CompItem = ({ data }) => {
           />
         </Link>
         <Link
-          to={`/comp/${comp ? comp : id}`}
+          to={pageLink}
           className="text-center text-md font-bold truncate mb-0 w-full"
         >
           <span className="hover:underline">{name}</span>

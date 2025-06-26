@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Track } from './Track';
 
-export const Tracklist = ({ comp }) => {
+export const Tracklist = ({ comp, highlightEditId }) => {
   const { name, yeditor, yeditor_name, art_path, length } = comp;
   const [edits, setEdits] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,11 @@ export const Tracklist = ({ comp }) => {
       "
       >
         {edits.map(edit => (
-          <Track key={edit.id} edit={edit} />
+          <Track
+            key={edit.id}
+            edit={edit}
+            highlight={edit.id === highlightEditId}
+          />
         ))}
       </div>
 

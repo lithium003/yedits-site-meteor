@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { CompInfo } from '../components/CompInfo';
 import { Tracklist } from '../components/Tracklist';
@@ -9,6 +9,10 @@ export const Comp = () => {
   const { comp_id } = useParams();
   const [comp, setComp] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Highlighted Edit
+  const [searchParams] = useSearchParams();
+  const highlightEditId = searchParams.get('h') ?? '';
 
   useEffect(() => {
     const getCompData = async () => {
@@ -39,7 +43,7 @@ export const Comp = () => {
         <title>{comp.name} - Yedits</title>
       </Helmet>
       <CompInfo comp={comp} />
-      <Tracklist comp={comp} />
+      <Tracklist comp={comp} highlightEditId={highlightEditId} />
     </>
   );
 };

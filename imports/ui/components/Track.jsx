@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAudioPlayerContext } from '../../contexts/AudioPlayerContext';
 
-export const Track = ({ edit }) => {
+export const Track = ({ edit, highlight }) => {
   const { filepath, number, name, length } = edit;
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
@@ -17,7 +17,9 @@ export const Track = ({ edit }) => {
   return (
     <>
       <div
-        className="flex items-center justify-between text-white font-mono hover:bg-gray-700 px-4 py-2 rounded cursor-pointer"
+        className={`flex items-center justify-between text-white font-mono hover:bg-gray-700 px-4 py-2 rounded cursor-pointer
+        ${highlight && 'border-1 border-yellow-500'}
+        `}
         onClick={handlePlay}
       >
         <span className="w-8 text-center">{number}</span>
