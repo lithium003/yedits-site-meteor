@@ -2,7 +2,7 @@ import React from 'react';
 import { useAudioPlayerContext } from '../../contexts/AudioPlayerContext';
 
 export const Track = ({ edit, highlight }) => {
-  const { filepath, number, name, length } = edit;
+  const { id, filepath, number, name, length } = edit;
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
 
@@ -17,9 +17,21 @@ export const Track = ({ edit, highlight }) => {
   return (
     <>
       <div
-        className={`flex items-center justify-between text-white font-mono hover:bg-gray-700 px-4 py-2 rounded cursor-pointer
-        ${highlight && 'border-1 border-yellow-500'}
+        /* eslint-disable indent */
+        className={`
+        flex items-center justify-between
+        text-white font-mono
+        hover:bg-gray-700 cursor-pointer
+        rounded px-4 py-2 
+        ${
+          id === currentTrack.id
+            ? 'border-l-4 border-red-500'
+            : highlight && 'border-l-4 border-yellow-500'
+        }
         `}
+        /* eslint-enable indent */
+        // Current marker and Highlight marker have to be mutually exclusive
+        // or else Highlight can override Current marker.
         onClick={handlePlay}
       >
         <span className="w-8 text-center">{number}</span>
