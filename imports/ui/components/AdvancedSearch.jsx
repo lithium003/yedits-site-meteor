@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { ERAS } from '../../utils/eras';
 
 export const AdvancedSearch = ({ onClose, onSubmit }) => {
+  useEffect(() => {
+    console.log('Advanced Search Mounted');
+  }, []);
   return (
     <>
       <div className="absolute top-full left-0 right-0 mt-2 bg-[#1c1c1d] rounded-lg p-4 shadow-lg z-50">
@@ -25,16 +29,22 @@ export const AdvancedSearch = ({ onClose, onSubmit }) => {
               placeholder="Filter by genre..."
             />
           </div>
-          {/* Date Range Filter */}
+          {/* Era Filter */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">
-              Date Range
-            </label>
+            <label className="block text-sm text-gray-400 mb-1">Era</label>
             <select className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2">
-              <option value="all">All Time</option>
-              <option value="week">Past Week</option>
-              <option value="month">Past Month</option>
-              <option value="year">Past Year</option>
+              {ERAS.map(era => (
+                <option
+                  key={era.id}
+                  value={era.id}
+                  style={{
+                    ...era.style,
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {era.name}
+                </option>
+              ))}
             </select>
           </div>
 
