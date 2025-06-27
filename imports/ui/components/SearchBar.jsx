@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { RiFilter3Line, RiSearchLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { AdvancedSearch } from './AdvancedSearch';
 
 export const SearchBar = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Advanced Search
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const handleSearch = e => {
     e.preventDefault();
@@ -14,18 +18,34 @@ export const SearchBar = () => {
 
   return (
     <>
-      <div className="relative rounded-full bg-white text-black p-2 flex items-center gap-2">
-        <RiSearchLine color="grey" />
-        <form onSubmit={handleSearch} className="flex-1">
-          <input
-            className="w-full outline-none"
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-          />
+      <div className="relative">
+        <form onSubmit={handleSearch}>
+          <div className="flex items-center bg-[#1c1c1d] rounded-lg px-3 py-2">
+            <RiSearchLine className="text-gray-400 mr-2" />
+            <input
+              type="text"
+              className="bg-transparent text-white flex-1 outline-none"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => setAdvancedOpen(prev => !prev)}
+              className={`text-gray-400 hover:text-white transition-colors ${
+                advancedOpen ? 'text-white' : ''
+              }`}
+            >
+              <RiFilter3Line />
+            </button>
+          </div>
+          {advancedOpen && (
+            <AdvancedSearch
+              onClose={() => setAdvancedOpen(false)}
+              onSubmit={handleSearch}
+            />
+          )}
         </form>
-        <RiFilter3Line color="grey" className="" />
       </div>
     </>
   );
