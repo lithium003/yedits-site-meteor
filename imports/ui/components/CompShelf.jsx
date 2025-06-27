@@ -2,8 +2,17 @@ import React, { forwardRef } from 'react';
 import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 
+/**
+ * A shelf displaying Items.
+ * @param ItemComponent - the Item component to be displayed (default CompItem)
+ * @param items - an array of objects containing item data, to be mapped onto individual Item components
+ * @param onLoadNext - the function to be mapped to the 'next' button (optional)
+ * @param scrollToStart - the function to be mapped onto the 'back' button (optional)
+ * @param ref - the ref of this CompShelf in the DOM
+ * @returns {JSX.Element}
+ */
 export const CompShelf = forwardRef(
-  ({ items, onLoadNext, scrollToStart }, ref) => {
+  ({ ItemComponent = CompItem, items, onLoadNext, scrollToStart }, ref) => {
     // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
     const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
     return (
@@ -38,7 +47,7 @@ export const CompShelf = forwardRef(
                 className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
                 key={item.id}
               >
-                <CompItem data={item} />
+                <ItemComponent data={item} />
               </div>
             ))}
           </div>

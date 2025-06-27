@@ -4,7 +4,12 @@ import { useSearchParams } from 'react-router-dom';
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
 import { searchableName } from '/imports/utils/stringUtils';
-import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
+import {
+  COMPS,
+  EDITS,
+  YEDITORS
+} from '../../api/collections/AvailableCollections';
+import { YeditorItem } from '../components/YeditorItem';
 
 /**
  * UI for the Search page
@@ -12,9 +17,13 @@ import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 export const Search = () => {
   const [comps, setComps] = useState([]);
   const [edits, setEdits] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [yeditors, setYeditors] = useState([]);
+
   const compsShelfRef = useRef(null);
   const editsShelfRef = useRef(null);
+  const yeditorsShelfRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const compsObj = {
     collection: COMPS,
@@ -28,6 +37,13 @@ export const Search = () => {
     state: edits,
     setState: setEdits
   };
+  const yeditorsObj = {
+    collection: YEDITORS,
+    shelfRef: yeditorsShelfRef,
+    state: yeditors,
+    setState: setYeditors
+  };
+  const objects = [compsObj, editsObj, yeditorsObj];
   // Get search term from url
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q') ?? '';
@@ -124,8 +140,8 @@ export const Search = () => {
 
   useEffect(() => {
     // On first component render, get items with no 'lastItem'
-    const objects = [compsObj, editsObj];
     objects.forEach(type => {
+      console.log('calling for', type);
       Meteor.call(
         'getSearchResults',
         { collection: type.collection, searchTerm: searchableName(searchTerm) },
@@ -146,25 +162,36 @@ export const Search = () => {
       <div className="flex justify-center w-full">
         {/* Ensures everything is stacked vertically */}
         <div className="flex flex-col">
+          {/* Comps Shelf */}
           <h1 className="text-xl font-bold mb-2">
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-          {/* Comps Shelf */}
           <CompShelf
             ref={compsShelfRef}
             items={comps}
             onLoadNext={() => loadNext(compsObj)}
             scrollToStart={() => scrollToStart(compsShelfRef)}
           />
+          {/* Edits Shelf */}
           <h1 className="text-xl font-bold mb-2">
             Edits matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-          {/* Edits Shelf */}
           <CompShelf
             ref={editsShelfRef}
             items={edits}
             onLoadNext={() => loadNext(editsObj)}
             scrollToStart={() => scrollToStart(editsShelfRef)}
+          />
+          {/* Yeditors Shelf */}
+          <h1 className="text-xl font-bold mb-2">
+            Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
+          </h1>
+          <CompShelf
+            ItemComponent={YeditorItem}
+            ref={yeditorsShelfRef}
+            items={yeditors}
+            onLoadNext={() => loadNext(yeditorsObj)}
+            scrollToStart={() => scrollToStart(yeditorsShelfRef)}
           />
         </div>
       </div>

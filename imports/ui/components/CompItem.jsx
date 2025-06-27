@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * An Item representing a Comp or an Edit.
+ * @param data - the Comp/Edit data object
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const CompItem = ({ data }) => {
-  // Destructure fields from the first item.
+  // Destructure fields from the data object.
   // `comp` refers to the comp id and is only defined if an *edit* is passed in
-  const { id, name, yeditor, yeditor_name, art_path, comp } = data;
+  const { id, name, yeditor, yeditor_name, art_path, comp, display_name } =
+    data;
 
   // For edits, link to its comp with the given edit highlighted.
   const pageLink = comp ? `/comp/${comp}?h=${id}` : `/comp/${id}`;
