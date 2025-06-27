@@ -17,7 +17,7 @@ export const CompShelf = forwardRef(
     const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
     return (
       <>
-        <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 px-2 bg-black/50 rounded-xl">
+        <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 py-3 px-2 bg-black/50 rounded-xl">
           {/* Scroll to Start button TODO turn these into components and pass the function/icon*/}
           {scrollToStart && (
             <div className="shelf-item flex-shrink-0 flex items-center">
@@ -33,7 +33,12 @@ export const CompShelf = forwardRef(
           <div
             ref={ref}
             style={{ width: `${shelfWidth}px` }}
-            className="flex flex-nowrap py-3 px-2 overflow-x-auto
+            // Change overflow-x-scroll to overflow-x-auto to remove the default black scrollbar placeholder.
+            // `pb-4` and `h-[284px]` create placeholder spacing for the scrollbar.
+            className="
+            overflow-x-scroll
+            h-[284px] px-2 pb-4
+            flex flex-nowrap
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:rounded-full
             [&::-webkit-scrollbar-track]:bg-black
