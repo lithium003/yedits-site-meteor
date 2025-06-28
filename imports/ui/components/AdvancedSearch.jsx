@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react';
 import { ERAS } from '../../utils/eras';
 
-export const AdvancedSearch = ({ onClose, onSubmit }) => {
+export const AdvancedSearch = ({
+  filters,
+  handleFilterChange,
+  resetFilters,
+  onClose,
+  onSubmit
+}) => {
   useEffect(() => {
     console.log('Advanced Search Mounted');
   }, []);
@@ -32,7 +38,12 @@ export const AdvancedSearch = ({ onClose, onSubmit }) => {
           {/* Era Filter */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">Era</label>
-            <select className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2">
+            <select
+              value={filters.era}
+              onChange={e => handleFilterChange('era', e.target.value)}
+              className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
+            >
+              <option value="">Select an era...</option>
               {ERAS.map(era => (
                 <option
                   key={era.id}
@@ -52,6 +63,7 @@ export const AdvancedSearch = ({ onClose, onSubmit }) => {
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
+              onClick={resetFilters}
               className="px-4 py-2 text-sm text-gray-400 hover:text-white"
             >
               Reset
@@ -60,7 +72,7 @@ export const AdvancedSearch = ({ onClose, onSubmit }) => {
               onClick={onSubmit}
               className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              Apply Filters
+              Search
             </button>
           </div>
         </div>

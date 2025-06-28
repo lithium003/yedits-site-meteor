@@ -9,11 +9,21 @@ export const SearchBar = () => {
 
   // Advanced Search
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  // Object for resetting/default filters - list all filters & default values here
+  const emptyFiltersObj = { era: '' };
+  const [filters, setFilters] = useState(emptyFiltersObj);
+  const handleFilterChange = (filterType, value) => {
+    setFilters({ ...filters, [filterType]: value });
+  };
+  const resetFilters = () => {
+    setFilters(emptyFiltersObj);
+  };
 
   const handleSearch = e => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
     navigate(`/search?q=${searchTerm.trim()}`);
+    console.log('Era:', filters.era);
   };
 
   return (
@@ -41,6 +51,9 @@ export const SearchBar = () => {
           </div>
           {advancedOpen && (
             <AdvancedSearch
+              filters={filters}
+              handleFilterChange={handleFilterChange}
+              resetFilters={resetFilters}
               onClose={() => setAdvancedOpen(false)}
               onSubmit={handleSearch}
             />
