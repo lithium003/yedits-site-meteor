@@ -47,7 +47,7 @@ export const AdvancedSearch = ({
               {ERAS.map(era => (
                 <option
                   key={era.id}
-                  value={era.id}
+                  value={era.name}
                   style={{
                     ...era.style,
                     fontWeight: 'bold'

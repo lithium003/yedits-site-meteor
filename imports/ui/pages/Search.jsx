@@ -47,6 +47,7 @@ export const Search = () => {
   // Get search term from url
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q') ?? '';
+  const eraFilter = searchParams.get('era') ?? '';
 
   // Hydration problems can occur when the client renders data before server-side rendering can finish.
   // If this happens, make the client-side rendering dependent on isMounted being true.
@@ -70,6 +71,7 @@ export const Search = () => {
       {
         collection: collection,
         searchTerm: searchableName(searchTerm),
+        era: eraFilter,
         lastId: lastId
       },
       (err, result) => {
@@ -139,12 +141,17 @@ export const Search = () => {
   };
 
   useEffect(() => {
+    // TODO abstract this to just calling the same thing as loadNext but with no lastId
     // On first component render, get items with no 'lastItem'
     objects.forEach(type => {
       console.log('calling for', type);
       Meteor.call(
         'getSearchResults',
-        { collection: type.collection, searchTerm: searchableName(searchTerm) },
+        {
+          collection: type.collection,
+          searchTerm: searchableName(searchTerm),
+          era: eraFilter
+        },
         (err, result) => {
           if (err) {
             console.error('Failed to fetch results:', err);

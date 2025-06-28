@@ -22,7 +22,7 @@ export const SearchBar = () => {
   const handleSearch = e => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
-    navigate(`/search?q=${searchTerm.trim()}`);
+    navigate(`/search?q=${searchTerm.trim()}&era=${filters.era}`);
     console.log('Era:', filters.era);
   };
 
