@@ -190,16 +190,21 @@ export const Search = () => {
             scrollToStart={() => scrollToStart(editsShelfRef)}
           />
           {/* Yeditors Shelf */}
-          <h1 className="text-xl font-bold mb-2">
-            Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
-          </h1>
-          <CompShelf
-            ItemComponent={YeditorItem}
-            ref={yeditorsShelfRef}
-            items={yeditors}
-            onLoadNext={() => loadNext(yeditorsObj)}
-            scrollToStart={() => scrollToStart(yeditorsShelfRef)}
-          />
+          {/* (don't display if searching for an era, as yeditors don't have eras) */}
+          {!eraFilter && (
+            <>
+              <h1 className="text-xl font-bold mb-2">
+                Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
+              </h1>
+              <CompShelf
+                ItemComponent={YeditorItem}
+                ref={yeditorsShelfRef}
+                items={yeditors}
+                onLoadNext={() => loadNext(yeditorsObj)}
+                scrollToStart={() => scrollToStart(yeditorsShelfRef)}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

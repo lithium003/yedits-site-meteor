@@ -19,10 +19,17 @@ Meteor.methods({
       // Ordering by name_search before rating would be more performance- and cost-
       // efficient, but this would mean when you search for "vultures"
       let query = await db.collection(collection);
+      if (era) {
+        if (collection !== YEDITORS) {
+          query = query.where('era', '==', era);
+        } else {
+          // Avoid unnecessary query, as yeditors don't have eras and wont be displayed
+          return {};
+        }
+      }
       /* eslint-disable indent */
       switch (collection) {
         case COMPS:
-          era && (query = query.where('era', '==', era));
           query = query
             .where('standalone_edit', '==', false)
             .where('name_search', '>=', searchTerm)
@@ -33,7 +40,6 @@ Meteor.methods({
             .limit(numResults);
           break;
         case EDITS:
-          era && (query = query.where('era', '==', era));
           query = query
             .where('name_search', '>=', searchTerm)
             .where('name_search', '<=', searchTerm + '\uf8ff')
