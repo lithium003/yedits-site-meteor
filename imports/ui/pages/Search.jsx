@@ -191,6 +191,8 @@ export const Search = () => {
           />
           {/* Yeditors Shelf */}
           {/* (don't display if searching for an era, as yeditors don't have eras) */}
+          {/* TODO could somehow change the getSearchResults Meteor method (or its calling logic) to only look for yeditors if yeditorsShelfRef exists.
+           TODO this would be more maintainable than manually checking for eraFilter in the Method */}
           {!eraFilter && (
             <>
               <h1 className="text-xl font-bold mb-2">

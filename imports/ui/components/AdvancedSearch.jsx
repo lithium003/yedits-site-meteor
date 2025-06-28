@@ -11,6 +11,11 @@ export const AdvancedSearch = ({
   useEffect(() => {
     console.log('Advanced Search Mounted');
   }, []);
+
+  // Get the styling of the selected era option, to apply it to the era selector itself.
+  const selectedEra = ERAS.find(era => era.name === filters.era);
+  const selectStyle = selectedEra ? selectedEra.style : {};
+
   return (
     <>
       <div className="absolute top-full left-0 right-0 mt-2 bg-[#1c1c1d] rounded-lg p-4 shadow-lg z-50">
@@ -42,6 +47,10 @@ export const AdvancedSearch = ({
               value={filters.era}
               onChange={e => handleFilterChange('era', e.target.value)}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
+              style={{
+                ...selectStyle,
+                fontWeight: selectedEra ? 'bold' : 'normal'
+              }}
             >
               <option value="">Select an era...</option>
               {ERAS.map(era => (
