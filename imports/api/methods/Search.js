@@ -15,7 +15,7 @@ Meteor.methods({
     lastId = null
   }) {
     const numResults = 5;
-
+    console.log('tags in backend:', tags);
     try {
       // Ordering by name_search before rating would be more performance- and cost-
       // efficient, but this would mean when you search for "vultures" you get

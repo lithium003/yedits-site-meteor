@@ -10,7 +10,7 @@ export const SearchBar = () => {
   // Advanced Search
   const [advancedOpen, setAdvancedOpen] = useState(false);
   // Object for resetting/default filters - list all filters & default values here
-  const emptyFiltersObj = { era: '', tags: [] };
+  const emptyFiltersObj = { era: '', tags: ['t1'] }; // TODO maybe remove the t1 and find another way to avoid empty array problem, maybe in the backend
   const [filters, setFilters] = useState(emptyFiltersObj);
   const handleFilterChange = (filterType, value) => {
     setFilters({ ...filters, [filterType]: value });
@@ -22,7 +22,11 @@ export const SearchBar = () => {
   const handleSearch = e => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
-    navigate(`/search?q=${searchTerm.trim()}&era=${filters.era}`);
+    const tags = filters.tags;
+    const tagString = tags.map(tag => `&tag=${tag}`).join('');
+    const navString =
+      `/search?q=${searchTerm.trim()}&era=${filters.era}` + tagString;
+    navigate(navString);
     console.log('Era:', filters.era);
   };
 
