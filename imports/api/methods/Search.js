@@ -11,13 +11,16 @@ Meteor.methods({
     collection = COMPS,
     searchTerm = '',
     era = null,
+    tags = [],
     lastId = null
   }) {
     const numResults = 5;
 
     try {
       // Ordering by name_search before rating would be more performance- and cost-
-      // efficient, but this would mean when you search for "vultures"
+      // efficient, but this would mean when you search for "vultures" you get
+      // all comps called 'vultures' before ones called 'vultures 2' even if they're
+      // lowly rated random vultures comps.
       let query = await db.collection(collection);
       if (era) {
         if (collection !== YEDITORS) {
@@ -27,6 +30,14 @@ Meteor.methods({
           return {};
         }
       }
+      // TODO find a way to avoid this repeated yeditor special case check
+      // Yeditors don't have tags, so don't search for them.
+      // Since you're ALWAYS searching with tags unless you disable all of them, BUT WE NEVER DO THIS BC ARRAY_CONTAINS_ANY DOESNT WORK WITH AN EMPTY ARRAY
+      // we still want to show yeditors even when tags are specified. JUST HAVE TO REQUIRE AT LEAST ONE TAG. ALTERNATIVELY COULD USE A DUMMY TAG TO SYMBOLIZE EMPTY
+      if (collection !== YEDITORS) {
+        query = query.where('tags', 'array-contains-any', tags);
+      }
+
       /* eslint-disable indent */
       switch (collection) {
         case COMPS:

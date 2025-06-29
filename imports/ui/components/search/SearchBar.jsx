@@ -10,7 +10,7 @@ export const SearchBar = () => {
   // Advanced Search
   const [advancedOpen, setAdvancedOpen] = useState(false);
   // Object for resetting/default filters - list all filters & default values here
-  const emptyFiltersObj = { era: '' };
+  const emptyFiltersObj = { era: '', tags: [] };
   const [filters, setFilters] = useState(emptyFiltersObj);
   const handleFilterChange = (filterType, value) => {
     setFilters({ ...filters, [filterType]: value });

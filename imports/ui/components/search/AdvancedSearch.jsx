@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ERAS } from '../../utils/eras';
+import { ERAS } from '../../../utils/eras';
 
 export const AdvancedSearch = ({
   filters,
@@ -31,13 +31,22 @@ export const AdvancedSearch = ({
             />
           </div>
           {/* Genre Filter */}
+          {/* TODO turn this into radios for rework/remaster etc tags, using array-contains-any */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Genre</label>
+            <label className="block text-sm text-gray-400 mb-1">Tags</label>
+            {/* Rework */}
             <input
-              type="text"
-              value={''}
+              type="checkbox"
+              checked={filters.tags.includes('Rework')}
+              onChange={e =>
+                handleFilterChange(
+                  'tags',
+                  e.target.checked
+                    ? [...filters.tags, 'Rework']
+                    : filters.tags.filter(tag => tag !== 'Rework')
+                )
+              }
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
-              placeholder="Filter by genre..."
             />
           </div>
           {/* Era Filter */}
