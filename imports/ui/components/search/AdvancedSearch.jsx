@@ -37,6 +37,7 @@ export const AdvancedSearch = ({
             {/* Rework */}
             <input
               type="checkbox"
+              defaultChecked={true}
               checked={filters.tags.includes('Rework')}
               onChange={e =>
                 handleFilterChange(

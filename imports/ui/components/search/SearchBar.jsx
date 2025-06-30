@@ -10,7 +10,10 @@ export const SearchBar = () => {
   // Advanced Search
   const [advancedOpen, setAdvancedOpen] = useState(false);
   // Object for resetting/default filters - list all filters & default values here
-  const emptyFiltersObj = { era: '', tags: ['t1'] }; // TODO maybe remove the t1 and find another way to avoid empty array problem, maybe in the backend
+  const emptyFiltersObj = {
+    era: '',
+    tags: ['t1', 'Remaster', 'Rework', 'Remix', 'Recreation']
+  }; // TODO maybe remove the t1 and find another way to avoid empty array problem, maybe in the backend
   const [filters, setFilters] = useState(emptyFiltersObj);
   const handleFilterChange = (filterType, value) => {
     setFilters({ ...filters, [filterType]: value });
