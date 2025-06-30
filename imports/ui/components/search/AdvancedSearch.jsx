@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ERAS } from '../../../utils/eras';
 import { tags } from '../../../utils/tags';
+import { PillCheckbox } from './PillCheckbox';
 
 export const AdvancedSearch = ({
   filters,
@@ -36,12 +37,10 @@ export const AdvancedSearch = ({
           <div>
             <label className="block text-sm text-gray-400 mb-1">Tags</label>
             {/* Rework */}
-            {tags.map(tag => (
-              <div>
-                <label>{tag}</label>
-                <input
-                  type="checkbox"
-                  defaultChecked={true}
+            <div className="">
+              {tags.map(tag => (
+                <PillCheckbox
+                  label={tag}
                   checked={filters.tags.includes(tag)}
                   onChange={e =>
                     handleFilterChange(
@@ -51,10 +50,10 @@ export const AdvancedSearch = ({
                         : filters.tags.filter(t => t !== tag)
                     )
                   }
-                  className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
+                  className="px-0.5"
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
           {/* Era Filter */}
           <div>
