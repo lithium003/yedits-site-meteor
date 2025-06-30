@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { ERAS } from '../../../utils/eras';
+import { tags } from '../../../utils/tags';
 
 export const AdvancedSearch = ({
   filters,
@@ -35,20 +36,25 @@ export const AdvancedSearch = ({
           <div>
             <label className="block text-sm text-gray-400 mb-1">Tags</label>
             {/* Rework */}
-            <input
-              type="checkbox"
-              defaultChecked={true}
-              checked={filters.tags.includes('Rework')}
-              onChange={e =>
-                handleFilterChange(
-                  'tags',
-                  e.target.checked
-                    ? [...filters.tags, 'Rework']
-                    : filters.tags.filter(tag => tag !== 'Rework')
-                )
-              }
-              className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
-            />
+            {tags.map(tag => (
+              <div>
+                <label>{tag}</label>
+                <input
+                  type="checkbox"
+                  defaultChecked={true}
+                  checked={filters.tags.includes(tag)}
+                  onChange={e =>
+                    handleFilterChange(
+                      'tags',
+                      e.target.checked
+                        ? [...filters.tags, tag]
+                        : filters.tags.filter(t => t !== tag)
+                    )
+                  }
+                  className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
+                />
+              </div>
+            ))}
           </div>
           {/* Era Filter */}
           <div>
