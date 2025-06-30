@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import {
+  ARTISTS,
   COMPS,
   EDITS,
   YEDITORS
@@ -81,6 +82,7 @@ Meteor.methods({
       }
 
       const snapshot = await query.get();
+      // noinspection UnnecessaryLocalVariableJS
       const results = snapshot.docs.map(doc => {
         const data = doc.data();
 
@@ -102,6 +104,25 @@ Meteor.methods({
     } catch (error) {
       console.error(`Error fetching results for ${collection}: ${error}`);
       throw new Meteor.Error('firebase-error', 'Failed to fetch results');
+    }
+  },
+
+  async getAllArtists() {
+    try {
+      const query = db.collection(ARTISTS).get();
+      const snapshot = await query;
+      // noinspection UnnecessaryLocalVariableJS
+      const results = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data
+        };
+      });
+      return results;
+    } catch (error) {
+      console.error(`Error fetching list of all artists: ${error}`);
+      throw new Meteor.Error('firebase-error', 'Failed to fetch artists');
     }
   }
 });

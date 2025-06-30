@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { RiFilter3Line, RiSearchLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { AdvancedSearch } from './AdvancedSearch';
@@ -11,6 +12,7 @@ export const SearchBar = () => {
   const [advancedOpen, setAdvancedOpen] = useState(false);
   // Object for resetting/default filters - list all filters & default values here
   const emptyFiltersObj = {
+    artist: '',
     era: '',
     tags: ['t1', 'Remaster', 'Rework', 'Remix', 'Recreation']
   }; // TODO maybe remove the t1 and find another way to avoid empty array problem, maybe in the backend
@@ -21,6 +23,20 @@ export const SearchBar = () => {
   const resetFilters = () => {
     setFilters(emptyFiltersObj);
   };
+
+  const [artists, setArtists] = useState([]);
+
+  useEffect(() => {
+    console.log('Search Bar Mounted');
+    Meteor.call('getAllArtists', (err, res) => {
+      if (err) {
+        console.error('Failed to fetch next results:', err);
+      } else {
+        setArtists(res);
+        console.log('Artists:', res);
+      }
+    });
+  }, []);
 
   const handleSearch = e => {
     e.preventDefault();
@@ -58,6 +74,7 @@ export const SearchBar = () => {
           </div>
           {advancedOpen && (
             <AdvancedSearch
+              artists={artists}
               filters={filters}
               handleFilterChange={handleFilterChange}
               resetFilters={resetFilters}

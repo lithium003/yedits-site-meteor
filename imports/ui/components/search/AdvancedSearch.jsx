@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ERAS } from '../../../utils/eras';
 import { tags } from '../../../utils/tags';
 import { PillCheckbox } from './PillCheckbox';
+import { searchableName } from '../../../utils/stringUtils';
 
 export const AdvancedSearch = ({
+  artists,
   filters,
   handleFilterChange,
   resetFilters,
@@ -14,32 +16,63 @@ export const AdvancedSearch = ({
     console.log('Advanced Search Mounted');
   }, []);
 
+  const [filteredArtists, setFilteredArtists] = useState([]);
+
+  const handleArtistInput = e => {
+    handleFilterChange('artist', e.target.value);
+    if (e.target.value.length > 0) {
+      const filteredData = artists.filter(artist => {
+        return searchableName(artist.name).startsWith(
+          searchableName(e.target.value)
+        );
+      });
+      setFilteredArtists(filteredData);
+    } else {
+      setFilteredArtists([]);
+    }
+  };
+
   // Get the styling of the selected era option, to apply it to the era selector itself.
   const selectedEra = ERAS.find(era => era.name === filters.era);
   const selectStyle = selectedEra ? selectedEra.style : {};
 
+  // TODO add x to clear input. same for search bar?
   return (
     <>
       <div className="absolute top-full left-0 right-0 mt-2 bg-[#1c1c1d] rounded-lg p-4 shadow-lg z-50">
         <div className="space-y-4">
-          {/* Yeditor Filter */}
+          {/* Artist Filter */}
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Yeditor</label>
+            <label className="block text-sm text-gray-400 mb-1">Artist</label>
+
             <input
               type="text"
-              value={''}
+              value={filters.artist}
+              onChange={handleArtistInput}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
-              placeholder="Filter by yeditor..."
+              placeholder="Filter by artist..."
             />
+            {filteredArtists.map(artist => (
+              <div
+                className="hover:underline hover:cursor-pointer"
+                onClick={() => {
+                  handleFilterChange('artist', artist.name);
+                  setFilteredArtists([]);
+                }}
+                key={artist.id}
+              >
+                <p>{artist.name}</p>
+              </div>
+            ))}
           </div>
-          {/* Genre Filter */}
-          {/* TODO turn this into radios for rework/remaster etc tags, using array-contains-any */}
+          {/* Tag Filter */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">Tags</label>
             {/* Rework */}
             <div className="">
               {tags.map(tag => (
                 <PillCheckbox
+                  key={tag}
                   label={tag}
                   checked={filters.tags.includes(tag)}
                   onChange={e =>
