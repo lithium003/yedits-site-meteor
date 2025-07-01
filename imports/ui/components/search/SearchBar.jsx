@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
-import {
-  RiCloseFill,
-  RiCloseLargeFill,
-  RiFilter3Line,
-  RiSearchLine
-} from 'react-icons/ri';
+import { RiCloseLargeFill, RiFilter3Line, RiSearchLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { AdvancedSearch } from './AdvancedSearch';
 
@@ -46,6 +41,7 @@ export const SearchBar = () => {
   const handleSearch = e => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
+    setAdvancedOpen(false);
     const tags = filters.tags;
     const tagString = tags.map(tag => `&tag=${tag}`).join('');
     const navString =
