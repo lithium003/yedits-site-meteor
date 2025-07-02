@@ -13,10 +13,12 @@ Meteor.methods({
     searchTerm = '',
     era = null,
     tags = [],
+    artistId = '',
     lastId = null
   }) {
     const numResults = 5;
     console.log('tags in backend:', tags);
+    console.log('artist in backend:', artistId);
     try {
       // Ordering by name_search before rating would be more performance- and cost-
       // efficient, but this would mean when you search for "vultures" you get
@@ -37,6 +39,9 @@ Meteor.methods({
       // we still want to show yeditors even when tags are specified. JUST HAVE TO REQUIRE AT LEAST ONE TAG. ALTERNATIVELY COULD USE A DUMMY TAG TO SYMBOLIZE EMPTY
       if (collection !== YEDITORS) {
         query = query.where('tags', 'array-contains-any', tags);
+        if (artistId) {
+          query = query.where('artist', '==', artistId);
+        }
       }
 
       /* eslint-disable indent */

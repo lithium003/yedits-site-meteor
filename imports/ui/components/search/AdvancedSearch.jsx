@@ -44,10 +44,10 @@ export const AdvancedSearch = ({
           {/* Artist Filter */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">Artist</label>
-
+            {/* TODO pressing enter here doesn't send the artist through?? */}
             <input
               type="text"
-              value={filters.artist}
+              value={filters.artist.name}
               onChange={handleArtistInput}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
               placeholder="Filter by artist..."
@@ -56,7 +56,7 @@ export const AdvancedSearch = ({
               <div
                 className="hover:underline hover:cursor-pointer"
                 onClick={() => {
-                  handleFilterChange('artist', artist.name);
+                  handleFilterChange('artist', artist);
                   setFilteredArtists([]);
                 }}
                 key={artist.id}

@@ -47,8 +47,9 @@ export const Search = () => {
   // Get search term from url
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q') ?? '';
-  const eraFilter = searchParams.get('era') ?? '';
-  const tagFilters = searchParams.getAll('tag');
+  const eraFilter = searchParams.get('e') ?? '';
+  const tagFilters = searchParams.getAll('t');
+  const artistFilter = searchParams.get('a') ?? '';
   console.log('tag in Search.jsx:', tagFilters);
 
   // Hydration problems can occur when the client renders data before server-side rendering can finish.
@@ -75,6 +76,7 @@ export const Search = () => {
         searchTerm: searchableName(searchTerm),
         era: eraFilter,
         tags: tagFilters,
+        artistId: artistFilter,
         lastId: lastId
       },
       (err, result) => {
@@ -154,7 +156,8 @@ export const Search = () => {
           collection: type.collection,
           searchTerm: searchableName(searchTerm),
           era: eraFilter,
-          tags: tagFilters
+          tags: tagFilters,
+          artistId: artistFilter
         },
         (err, result) => {
           if (err) {

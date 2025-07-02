@@ -42,10 +42,14 @@ export const SearchBar = () => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
     setAdvancedOpen(false);
+    const era = filters.era;
+    const eraString = era ? `&e=${era}` : '';
     const tags = filters.tags;
-    const tagString = tags.map(tag => `&tag=${tag}`).join('');
+    const tagString = tags.map(tag => `&t=${tag}`).join('');
+    const artist = filters.artist.id; // Artist is an object so that id can be sent to backend? Grab the id for the url.
+    const artistString = artist ? `&a=${artist}` : '';
     const navString =
-      `/search?q=${searchTerm.trim()}&era=${filters.era}` + tagString;
+      `/search?q=${searchTerm.trim()}` + tagString + artistString + eraString;
     navigate(navString);
     console.log('Era:', filters.era);
   };
