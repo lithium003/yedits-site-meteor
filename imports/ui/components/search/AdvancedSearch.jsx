@@ -12,24 +12,34 @@ export const AdvancedSearch = ({
   onClose,
   onSubmit
 }) => {
-  useEffect(() => {
-    console.log('Advanced Search Mounted');
-  }, []);
+  console.log('artists enters AdvancedSearch:', artists);
 
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [artistInput, setArtistInput] = useState([]);
+  const [matchingArtists, setMatchingArtists] = useState([]);
 
   const handleArtistInput = e => {
-    handleFilterChange('artist', e.target.value);
+    console.log('e.target.value:', e.target.value);
+    setArtistInput(e.target.value);
     if (e.target.value.length > 0) {
-      const filteredData = artists.filter(artist => {
+      const matchingData = artists.filter(artist => {
         return searchableName(artist.name).startsWith(
           searchableName(e.target.value)
         );
       });
-      setFilteredArtists(filteredData);
+      setMatchingArtists(matchingData);
     } else {
-      setFilteredArtists([]);
+      setMatchingArtists([]);
     }
+  };
+
+  const handleSubmit = e => {
+    console.log('artistInput:', artistInput);
+    const artistObj = artists.find(artist => artist.name === artistInput);
+    console.log('artistObj:', artistObj);
+    const artistId = artistObj ? artistObj.id : null;
+    console.log('artistId:', artistId);
+    handleFilterChange('artist', artistId);
+    onSubmit(e);
   };
 
   // Get the styling of the selected era option, to apply it to the era selector itself.
@@ -47,17 +57,17 @@ export const AdvancedSearch = ({
             {/* TODO pressing enter here doesn't send the artist through?? */}
             <input
               type="text"
-              value={filters.artist.name}
+              value={artistInput}
               onChange={handleArtistInput}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
               placeholder="Filter by artist..."
             />
-            {filteredArtists.map(artist => (
+            {matchingArtists.map(artist => (
               <div
                 className="hover:underline hover:cursor-pointer"
                 onClick={() => {
-                  handleFilterChange('artist', artist);
-                  setFilteredArtists([]);
+                  setArtistInput(artist.name);
+                  setMatchingArtists([]);
                 }}
                 key={artist.id}
               >
@@ -126,7 +136,7 @@ export const AdvancedSearch = ({
               Reset
             </button>
             <button
-              onClick={onSubmit}
+              onClick={handleSubmit}
               className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               Search

@@ -19,6 +19,14 @@ export const SearchBar = () => {
   const [filters, setFilters] = useState(emptyFiltersObj);
   const handleFilterChange = (filterType, value) => {
     setFilters({ ...filters, [filterType]: value });
+    console.log(
+      'Filter type:',
+      filterType,
+      'Value:',
+      value,
+      'Filters:',
+      filters
+    );
   };
   const resetFilters = () => {
     setFilters(emptyFiltersObj);
@@ -27,7 +35,6 @@ export const SearchBar = () => {
   const [artists, setArtists] = useState([]);
 
   useEffect(() => {
-    console.log('Search Bar Mounted');
     Meteor.call('getAllArtists', (err, res) => {
       if (err) {
         console.error('Failed to fetch next results:', err);
@@ -38,7 +45,7 @@ export const SearchBar = () => {
     });
   }, []);
 
-  const handleSearch = e => {
+  const handleSearch = (e, artistName) => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
     setAdvancedOpen(false);
@@ -51,7 +58,6 @@ export const SearchBar = () => {
     const navString =
       `/search?q=${searchTerm.trim()}` + tagString + artistString + eraString;
     navigate(navString);
-    console.log('Era:', filters.era);
   };
 
   return (

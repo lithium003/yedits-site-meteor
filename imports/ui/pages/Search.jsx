@@ -50,7 +50,6 @@ export const Search = () => {
   const eraFilter = searchParams.get('e') ?? '';
   const tagFilters = searchParams.getAll('t');
   const artistFilter = searchParams.get('a') ?? '';
-  console.log('tag in Search.jsx:', tagFilters);
 
   // Hydration problems can occur when the client renders data before server-side rendering can finish.
   // If this happens, make the client-side rendering dependent on isMounted being true.
@@ -149,7 +148,6 @@ export const Search = () => {
     // TODO abstract this to just calling the same thing as loadNext but with no lastId
     // On first component render, get items with no 'lastItem'
     objects.forEach(type => {
-      console.log('calling for', type);
       Meteor.call(
         'getSearchResults',
         {

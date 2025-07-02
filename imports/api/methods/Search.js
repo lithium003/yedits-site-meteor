@@ -17,8 +17,7 @@ Meteor.methods({
     lastId = null
   }) {
     const numResults = 5;
-    console.log('tags in backend:', tags);
-    console.log('artist in backend:', artistId);
+    console.log('Artist ID in backend: ', artistId);
     try {
       // Ordering by name_search before rating would be more performance- and cost-
       // efficient, but this would mean when you search for "vultures" you get
@@ -124,6 +123,7 @@ Meteor.methods({
           ...data
         };
       });
+      console.log('backend artists results', results);
       return results;
     } catch (error) {
       console.error(`Error fetching list of all artists: ${error}`);

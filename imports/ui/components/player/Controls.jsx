@@ -71,7 +71,6 @@ export const Controls = () => {
   }, [isPlaying, startAnimation, updateProgress, audioRef]);
 
   const onLoadedMetadata = () => {
-    console.log('abc');
     console.log(audioRef.current?.duration);
     const seconds = audioRef.current?.duration;
     if (seconds !== undefined) {
