@@ -4,27 +4,27 @@ import { tags } from '../../../utils/tags';
 import { PillCheckbox } from './PillCheckbox';
 import { searchableName } from '../../../utils/stringUtils';
 
-export const AdvancedSearch = ({
-  artists,
-  filters,
-  handleFilterChange,
-  resetFilters,
-  onClose,
-  onSubmit
-}) => {
+export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   useEffect(() => {
     console.log('Advanced Search Mounted');
   }, []);
 
+  const [artistNameInput, setArtistNameInput] = useState('');
   const [filteredArtists, setFilteredArtists] = useState([]);
 
-  const handleArtistInput = e => {
-    handleFilterChange('artist', e.target.value);
-    if (e.target.value.length > 0) {
-      const filteredData = artists.filter(artist => {
-        return searchableName(artist.name).startsWith(
-          searchableName(e.target.value)
-        );
+  // TODO searching a nonexistent artist just returns everything?
+  // TODO is there a way to avoid having the separate artistNameInput?
+  const handleArtistInput = name => {
+    console.log('name:', name);
+    setArtistNameInput(name);
+    const selectedArtistId = allArtists.find(
+      artist => artist.name === name
+    )?.id;
+    console.log('selectedArtistId:', selectedArtistId);
+    filters.setArtistFilter(selectedArtistId);
+    if (name.length > 0) {
+      const filteredData = allArtists.filter(artist => {
+        return searchableName(artist.name).startsWith(searchableName(name));
       });
       setFilteredArtists(filteredData);
     } else {
@@ -32,8 +32,20 @@ export const AdvancedSearch = ({
     }
   };
 
+  /**
+   * Resets the values of all the filter states as well as the inputs.
+   */
+  const resetFilters = () => {
+    // Filters
+    filters.setArtistFilter('');
+    filters.setTagsFilter([]);
+    filters.setEraFilter('');
+    // Inputs
+    setArtistNameInput('');
+  };
+
   // Get the styling of the selected era option, to apply it to the era selector itself.
-  const selectedEra = ERAS.find(era => era.name === filters.era);
+  const selectedEra = ERAS.find(era => era.name === filters.eraFilter);
   const selectStyle = selectedEra ? selectedEra.style : {};
 
   // TODO add x to clear input. same for search bar?
@@ -47,8 +59,10 @@ export const AdvancedSearch = ({
             {/* TODO pressing enter here doesn't send the artist through?? */}
             <input
               type="text"
-              value={filters.artist.name}
-              onChange={handleArtistInput}
+              value={artistNameInput}
+              onChange={e => {
+                handleArtistInput(e.target.value);
+              }}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
               placeholder="Filter by artist..."
             />
@@ -56,7 +70,7 @@ export const AdvancedSearch = ({
               <div
                 className="hover:underline hover:cursor-pointer"
                 onClick={() => {
-                  handleFilterChange('artist', artist);
+                  handleArtistInput(artist.name);
                   setFilteredArtists([]);
                 }}
                 key={artist.id}
@@ -74,13 +88,12 @@ export const AdvancedSearch = ({
                 <PillCheckbox
                   key={tag}
                   label={tag}
-                  checked={filters.tags.includes(tag)}
+                  checked={filters.tagsFilter.includes(tag)}
                   onChange={e =>
-                    handleFilterChange(
-                      'tags',
+                    filters.setTagsFilter(
                       e.target.checked
-                        ? [...filters.tags, tag]
-                        : filters.tags.filter(t => t !== tag)
+                        ? [...filters.tagsFilter, tag]
+                        : filters.tagsFilter.filter(t => t !== tag)
                     )
                   }
                   className="px-0.5"
@@ -92,8 +105,8 @@ export const AdvancedSearch = ({
           <div>
             <label className="block text-sm text-gray-400 mb-1">Era</label>
             <select
-              value={filters.era}
-              onChange={e => handleFilterChange('era', e.target.value)}
+              value={filters.eraFilter}
+              onChange={e => filters.setEraFilter(e.target.value)}
               className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
               style={{
                 ...selectStyle,

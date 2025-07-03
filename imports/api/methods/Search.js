@@ -13,7 +13,7 @@ Meteor.methods({
     searchTerm = '',
     era = null,
     tags = [],
-    artistId = '',
+    artistId = 'test',
     lastId = null
   }) {
     const numResults = 5;

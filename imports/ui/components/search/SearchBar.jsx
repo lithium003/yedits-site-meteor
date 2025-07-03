@@ -11,20 +11,26 @@ export const SearchBar = () => {
   // Advanced Search
   const [advancedOpen, setAdvancedOpen] = useState(false);
   // Object for resetting/default filters - list all filters & default values here
-  const emptyFiltersObj = {
-    artist: '',
-    era: '',
-    tags: ['t1', 'Remaster', 'Rework', 'Remix', 'Recreation']
-  }; // TODO maybe remove the t1 and find another way to avoid empty array problem, maybe in the backend
-  const [filters, setFilters] = useState(emptyFiltersObj);
-  const handleFilterChange = (filterType, value) => {
-    setFilters({ ...filters, [filterType]: value });
-  };
-  const resetFilters = () => {
-    setFilters(emptyFiltersObj);
-  };
+  const [allArtists, setAllArtists] = useState([]);
 
-  const [artists, setArtists] = useState([]);
+  // Filters
+  const [artistFilter, setArtistFilter] = useState('');
+  const [tagsFilter, setTagsFilter] = useState([
+    '~',
+    'Remaster',
+    'Rework',
+    'Remix',
+    'Recreation'
+  ]);
+  const [eraFilter, setEraFilter] = useState('');
+  const filters = {
+    artistFilter,
+    setArtistFilter,
+    tagsFilter,
+    setTagsFilter,
+    eraFilter,
+    setEraFilter
+  };
 
   useEffect(() => {
     console.log('Search Bar Mounted');
@@ -32,7 +38,7 @@ export const SearchBar = () => {
       if (err) {
         console.error('Failed to fetch next results:', err);
       } else {
-        setArtists(res);
+        setAllArtists(res);
         console.log('Artists:', res);
       }
     });
@@ -42,16 +48,12 @@ export const SearchBar = () => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
     setAdvancedOpen(false);
-    const era = filters.era;
-    const eraString = era ? `&e=${era}` : '';
-    const tags = filters.tags;
-    const tagString = tags.map(tag => `&t=${tag}`).join('');
-    const artist = filters.artist.id; // Artist is an object so that id can be sent to backend? Grab the id for the url.
-    const artistString = artist ? `&a=${artist}` : '';
+    const artistString = artistFilter ? `&a=${artistFilter}` : '';
+    const tagString = tagsFilter.map(tag => `&t=${tag}`).join('');
+    const eraString = eraFilter ? `&e=${eraFilter}` : '';
     const navString =
       `/search?q=${searchTerm.trim()}` + tagString + artistString + eraString;
     navigate(navString);
-    console.log('Era:', filters.era);
   };
 
   return (
@@ -90,10 +92,8 @@ export const SearchBar = () => {
             </div>
             {advancedOpen && (
               <AdvancedSearch
-                artists={artists}
+                allArtists={allArtists}
                 filters={filters}
-                handleFilterChange={handleFilterChange}
-                resetFilters={resetFilters}
                 onClose={() => setAdvancedOpen(false)}
                 onSubmit={handleSearch}
               />
