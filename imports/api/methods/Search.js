@@ -13,7 +13,7 @@ Meteor.methods({
     searchTerm = '',
     era = null,
     tags = [],
-    artistId = 'test',
+    artistId = null,
     lastId = null
   }) {
     const numResults = 5;
@@ -39,7 +39,15 @@ Meteor.methods({
       // we still want to show yeditors even when tags are specified. JUST HAVE TO REQUIRE AT LEAST ONE TAG. ALTERNATIVELY COULD USE A DUMMY TAG TO SYMBOLIZE EMPTY
       if (collection !== YEDITORS) {
         query = query.where('tags', 'array-contains-any', tags);
+        console.log('artistId type:', typeof artistId);
         if (artistId) {
+          console.log('artistId before:', artistId);
+
+          if (artistId === '~') {
+            console.log('length 0');
+            artistId = 'NULL';
+          }
+          console.log('artistId after:', artistId);
           query = query.where('artist', '==', artistId);
         }
       }

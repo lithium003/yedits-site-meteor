@@ -9,19 +9,37 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
     console.log('Advanced Search Mounted');
   }, []);
 
-  const [artistNameInput, setArtistNameInput] = useState('');
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  // Grab the name of the currently selected artist, if there is one. If not, use an empty string to avoid "uncontrolled input" warning.
+  const currentArtistName = allArtists.find(
+    artist => artist.id === filters.artistFilter
+  )?.name; // this means only valid artists are saved. should be ok so long as we give a warning when an artist is not valid
+  const [artistNameInput, setArtistNameInput] = useState(
+    currentArtistName ? currentArtistName : ''
+  ); // SINCE THIS IS INITIALIZED HERE, IT SEEMS TO RESET ON SUBSEQUENT SEARCHES
+  const [filteredArtists, setFilteredArtists] = useState([]); // ^ ARTISTFILTER IS AN ID, NOT A NAME
+  // I want to input names since those are human-readable.
+  // but edits/comps store the artist ID, not the artist NAME, so we need to get the ID for the backend.
+  // I could just use the name for everything in the frontend and let the backend run a query to get the id but that's one extra query every artist-based search
+  // I could maybe pass the 'allArtists' variable to the backend and lookup the ID with that? avoids a query but adds an extra thing to pass
+  // this would probably mean linking someone to your artist-search URL would break, because allArtists might not exist?
+  // I suppose querying for an artist with a given name would only read one document anyway so it's not a big deal... plus most people won't search for artists.
+  // If we ever do different 'sites' for each artist, the artist id would be hardcoded there and we could avoid the query.
+  // If we add other artist eras, we will *need* to filter by artist to see the eras?
+  // Theoretically we could refrain from running the artist filter if we have an era filter, since any MBDTF comp is necessarily a Kanye comp?
+  // - How could this affect collab artist comps, esp. fanmade ones like TMNG TOHR?
+  // could store artists on disk like eras, potentially doing away with IDs entirely
 
-  // TODO searching a nonexistent artist just returns everything?
   // TODO is there a way to avoid having the separate artistNameInput?
   const handleArtistInput = name => {
     console.log('name:', name);
     setArtistNameInput(name);
-    const selectedArtistId = allArtists.find(
-      artist => artist.name === name
-    )?.id;
-    console.log('selectedArtistId:', selectedArtistId);
-    filters.setArtistFilter(selectedArtistId);
+    if (name) {
+      const selectedArtist = allArtists.find(artist => artist.name === name);
+      const selectedArtistId = selectedArtist ? selectedArtist.id : '~';
+      console.log('selectedArtistId:', selectedArtistId);
+      filters.setArtistFilter(selectedArtistId);
+    }
+
     if (name.length > 0) {
       const filteredData = allArtists.filter(artist => {
         return searchableName(artist.name).startsWith(searchableName(name));
@@ -38,7 +56,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   const resetFilters = () => {
     // Filters
     filters.setArtistFilter('');
-    filters.setTagsFilter([]);
+    filters.setTagsFilter(['~', 'Remaster', 'Rework', 'Remix', 'Recreation']);
     filters.setEraFilter('');
     // Inputs
     setArtistNameInput('');
