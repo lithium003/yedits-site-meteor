@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { RiCloseLargeFill, RiFilter3Line, RiSearchLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { AdvancedSearch } from './AdvancedSearch';
+import { tags } from '../../../utils/tags';
 
 export const SearchBar = () => {
   const navigate = useNavigate();
@@ -15,14 +16,10 @@ export const SearchBar = () => {
 
   // Filters
   const [artistFilter, setArtistFilter] = useState('');
-  const [tagsFilter, setTagsFilter] = useState([
-    '~',
-    'Remaster',
-    'Rework',
-    'Remix',
-    'Recreation'
-  ]);
+  const [tagsFilter, setTagsFilter] = useState([...tags, '~']);
   const [eraFilter, setEraFilter] = useState('');
+  // Bundle up all the filter states and setStates for ease of passing as parameters.
+  // Avoids having to type out many params and changing them in multiple places when filters are changed.
   const filters = {
     artistFilter,
     setArtistFilter,
