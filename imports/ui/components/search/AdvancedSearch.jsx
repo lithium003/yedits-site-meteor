@@ -9,14 +9,18 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
     console.log('Advanced Search Mounted');
   }, []);
 
-  // Grab the name of the currently selected artist, if there is one. If not, use an empty string to avoid "uncontrolled input" warning.
+  // Grab the name of the currently selected artist if there is one.
   const currentArtistName = allArtists.find(
     artist => artist.id === filters.artistFilter
-  )?.name; // this means only valid artists are saved. should be ok so long as we give a warning when an artist is not valid
+  )?.name;
   const [artistNameInput, setArtistNameInput] = useState(
-    currentArtistName ? currentArtistName : ''
-  ); // SINCE THIS IS INITIALIZED HERE, IT SEEMS TO RESET ON SUBSEQUENT SEARCHES
-  const [filteredArtists, setFilteredArtists] = useState([]); // ^ ARTISTFILTER IS AN ID, NOT A NAME
+    currentArtistName ? currentArtistName : '' // Ensure at least an empty string to avoid "uncontrolled input" warning
+  );
+
+  const [artistNameInputValid, setArtistNameInputValid] = useState(true);
+  const [filteredArtists, setFilteredArtists] = useState([]);
+
+  // NOTES FOR FUTURE CONSIDERATION ON STORING AND FILTERING ERAS AND ARTISTS
   // I want to input names since those are human-readable.
   // but edits/comps store the artist ID, not the artist NAME, so we need to get the ID for the backend.
   // I could just use the name for everything in the frontend and let the backend run a query to get the id but that's one extra query every artist-based search
@@ -29,24 +33,42 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   // - How could this affect collab artist comps, esp. fanmade ones like TMNG TOHR?
   // could store artists on disk like eras, potentially doing away with IDs entirely
 
-  // TODO is there a way to avoid having the separate artistNameInput?
+  /**
+   * Handle a change in the 'Artist' input field
+   * @param name the user-inputted artist name
+   */
   const handleArtistInput = name => {
-    console.log('name:', name);
+    // Control the input component
     setArtistNameInput(name);
-    if (name) {
-      const selectedArtist = allArtists.find(artist => artist.name === name);
-      const selectedArtistId = selectedArtist ? selectedArtist.id : '~';
-      console.log('selectedArtistId:', selectedArtistId);
-      filters.setArtistFilter(selectedArtistId);
-    }
+    // Reset the existing artist filter as a new artist is being input
+    filters.setArtistFilter('');
+    // Remove caps, symbols, etc.
+    const searchableNameInput = searchableName(name);
 
-    if (name.length > 0) {
+    if (name) {
+      // TODO A: redundant with B
+      const selectedArtist = allArtists.find(
+        artist => artist.name_search === searchableNameInput
+      );
+      const selectedArtistId = selectedArtist ? selectedArtist.id : '';
+      filters.setArtistFilter(selectedArtistId);
+
+      // Find potential artist name matches to display
       const filteredData = allArtists.filter(artist => {
-        return searchableName(artist.name).startsWith(searchableName(name));
+        return artist.name_search.startsWith(searchableNameInput);
       });
       setFilteredArtists(filteredData);
+
+      // Input is valid if it is (case and symbols notwithstanding) the name of an artist
+      // TODO B: redundant with A
+      const inputValid = filteredData.some(
+        artist => artist.name_search === searchableNameInput
+      );
+      setArtistNameInputValid(inputValid);
     } else {
       setFilteredArtists([]);
+      // Input is also valid if it is empty
+      setArtistNameInputValid(true);
     }
   };
 
@@ -81,7 +103,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
               onChange={e => {
                 handleArtistInput(e.target.value);
               }}
-              className="w-full bg-[#2c2c2d] text-white rounded px-3 py-2"
+              className={`w-full bg-[#2c2c2d] text-white rounded px-3 py-2 ${!artistNameInputValid && 'inset-ring-2 inset-ring-red-500/50'}`}
               placeholder="Filter by artist..."
             />
             {filteredArtists.map(artist => (

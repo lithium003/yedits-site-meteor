@@ -48,7 +48,7 @@ export const SearchBar = () => {
     e.preventDefault();
     // if (!searchTerm.trim()) return;
     setAdvancedOpen(false);
-    const artistString = artistFilter ? `&a=${artistFilter}` : ''; //TODO WHEN AN INVALID ARTIST NAME IS ENTERED, ARTISTFILTER BECOMES FALSE, SO THE QUERY IS '', WHICH IS INDISTINGUISHABLE FROM NOT ENTERING AN ARTIST NAME AT ALL
+    const artistString = artistFilter ? `&a=${artistFilter}` : '';
     const tagString = tagsFilter.map(tag => `&t=${tag}`).join('');
     const eraString = eraFilter ? `&e=${eraFilter}` : '';
     const navString =
