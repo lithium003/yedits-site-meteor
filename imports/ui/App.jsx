@@ -8,15 +8,17 @@ import { AudioPlayer } from './components/player/AudioPlayer';
 
 export const App = () => (
   <>
-    <div className="">
+    <div className="h-screen flex flex-col">
       <NavBar />
-      <main>
+      <main className="flex-1 overflow-y-auto">
         {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
         <Suspense fallback={<Fallback />}>
           <Outlet /> {/* Renders the matched child (pages) route here */}
         </Suspense>
       </main>
-      <AudioPlayer />
+      <div className="w-full">
+        <AudioPlayer />
+      </div>
     </div>
   </>
 );
