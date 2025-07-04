@@ -10,7 +10,15 @@ export const App = () => (
   <>
     <div className="h-screen flex flex-col">
       <NavBar />
-      <main className="flex-1 overflow-y-auto">
+      <main
+        className="flex-1 overflow-y-auto
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-black
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-gray-500
+        [&::-webkit-scrollbar-thumb:hover]:bg-gray-600"
+      >
         {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
         <Suspense fallback={<Fallback />}>
           <Outlet /> {/* Renders the matched child (pages) route here */}

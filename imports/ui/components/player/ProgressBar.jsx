@@ -6,7 +6,6 @@ export const ProgressBar = () => {
     useAudioPlayerContext();
 
   const handleProgressChange = () => {
-    console.log('test');
     if (audioRef.current && progressBarRef.current) {
       const newTime = Number(progressBarRef.current.value);
       audioRef.current.currentTime = newTime;

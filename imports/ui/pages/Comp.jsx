@@ -6,7 +6,7 @@ import { CompInfo } from '../components/CompInfo';
 import { Tracklist } from '../components/Tracklist';
 
 export const Comp = () => {
-  const { comp_id } = useParams();
+  const { compId } = useParams();
   const [comp, setComp] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ export const Comp = () => {
   useEffect(() => {
     const getCompData = async () => {
       try {
-        const res = await Meteor.callAsync('getComp', comp_id);
+        const res = await Meteor.callAsync('getComp', compId);
         setComp(res);
       } catch (err) {
         console.error('Error fetching comp:', err);
@@ -26,8 +26,8 @@ export const Comp = () => {
       }
     };
 
-    getCompData();
-  }, [comp_id]);
+    getCompData(); // TODO what's going on here
+  }, [compId]);
 
   if (loading) {
     return <h1>Loading...</h1>;
