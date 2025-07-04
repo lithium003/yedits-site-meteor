@@ -8,30 +8,20 @@ import { Tracklist } from '../components/Tracklist';
 export const Comp = () => {
   const { compId } = useParams();
   const [comp, setComp] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   // Highlighted Edit
   const [searchParams] = useSearchParams();
   const highlightEditId = searchParams.get('h') ?? '';
 
   useEffect(() => {
-    const getCompData = async () => {
-      try {
-        const res = await Meteor.callAsync('getComp', compId);
-        setComp(res);
-      } catch (err) {
+    Meteor.call('getComp', compId, (err, res) => {
+      if (err) {
         console.error('Error fetching comp:', err);
-      } finally {
-        setLoading(false);
+      } else {
+        setComp(res);
       }
-    };
-
-    getCompData(); // TODO what's going on here
+    });
   }, [compId]);
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
 
   if (!comp) {
     return <h1 className="text-red-500">Comp not found</h1>;
