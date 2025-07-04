@@ -46,25 +46,21 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
     const searchableNameInput = searchableName(name);
 
     if (name) {
-      // TODO A: redundant with B
-      const selectedArtist = allArtists.find(
-        artist => artist.name_search === searchableNameInput
-      );
-      const selectedArtistId = selectedArtist ? selectedArtist.id : '';
-      filters.setArtistFilter(selectedArtistId);
-
       // Find potential artist name matches to display
       const filteredData = allArtists.filter(artist => {
         return artist.name_search.startsWith(searchableNameInput);
       });
       setFilteredArtists(filteredData);
 
-      // Input is valid if it is (case and symbols notwithstanding) the name of an artist
-      // TODO B: redundant with A
-      const inputValid = filteredData.some(
+      // Check if the input is (case and symbols notwithstanding) the name of an artist
+      const selectedArtist = allArtists.find(
         artist => artist.name_search === searchableNameInput
       );
-      setArtistNameInputValid(inputValid);
+      const selectedArtistId = selectedArtist ? selectedArtist.id : '';
+      filters.setArtistFilter(selectedArtistId);
+
+      // Input is valid if it gives an artist
+      setArtistNameInputValid(!!selectedArtist);
     } else {
       setFilteredArtists([]);
       // Input is also valid if it is empty
