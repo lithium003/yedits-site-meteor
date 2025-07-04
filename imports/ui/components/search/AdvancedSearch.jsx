@@ -3,6 +3,7 @@ import { ERAS } from '../../../utils/eras';
 import { tags } from '../../../utils/tags';
 import { PillCheckbox } from './PillCheckbox';
 import { searchableName } from '../../../utils/stringUtils';
+import { RiCloseLargeFill } from 'react-icons/ri';
 
 export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   useEffect(() => {
@@ -93,15 +94,29 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
           <div>
             <label className="block text-sm text-gray-400 mb-1">Artist</label>
             {/* TODO pressing enter here doesn't send the artist through?? */}
-            <input
-              type="text"
-              value={artistNameInput}
-              onChange={e => {
-                handleArtistInput(e.target.value);
-              }}
-              className={`w-full bg-[#2c2c2d] text-white rounded px-3 py-2 ${!artistNameInputValid && 'inset-ring-2 inset-ring-red-500/50'}`}
-              placeholder="Filter by artist..."
-            />
+            <div
+              className={`flex items-center w-full bg-[#2c2c2d] text-white rounded px-3 py-2 ${!artistNameInputValid && 'inset-ring-2 inset-ring-red-500/50'}`}
+            >
+              <input
+                type="text"
+                value={artistNameInput}
+                onChange={e => {
+                  handleArtistInput(e.target.value);
+                }}
+                className="w-full h-full border-none text-white outline-none py-0.25"
+                placeholder="Filter by artist..."
+              />
+              {artistNameInput && (
+                <button
+                  type="button"
+                  className="text-gray-400 hover:text-white transition-colors px-1"
+                  onClick={() => handleArtistInput('')}
+                >
+                  <RiCloseLargeFill />
+                </button>
+              )}
+            </div>
+
             {filteredArtists.map(artist => (
               <div
                 className="hover:underline hover:cursor-pointer"
