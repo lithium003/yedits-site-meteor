@@ -31,19 +31,24 @@ export const SearchBar = () => {
 
   useEffect(() => {
     console.log('Search Bar Mounted');
+    // Grab all the artists from the backend, to be potentially searched through in the Advanced Filters.
+    // Grabbing them here rather than in AdvancedSearch to avoid querying every open/close of that window.
     Meteor.call('getAllArtists', (err, res) => {
       if (err) {
         console.error('Failed to fetch next results:', err);
       } else {
         setAllArtists(res);
-        console.log('Artists:', res);
       }
     });
   }, []);
 
+  /**
+   * Generates the search url with all the searchParams and navigates to it.
+   * @param e
+   */
   const handleSearch = e => {
     e.preventDefault();
-    // if (!searchTerm.trim()) return;
+    // if (!searchTerm.trim()) return; //UNCOMMENT THIS IF YOU WANT TO DISALLOW EMPTY SEARCHES
     setAdvancedOpen(false);
     const artistString = artistFilter ? `&a=${artistFilter}` : '';
     const tagString = tagsFilter.map(tag => `&t=${tag}`).join('');

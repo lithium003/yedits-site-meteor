@@ -62,13 +62,12 @@ export const Search = () => {
   /**
    * Loads the next few comps and scrolls to show them
    */
-  // TODO: a way to pass around the collection name, state variable, setter, and ref for each collection together
   const loadNext = ({ collection, shelfRef, state, setState }) => {
+    // TODO: find a way to pass around the collection name, state variable, setter, and ref for each collection together
     const lastId = state[state.length - 1]?.id;
     if (!lastId || isLoading) return;
 
     setIsLoading(true);
-    const previousLength = state.length;
     Meteor.call(
       'getSearchResults',
       {
