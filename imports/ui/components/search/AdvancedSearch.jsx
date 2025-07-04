@@ -19,7 +19,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   );
 
   const [artistNameInputValid, setArtistNameInputValid] = useState(true);
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [possibleArtistMatches, setPossibleArtistMatches] = useState([]);
 
   // NOTES FOR FUTURE CONSIDERATION ON STORING AND FILTERING ERAS AND ARTISTS
   // I want to input names since those are human-readable.
@@ -51,7 +51,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
       const filteredData = allArtists.filter(artist => {
         return artist.name_search.startsWith(searchableNameInput);
       });
-      setFilteredArtists(filteredData);
+      setPossibleArtistMatches(filteredData);
 
       // Check if the input is (case and symbols notwithstanding) the name of an artist
       const selectedArtist = allArtists.find(
@@ -63,7 +63,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
       // Input is valid if it gives an artist
       setArtistNameInputValid(!!selectedArtist);
     } else {
-      setFilteredArtists([]);
+      setPossibleArtistMatches([]);
       // Input is also valid if it is empty
       setArtistNameInputValid(true);
     }
@@ -85,7 +85,6 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   const selectedEra = ERAS.find(era => era.name === filters.eraFilter);
   const selectStyle = selectedEra ? selectedEra.style : {};
 
-  // TODO add x to clear input. same for search bar?
   return (
     <>
       <div className="absolute top-full left-0 right-0 mt-2 bg-[#1c1c1d] rounded-lg p-4 shadow-lg z-50">
@@ -93,7 +92,6 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
           {/* Artist Filter */}
           <div>
             <label className="block text-sm text-gray-400 mb-1">Artist</label>
-            {/* TODO pressing enter here doesn't send the artist through?? */}
             <div
               className={`flex items-center w-full bg-[#2c2c2d] text-white rounded px-3 py-2 ${!artistNameInputValid && 'inset-ring-2 inset-ring-red-500/50'}`}
             >
@@ -117,12 +115,12 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
               )}
             </div>
 
-            {filteredArtists.map(artist => (
+            {possibleArtistMatches.map(artist => (
               <div
                 className="hover:underline hover:cursor-pointer"
                 onClick={() => {
                   handleArtistInput(artist.name);
-                  setFilteredArtists([]);
+                  setPossibleArtistMatches([]);
                 }}
                 key={artist.id}
               >
