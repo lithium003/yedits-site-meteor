@@ -109,40 +109,6 @@ export const Search = () => {
     });
   };
 
-  /**
-   * Scroll to start of CompShelf
-   */
-  const scrollToStart = shelfRef => {
-    if (!shelfRef.current) return;
-
-    shelfRef.current.scrollTo({
-      left: 0,
-      behavior: 'smooth'
-    });
-  };
-
-  /**
-   * Scroll to the start of the newly loaded items
-   * @param previousLength the number of items in the shelf before loading more
-   */
-  const scrollToNewItems = previousLength => {
-    if (!compsShelfRef.current) return;
-    const shelfElement = compsShelfRef.current;
-
-    // Scroll to the first new item
-    const firstNewItemIndex = previousLength;
-    const compItems = shelfElement.querySelectorAll('.shelf-item');
-    if (compItems[firstNewItemIndex]) {
-      compItems[firstNewItemIndex].scrollIntoView({
-        behavior: 'smooth', // TODO consider a custom speed or instant
-        block: 'nearest',
-        inline: 'start'
-      });
-    } else {
-      // Fallback: scroll to show new content area TODO?
-    }
-  };
-
   useEffect(() => {
     // TODO abstract this to just calling the same thing as loadNext but with no lastId
     // On first component render, get items with no 'lastItem'
@@ -181,7 +147,6 @@ export const Search = () => {
             ref={compsShelfRef}
             items={comps}
             onLoadNext={() => loadNext(compsObj)}
-            scrollToStart={() => scrollToStart(compsShelfRef)}
           />
           {/* Edits Shelf */}
           <h1 className="text-xl font-bold mb-2">
@@ -191,7 +156,6 @@ export const Search = () => {
             ref={editsShelfRef}
             items={edits}
             onLoadNext={() => loadNext(editsObj)}
-            scrollToStart={() => scrollToStart(editsShelfRef)}
           />
           {/* Yeditors Shelf */}
           {/* (don't display if searching for an era, as yeditors don't have eras) */}
@@ -207,7 +171,6 @@ export const Search = () => {
                 ref={yeditorsShelfRef}
                 items={yeditors}
                 onLoadNext={() => loadNext(yeditorsObj)}
-                scrollToStart={() => scrollToStart(yeditorsShelfRef)}
               />
             </>
           )}

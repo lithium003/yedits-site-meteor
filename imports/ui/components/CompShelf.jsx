@@ -12,9 +12,25 @@ import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
  * @returns {JSX.Element}
  */
 export const CompShelf = forwardRef(
-  ({ ItemComponent = CompItem, items, onLoadNext, scrollToStart }, ref) => {
+  ({ ItemComponent = CompItem, items, onLoadNext }, ref) => {
     // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
     const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
+
+    /**
+     * Scroll to start of CompShelf
+     */
+    const scrollToStartAux = shelfRef => {
+      if (!shelfRef.current) return;
+
+      shelfRef.current.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+    };
+    const scrollToStart = () => {
+      scrollToStartAux(ref);
+    };
+
     return (
       <>
         <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 py-3 px-2 bg-black/50 rounded-xl">

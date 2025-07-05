@@ -72,6 +72,7 @@ export const Yeditor = () => {
             <span className="bg-yellow-500">4.3x Rating</span>
           </div>
 
+          {/* TODO refactor CompShelf to have all of its own < > loading logic inside it */ }
           {/* Top Comps */}
           {/*<div>*/}
           {/*  <CompShelf items={compsTop}*/}
