@@ -33,13 +33,15 @@ export const Home = () => {
       <Helmet>
         <title>Yedits - Home</title>
       </Helmet>
-      <div className="p-2">
-        <h1 className="text-3xl font-bold mt-2">Welcome to Yedits.net!</h1>
-        {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
-        <Suspense fallback={<Fallback />}>
-          <CompShelf items={topComps} />
-        </Suspense>
-        <Suspense fallback={<Fallback />}></Suspense>
+      <div className="flex justify-center w-full">
+        <div>
+          <h1 className="text-3xl font-bold mt-2">Welcome to Yedits.net!</h1>
+          {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
+          <Suspense fallback={<Fallback />}>
+            <CompShelf items={topComps} />
+          </Suspense>
+          <Suspense fallback={<Fallback />}></Suspense>
+        </div>
       </div>
     </>
   );

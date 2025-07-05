@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useParams } from 'react-router-dom';
-import { YeditorItem } from '../components/YeditorItem';
+import { YeditorPhoto } from '../components/yeditor/YeditorPhoto';
+import { Helmet } from 'react-helmet';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -21,9 +22,35 @@ export const Yeditor = () => {
   }
   return (
     <>
-      <span>{yeditorId}</span>
-      <span>{yeditor.display_name}</span>
-      <YeditorItem data={yeditor} />
+      <Helmet>
+        <title>{yeditor.display_name} - Yedits</title>
+      </Helmet>
+      {/* Horizontally centers the page */}
+      <div className="flex justify-center w-full">
+        <div>
+          {/* Title */}
+          <div className="flex gap-4 mb-2 bg-green-400 items-center">
+            <YeditorPhoto yeditor={yeditor} size="200" />
+            <div
+              id="text-container"
+              className="flex flex-col gap-4 bg-blue-400"
+            >
+              <h1 className="text-7xl font-bold text-purple-500 bg-pink-400">
+                {yeditor.display_name}
+              </h1>
+              <span className="bg-green-800">ABCDE</span>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="flex gap-4 justify-between bg-green-400">
+            <span className="bg-yellow-500">5 Comps</span>
+            <span className="bg-yellow-500">3 Edits</span>
+            <span className="bg-yellow-500">0 Collabs</span>
+            <span className="bg-yellow-500">4.3x Rating</span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
