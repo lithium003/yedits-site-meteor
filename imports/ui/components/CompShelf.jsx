@@ -20,12 +20,10 @@ export const CompShelf = ({
   const { collection, state = items, setState } = obj || {};
   // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
   const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
+  // Get the ref of the scrollable container inside, for use in scrolling to start/end
   const containerRef = useRef(null);
-
-  // TODO understand this AI refactor.
-  //  how necessary is all of `obj`?
-  //  add a flag and make it work on Home page too
-  // http://localhost:3000/search?q=&t=Remaster&t=Rework&t=Remix&t=Recreation&t=~
+  // Keep track of when new items are loading
+  const [isLoading, setIsLoading] = useState(false);
   /**
    * Scroll to start of CompShelf
    */
@@ -50,12 +48,10 @@ export const CompShelf = ({
     });
   };
 
-  const [isLoading, setIsLoading] = useState(false);
-
   /**
    * Loads the next few comps and scrolls to show them
    */
-  const loadNext = ({ collection, state, setState }) => {
+  const loadNext = () => {
     if (!loadMoreFunc) {
       console.log('a');
       scrollToEnd(containerRef);
@@ -136,7 +132,7 @@ export const CompShelf = ({
         {loadMoreEnabled && (
           <div className="shelf-item flex-shrink-0 flex items-center">
             <button
-              onClick={() => loadNext({ collection, state, setState })}
+              onClick={loadNext}
               className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
             >
               <RiArrowRightDoubleLine />

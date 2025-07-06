@@ -34,7 +34,7 @@ export const Search = () => {
   }, []);
 
   // Define your Meteor call function directly
-  const meteorCallFunction = (collection, lastId, onSuccess, onError) => {
+  const loadMoreSearchResults = (collection, lastId, onSuccess, onError) => {
     Meteor.call(
       'getSearchResults',
       {
@@ -109,7 +109,7 @@ export const Search = () => {
           </h1>
           <CompShelf
             items={comps}
-            loadMoreFunc={meteorCallFunction}
+            loadMoreFunc={loadMoreSearchResults}
             obj={compsObj}
           />
           {/* Edits Shelf */}
@@ -118,7 +118,7 @@ export const Search = () => {
           </h1>
           <CompShelf
             items={edits}
-            loadMoreFunc={meteorCallFunction}
+            loadMoreFunc={loadMoreSearchResults}
             obj={editsObj}
           />
           {/* Yeditors Shelf */}
@@ -133,7 +133,7 @@ export const Search = () => {
               <CompShelf
                 ItemComponent={YeditorItem}
                 items={yeditors}
-                loadMoreFunc={meteorCallFunction}
+                loadMoreFunc={loadMoreSearchResults}
                 obj={yeditorsObj}
               />
             </>
