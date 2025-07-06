@@ -6,7 +6,11 @@ import { Helmet } from 'react-helmet';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { ERAS } from '../../utils/eras';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+import {
+  faDiscord,
+  faTwitter,
+  faYoutube
+} from '@fortawesome/free-brands-svg-icons';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -90,27 +94,27 @@ export const Yeditor = () => {
                 <div className="flex gap-4 flex-wrap">
                   <a
                     href="https://discord.com/invite/yedits"
-                    className="w-11 h-11 bg-indigo-600 rounded-full flex items-center justify-center text-white hover:bg-indigo-700 transition-all duration-300 hover:scale-110"
+                    className="w-11 h-11 bg-[#5865F2] rounded-full flex items-center justify-center text-white hover:bg-indigo-700 transition-all duration-300 hover:scale-110"
                   >
-                    <i className="fab fa-discord text-lg"></i>
+                    <span className="text-lg">
+                      <FontAwesomeIcon icon={faDiscord} />
+                    </span>
                   </a>
                   <a
                     href="#"
-                    className="w-11 h-11 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110"
+                    className="w-11 h-11 bg-[#1DA1F2] rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110"
                   >
-                    <i className="fab fa-twitter text-lg"></i>
+                    <span className="text-lg">
+                      <FontAwesomeIcon icon={faTwitter} />
+                    </span>
                   </a>
                   <a
                     href="#"
-                    className="w-11 h-11 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white hover:opacity-80 transition-all duration-300 hover:scale-110"
+                    className="w-11 h-11 bg-[#FF0000] rounded-full flex items-center justify-center text-white hover:bg-red-700 transition-all duration-300 hover:scale-110"
                   >
-                    <i className="fab fa-instagram text-lg"></i>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-11 h-11 bg-red-600 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition-all duration-300 hover:scale-110"
-                  >
-                    <i className="fab fa-youtube text-lg"></i>
+                    <span className="text-lg">
+                      <FontAwesomeIcon icon={faYoutube} />
+                    </span>
                   </a>
                 </div>
               </div>
