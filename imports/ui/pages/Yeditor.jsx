@@ -453,7 +453,7 @@ export const Yeditor = () => {
                 href="https://discord.com/invite/yedits"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white font-semibold rounded-full border border-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#5865F2] text-white font-semibold rounded-full border border-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
                 <i className="fab fa-discord text-xl"></i>
                 Join the Discord!
