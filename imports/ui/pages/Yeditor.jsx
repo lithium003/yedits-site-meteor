@@ -11,6 +11,7 @@ import {
   faTwitter,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { getDateFromTimestamp } from '../../utils/firestoreHandling';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -337,7 +338,9 @@ export const Yeditor = () => {
                         </h3>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-gray-400">
-                            {comp.year}
+                            {getDateFromTimestamp(
+                              comp.release_date
+                            ).getFullYear()}
                           </span>
                           <span
                             style={
