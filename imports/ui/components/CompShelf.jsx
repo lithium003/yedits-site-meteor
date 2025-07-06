@@ -3,23 +3,33 @@ import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 
 /**
+ *
  * A shelf displaying Items.
  * @param ItemComponent - the Item component to be displayed (default CompItem)
  * @param items - an array of objects containing item data, to be mapped onto individual Item components
- * @param onLoadNext - the function to be mapped to the 'next' button (optional)
+ * @param loadMoreFunc - the function to be mapped to the 'next' button (optional)
+ * @param obj - object containing `collection`, `state` and `setState` for querying and managing the items (optional)
+ * @param defaultWidth - number of items wide the shelf should be by default (any more requires scrolling) (optional)
+ * @param centerItems - true if you want to center the items, false if you want them aligned to the start of the container
+ * @param skipBackEnabled - true if you want a button for going to the start of the container, false otherwise
+ * @param loadMoreEnabled - true if you want a button to load more and go to the end of the container, false otherwise
  * @returns {JSX.Element}
+ * @constructor
  */
 export const CompShelf = ({
   ItemComponent = CompItem,
   items = [],
   loadMoreFunc = null,
   obj,
+  defaultWidth = 5,
+  centerItems = false,
   skipBackEnabled = true,
   loadMoreEnabled = true
 }) => {
+  // Destructure obj
   const { collection, state = items, setState } = obj || {};
   // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
-  const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
+  const shelfWidth = 200 * defaultWidth + 8 * 4 + 16 + 8 + 16 + 8;
   // Get the ref of the scrollable container inside, for use in scrolling to start/end
   const containerRef = useRef(null);
   // Keep track of when new items are loading
@@ -106,17 +116,18 @@ export const CompShelf = ({
           style={{ width: `${shelfWidth}px` }}
           // Change overflow-x-scroll to overflow-x-auto to remove the default black scrollbar placeholder.
           // `pb-4` and `h-[284px]` create placeholder spacing for the scrollbar.
-          className="
+          className={`
             overflow-x-scroll
             h-[284px] px-2 pb-4
             flex flex-nowrap
+            ${centerItems ? 'justify-center-safe' : ''}
             [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:rounded-full
             [&::-webkit-scrollbar-track]:bg-black
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-thumb]:bg-gray-500
             [&::-webkit-scrollbar-thumb:hover]:bg-gray-600
-            "
+            `}
         >
           {items.map(item => (
             <div

@@ -63,7 +63,6 @@ export const Yeditor = () => {
               <span className="bg-green-800">ABCDE</span>
             </div>
           </div>
-
           {/* Stats */}
           <div className="flex gap-4 justify-between bg-green-400">
             <span className="bg-yellow-500">5 Comps</span>
@@ -71,12 +70,17 @@ export const Yeditor = () => {
             <span className="bg-yellow-500">0 Collabs</span>
             <span className="bg-yellow-500">4.3x Rating</span>
           </div>
-
-          {/* TODO refactor CompShelf to have all of its own < > loading logic inside it */ }
-          {/* Top Comps */}
-          {/*<div>*/}
-          {/*  <CompShelf items={compsTop}*/}
-          {/*</div>*/}
+          {/* TODO refactor CompShelf to have all of its own < > loading logic inside it */}
+          Top Comps
+          <div>
+            <CompShelf
+              items={compsTop}
+              defaultWidth={2}
+              centerItems={true}
+              skipBackEnabled={false}
+              loadMoreEnabled={false}
+            />
+          </div>
         </div>
       </div>
     </>
