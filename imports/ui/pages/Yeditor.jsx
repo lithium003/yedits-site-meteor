@@ -202,7 +202,7 @@ export const Yeditor = () => {
                     </h3>
                     <div className="flex items-center justify-between">
                       <span className="text-purple-400 font-semibold">
-                        {comp.rating}★
+                        {comp.rating.toFixed(1)}★
                       </span>
                       <span
                         style={ERAS.find(era => era.name === comp.era)?.style}
