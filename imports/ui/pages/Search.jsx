@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { CompShelf } from '../components/CompShelf';
@@ -18,10 +18,6 @@ export const Search = () => {
   const [comps, setComps] = useState([]);
   const [edits, setEdits] = useState([]);
   const [yeditors, setYeditors] = useState([]);
-
-  const compsShelfRef = useRef(null);
-  const editsShelfRef = useRef(null);
-  const yeditorsShelfRef = useRef(null);
 
   // Get search term from url
   const [searchParams] = useSearchParams();
@@ -62,19 +58,16 @@ export const Search = () => {
   // Define your objects after the loadNext function
   const compsObj = {
     collection: COMPS,
-    shelfRef: compsShelfRef,
     state: comps,
     setState: setComps
   };
   const editsObj = {
     collection: EDITS,
-    shelfRef: editsShelfRef,
     state: edits,
     setState: setEdits
   };
   const yeditorsObj = {
     collection: YEDITORS,
-    shelfRef: yeditorsShelfRef,
     state: yeditors,
     setState: setYeditors
   };
@@ -115,9 +108,8 @@ export const Search = () => {
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
           <CompShelf
-            ref={compsShelfRef}
             items={comps}
-            meteorCallFunction={meteorCallFunction}
+            loadMoreFunc={meteorCallFunction}
             obj={compsObj}
           />
           {/* Edits Shelf */}
@@ -125,9 +117,8 @@ export const Search = () => {
             Edits matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
           <CompShelf
-            ref={editsShelfRef}
             items={edits}
-            meteorCallFunction={meteorCallFunction}
+            loadMoreFunc={meteorCallFunction}
             obj={editsObj}
           />
           {/* Yeditors Shelf */}
@@ -141,9 +132,8 @@ export const Search = () => {
               </h1>
               <CompShelf
                 ItemComponent={YeditorItem}
-                ref={yeditorsShelfRef}
                 items={yeditors}
-                meteorCallFunction={meteorCallFunction}
+                loadMoreFunc={meteorCallFunction}
                 obj={yeditorsObj}
               />
             </>
