@@ -3,10 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import { useParams } from 'react-router-dom';
 import { YeditorPhoto } from '../components/yeditor/YeditorPhoto';
 import { Helmet } from 'react-helmet';
-import { CompShelf } from '../components/CompShelf';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { ERAS } from '../../utils/eras';
-import { CompItem } from '../components/CompItem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -457,7 +457,9 @@ export const Yeditor = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-[#5865F2] text-white font-semibold rounded-full border border-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
-                <i className="fab fa-discord text-xl"></i>
+                <span className="text-xl">
+                  <FontAwesomeIcon icon={faDiscord} />
+                </span>
                 Join the Discord!
               </a>
             </div>
