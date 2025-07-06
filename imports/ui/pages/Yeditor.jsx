@@ -57,7 +57,9 @@ export const Yeditor = () => {
 
   return (
     <div className="w-full">
-      <title>{yeditor.display_name} - Yedits</title>
+      <Helmet>
+        <title>{yeditor.display_name} - Yedits</title>
+      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-black text-white">
         <div className="max-w-6xl mx-auto px-8 py-8">
