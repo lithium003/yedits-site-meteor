@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 
@@ -12,23 +12,80 @@ import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
  * @returns {JSX.Element}
  */
 export const CompShelf = forwardRef(
-  ({ ItemComponent = CompItem, items, onLoadNext }, ref) => {
+  (
+    {
+      ItemComponent = CompItem,
+      items = [],
+      meteorCallFunction = null,
+      obj = {}
+    },
+    ref
+  ) => {
+    const { collection, state, setState } = obj;
     // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
     const shelfWidth = 200 * 5 + 8 * 4 + 16 + 8 + 16 + 8;
 
+    // TODO understand this AI refactor.
+    //  how necessary is all of `obj`?
+    //  add a flag and make it work on Home page too
+    // http://localhost:3000/search?q=&t=Remaster&t=Rework&t=Remix&t=Recreation&t=~
     /**
      * Scroll to start of CompShelf
      */
-    const scrollToStartAux = shelfRef => {
-      if (!shelfRef.current) return;
+    const scrollToStart = () => {
+      if (!ref.current) return;
 
-      shelfRef.current.scrollTo({
+      ref.current.scrollTo({
         left: 0,
         behavior: 'smooth'
       });
     };
-    const scrollToStart = () => {
-      scrollToStartAux(ref);
+
+    /**
+     * Scroll to end to show all new items
+     */
+    const scrollToEnd = shelfRef => {
+      if (!shelfRef.current) return;
+
+      shelfRef.current.scrollTo({
+        left: shelfRef.current.scrollWidth,
+        behavior: 'smooth'
+      });
+    };
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    /**
+     * Loads the next few comps and scrolls to show them
+     */
+    const loadNext = ({ collection, state, setState }) => {
+      const lastId = state[state.length - 1]?.id;
+      if (!lastId || isLoading) return;
+
+      setIsLoading(true);
+
+      // Call the meteor function directly
+      meteorCallFunction(
+        collection,
+        lastId,
+        result => {
+          // Success handler
+          setState(prev => {
+            const newData = [...prev, ...result];
+            // Scroll to newly loaded items
+            setTimeout(() => {
+              scrollToEnd(ref);
+              setIsLoading(false);
+            }, 100);
+            return newData;
+          });
+        },
+        error => {
+          // Error handler
+          console.error('Failed to fetch next results:', error);
+          setIsLoading(false);
+        }
+      );
     };
 
     return (
@@ -73,11 +130,11 @@ export const CompShelf = forwardRef(
             ))}
           </div>
 
-          {/* Load Next button */}
-          {onLoadNext && (
+          {/* Load Next button  TODO make these conditional on some flag */}
+          {meteorCallFunction && (
             <div className="shelf-item flex-shrink-0 flex items-center">
               <button
-                onClick={onLoadNext}
+                onClick={() => loadNext({ collection, state, setState })}
                 className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
               >
                 <RiArrowRightDoubleLine />

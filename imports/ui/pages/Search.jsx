@@ -23,8 +23,43 @@ export const Search = () => {
   const editsShelfRef = useRef(null);
   const yeditorsShelfRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // Get search term from url
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('q') ?? '';
+  const eraFilter = searchParams.get('e') ?? '';
+  const tagFilters = searchParams.getAll('t');
+  const artistFilter = searchParams.get('a') ?? '';
 
+  // Hydration problems can occur when the client renders data before server-side rendering can finish.
+  // If this happens, make the client-side rendering dependent on isMounted being true.
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Define your Meteor call function directly
+  const meteorCallFunction = (collection, lastId, onSuccess, onError) => {
+    Meteor.call(
+      'getSearchResults',
+      {
+        collection: collection,
+        searchTerm: searchableName(searchTerm),
+        era: eraFilter,
+        tags: tagFilters,
+        artistId: artistFilter,
+        lastId: lastId
+      },
+      (err, result) => {
+        if (err) {
+          onError(err);
+        } else {
+          onSuccess(result);
+        }
+      }
+    );
+  };
+
+  // Define your objects after the loadNext function
   const compsObj = {
     collection: COMPS,
     shelfRef: compsShelfRef,
@@ -44,70 +79,6 @@ export const Search = () => {
     setState: setYeditors
   };
   const objects = [compsObj, editsObj, yeditorsObj];
-  // Get search term from url
-  const [searchParams] = useSearchParams();
-  const searchTerm = searchParams.get('q') ?? '';
-  const eraFilter = searchParams.get('e') ?? '';
-  const tagFilters = searchParams.getAll('t');
-  const artistFilter = searchParams.get('a') ?? '';
-
-  // Hydration problems can occur when the client renders data before server-side rendering can finish.
-  // If this happens, make the client-side rendering dependent on isMounted being true.
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  /**
-   * Loads the next few comps and scrolls to show them
-   */
-  const loadNext = ({ collection, shelfRef, state, setState }) => {
-    // TODO: find a way to pass around the collection name, state variable, setter, and ref for each collection together
-    const lastId = state[state.length - 1]?.id;
-    if (!lastId || isLoading) return;
-
-    setIsLoading(true);
-    Meteor.call(
-      'getSearchResults',
-      {
-        collection: collection,
-        searchTerm: searchableName(searchTerm),
-        era: eraFilter,
-        tags: tagFilters,
-        artistId: artistFilter,
-        lastId: lastId
-      },
-      (err, result) => {
-        if (err) {
-          console.error('Failed to fetch next results:', err);
-          setIsLoading(false);
-        } else {
-          setState(prev => {
-            const newData = [...prev, ...result];
-            // Scroll to newly loaded items
-            setTimeout(() => {
-              scrollToEnd(shelfRef);
-              // scrollToNewItems(previousLength);
-              setIsLoading(false);
-            }, 100); // Small delay to ensure DOM is updated
-            return newData;
-          });
-        }
-      }
-    );
-  };
-
-  /**
-   * Scroll to end to show all new items
-   */
-  const scrollToEnd = shelfRef => {
-    if (!shelfRef.current) return;
-
-    shelfRef.current.scrollTo({
-      left: shelfRef.current.scrollWidth,
-      behavior: 'smooth'
-    });
-  };
 
   useEffect(() => {
     // TODO abstract this to just calling the same thing as loadNext but with no lastId
@@ -146,7 +117,8 @@ export const Search = () => {
           <CompShelf
             ref={compsShelfRef}
             items={comps}
-            onLoadNext={() => loadNext(compsObj)}
+            meteorCallFunction={meteorCallFunction}
+            obj={compsObj}
           />
           {/* Edits Shelf */}
           <h1 className="text-xl font-bold mb-2">
@@ -155,7 +127,8 @@ export const Search = () => {
           <CompShelf
             ref={editsShelfRef}
             items={edits}
-            onLoadNext={() => loadNext(editsObj)}
+            meteorCallFunction={meteorCallFunction}
+            obj={editsObj}
           />
           {/* Yeditors Shelf */}
           {/* (don't display if searching for an era, as yeditors don't have eras) */}
@@ -170,7 +143,8 @@ export const Search = () => {
                 ItemComponent={YeditorItem}
                 ref={yeditorsShelfRef}
                 items={yeditors}
-                onLoadNext={() => loadNext(yeditorsObj)}
+                meteorCallFunction={meteorCallFunction}
+                obj={yeditorsObj}
               />
             </>
           )}
