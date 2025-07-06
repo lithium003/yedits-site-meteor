@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import { CompShelf } from '../components/CompShelf';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { ERAS } from '../../utils/eras';
+import { CompItem } from '../components/CompItem';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -182,9 +183,7 @@ export const Yeditor = () => {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 group"
                 >
                   <div className="aspect-square bg-gradient-to-br from-purple-500 to-blue-500 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-4xl font-bold">
-                      {comp.name.split(' ')[2]}
-                    </div>
+                    <img src={comp.art_path} alt={comp.name} />
                     <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <span className="bg-gradient-to-r from-purple-400 to-blue-400 px-4 py-2 rounded-full text-sm font-semibold">
                         View
@@ -229,9 +228,7 @@ export const Yeditor = () => {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 group"
                 >
                   <div className="aspect-square bg-gradient-to-br from-orange-500 to-red-500 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-4xl font-bold">
-                      {edit.name.split(' ')[2]}
-                    </div>
+                    <img src={edit.art_path} alt={edit.name} />
                     <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <span className="bg-gradient-to-r from-orange-400 to-red-400 px-4 py-2 rounded-full text-sm font-semibold">
                         View
@@ -321,9 +318,7 @@ export const Yeditor = () => {
                       className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 group"
                     >
                       <div className="aspect-square bg-gradient-to-br from-purple-500 to-blue-500 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-2xl font-bold">
-                          {comp.name.split(' ')[1]}
-                        </div>
+                        <img src={comp.art_path} alt={comp.name} />
                         <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <span className="bg-gradient-to-r from-purple-400 to-blue-400 px-3 py-1 rounded-full text-sm font-semibold">
                             View
@@ -362,7 +357,7 @@ export const Yeditor = () => {
                     >
                       <div className="aspect-square bg-gradient-to-br from-orange-500 to-red-500 relative overflow-hidden">
                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-2xl font-bold">
-                          {edit.name.split(' ')[1]}
+                          <img src={edit.art_path} alt={edit.name} />
                         </div>
                         <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <span className="bg-gradient-to-r from-orange-400 to-red-400 px-3 py-1 rounded-full text-sm font-semibold">
@@ -402,7 +397,7 @@ export const Yeditor = () => {
                     >
                       <div className="aspect-square bg-gradient-to-br from-green-500 to-blue-500 relative overflow-hidden">
                         <div className="absolute inset-0 bg-black/20 flex items-center justify-center text-2xl font-bold">
-                          {credit.name.split(' ')[1]}
+                          <img src={credit.art_path} alt={credit.name} />
                         </div>
                         <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <span className="bg-gradient-to-r from-green-400 to-blue-400 px-3 py-1 rounded-full text-sm font-semibold">
