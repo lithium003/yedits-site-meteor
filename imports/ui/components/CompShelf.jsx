@@ -17,7 +17,9 @@ export const CompShelf = forwardRef(
       ItemComponent = CompItem,
       items = [],
       meteorCallFunction = null,
-      obj = {}
+      obj = {},
+      skipBackEnabled = true,
+      loadMoreEnabled = true
     },
     ref
   ) => {
@@ -76,7 +78,7 @@ export const CompShelf = forwardRef(
             setTimeout(() => {
               scrollToEnd(ref);
               setIsLoading(false);
-            }, 100);
+            }, 100); // Delay to ensure DOM is updated
             return newData;
           });
         },
@@ -92,7 +94,7 @@ export const CompShelf = forwardRef(
       <>
         <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 py-3 px-2 bg-black/50 rounded-xl">
           {/* Scroll to Start button TODO turn these into components and pass the function/icon*/}
-          {scrollToStart && (
+          {skipBackEnabled && (
             <div className="shelf-item flex-shrink-0 flex items-center">
               <button
                 onClick={scrollToStart}
@@ -131,7 +133,7 @@ export const CompShelf = forwardRef(
           </div>
 
           {/* Load Next button  TODO make these conditional on some flag */}
-          {meteorCallFunction && (
+          {loadMoreEnabled && (
             <div className="shelf-item flex-shrink-0 flex items-center">
               <button
                 onClick={() => loadNext({ collection, state, setState })}
