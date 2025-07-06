@@ -182,7 +182,7 @@ export const Yeditor = () => {
               <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-blue-400 mx-auto rounded-full"></div>
             </div>
 
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-5 gap-6">
               {compsTop.map((comp, index) => (
                 <div
                   key={index}
@@ -227,7 +227,7 @@ export const Yeditor = () => {
               <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-400 mx-auto rounded-full"></div>
             </div>
 
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-5 gap-6">
               {editsTop.map((edit, index) => (
                 <div
                   key={index}
