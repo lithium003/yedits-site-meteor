@@ -7,7 +7,7 @@ export const YeditorPhoto = ({ yeditor, size }) => {
     <>
       <Link to={`/yeditor/${id}`}>
         <img
-          className={`rounded-full object-cover h-[${size}px] w-[${size}px]}`}
+          className={`rounded-full object-cover h-[${size}px] w-[${size}px] hover:brightness-80 transition-all duration-300`}
           src={art_path}
           alt={display_name}
         />
