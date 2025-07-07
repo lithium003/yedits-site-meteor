@@ -20,7 +20,7 @@ export const CompItem = ({ data }) => {
       <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
         <Link to={pageLink}>
           <img
-            className="w-full h-[200px] rounded-xl object-cover mb-1"
+            className="w-full h-[200px] rounded-xl object-cover mb-1 hover:brightness-70 transition-all duration-300"
             src={art_path}
             alt={name}
           />
