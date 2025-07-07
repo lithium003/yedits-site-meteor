@@ -101,9 +101,9 @@ export const Yeditor = () => {
 
       <div className="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-black text-white">
         <div className="max-w-6xl mx-auto px-8 py-8">
-          {/* Hero Section */}
+          {/* Yeditor Info Section */}
           <section className="text-center mb-8">
-            <div className="flex items-center justify-center gap-12 max-w-5xl mx-auto">
+            <div className="flex items-center justify-center gap-12 max-w-5xl">
               <div className="relative">
                 <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-2xl shadow-purple-500/40">
                   <YeditorPhoto
