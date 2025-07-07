@@ -26,7 +26,9 @@ export function convertPath(input) {
   output = output.replace(/\\/g, '/');
 
   // Remove the trailing '.webp' extension
-  output = output.replace(/\.webp$/, '');
+  // NOTE: BIGGER PNGS (1-2MB) CAUSE SOME CHOPPINESS WHEN LOADING IN ON THE COMPSHELF.
+  // COMMENTING THIS OUT TO ALLOW WEBPS FIXES THIS.
+  // output = output.replace(/\.webp$/, '');
 
   return output;
 }
