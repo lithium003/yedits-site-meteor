@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
 import { searchableName } from '/imports/utils/stringUtils';
-import { COMPS } from '../../api/collections/AvailableCollections';
+import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 
 /**
  * UI for the Search page
@@ -59,15 +59,11 @@ export const Search = () => {
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
           <CompShelf onLoadMore={createLoadMoreFunc} collection={COMPS} />
-          {/* Edits Shelf */}
-          {/*<h1 className="text-xl font-bold mb-2">*/}
-          {/*  Edits matching {isMounted ? `"${searchTerm}"` : ''}*/}
-          {/*</h1>*/}
-          {/*<CompShelf*/}
-          {/*  items={edits}*/}
-          {/*  loadMoreFunc={loadMoreSearchResults}*/}
-          {/*  obj={editsObj}*/}
-          {/*/>*/}
+          {/*Edits Shelf */}
+          <h1 className="text-xl font-bold mb-2">
+            Edits matching {isMounted ? `"${searchTerm}"` : ''}
+          </h1>
+          <CompShelf onLoadMore={createLoadMoreFunc} collection={EDITS} />
           {/*/!* Yeditors Shelf *!/*/}
           {/*/!* (don't display if searching for an era, as yeditors don't have eras) *!/*/}
           {/*/!* TODO could somehow change the getSearchResults Meteor method (or its calling logic) to only look for yeditors if yeditorsShelfRef exists.*/}
