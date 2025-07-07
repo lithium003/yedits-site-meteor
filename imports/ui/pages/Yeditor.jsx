@@ -311,7 +311,7 @@ export const Yeditor = () => {
             </div>
 
             {/* Tab Content */}
-            <div className="min-h-96 flex justify-center">
+            <div className="flex justify-center">
               {activeTab === 'comps' && (
                 <CompShelf
                   items={allComps}
