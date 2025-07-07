@@ -89,6 +89,12 @@ export const Yeditor = () => {
     );
   }, [yeditorId]);
 
+  // const loadMoreDiscog = () => {
+  //   Meteor.call('getDiscog', (err, res) => {
+  //
+  //   })
+  // }
+
   if (!yeditor) {
     return <div>Loading...</div>;
   }
@@ -99,20 +105,20 @@ export const Yeditor = () => {
         <title>{yeditor.display_name} - Yedits</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-purple-900 via-indigo-900 to-black text-white">
+      <div className="min-h-screen text-white">
         <div className="max-w-6xl mx-auto px-8 py-8">
           {/* Yeditor Info Section */}
           <section className="text-center mb-8">
             <div className="flex items-center justify-center gap-12 max-w-5xl">
               <div className="relative">
-                <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-2xl shadow-purple-500/40">
+                <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500">
                   <YeditorPhoto
                     yeditor={yeditor}
                     size="256"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-md -z-10"></div>
+                {/*<div className="absolute -inset-8 rounded-full bg-gradient-to-r from-purple-500/30 to-blue-500/30 blur-md -z-10"></div>*/}
               </div>
 
               <div className="flex-1 text-left">
