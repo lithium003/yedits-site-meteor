@@ -22,10 +22,12 @@ Meteor.methods({
     }
   },
 
-  async getYeditorTop({
+  async getYeditorWorks({
     collection = COMPS,
     numResults = 5,
     yeditorId = null,
+    orderField = 'rating',
+    orderDirection = 'desc',
     lastId = null
   }) {
     try {
@@ -33,7 +35,7 @@ Meteor.methods({
       let query = db
         .collection(collection)
         .where('yeditor', '==', yeditorId)
-        .orderBy('rating', 'desc')
+        .orderBy(orderField, orderDirection)
         .limit(numResults);
 
       if (lastId) {

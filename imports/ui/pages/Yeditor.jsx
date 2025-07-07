@@ -16,9 +16,37 @@ export const Yeditor = () => {
   const [yeditor, setYeditor] = useState(null);
   const [compsTop, setCompsTop] = useState([]);
   const [editsTop, setEditsTop] = useState([]);
-  const [allComps, setAllComps] = useState([]);
-  const [allEdits, setAllEdits] = useState([]);
+  const [compsDiscog, setCompsDiscog] = useState([]);
+  const [editsDiscog, setEditsDiscog] = useState([]);
   const [activeTab, setActiveTab] = useState('comps');
+
+  const fetchData = (
+    collection,
+    numResults,
+    orderField,
+    orderDirection,
+    callback,
+    lastId = null
+  ) => {
+    Meteor.call(
+      'getYeditorWorks',
+      {
+        collection: collection,
+        numResults: 5,
+        yeditorId: yeditorId,
+        orderField: orderField,
+        orderDirection: orderDirection,
+        lastId: lastId
+      },
+      (err, res) => {
+        if (err) {
+          console.error(`Error fetching ${collection}:`, err);
+        } else {
+          callback(res);
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     Meteor.call('getYeditor', yeditorId, (err, res) => {
@@ -33,27 +61,13 @@ export const Yeditor = () => {
   useEffect(() => {
     console.log('yeditorId: ', yeditorId);
 
-    const fetchData = (collection, callback) => {
-      Meteor.call(
-        'getYeditorTop',
-        { collection, numResults: 5, yeditorId },
-        (err, res) => {
-          if (err) {
-            console.error(`Error fetching ${collection}:`, err);
-          } else {
-            callback(res);
-          }
-        }
-      );
-    };
-
     // Get top 5 for featured sections
-    fetchData(COMPS, setCompsTop);
-    fetchData(EDITS, setEditsTop);
+    fetchData(COMPS, 5, 'rating', 'desc', setCompsTop);
+    fetchData(EDITS, 5, 'rating', 'desc', setEditsTop);
 
     // Get all items for complete discography section
-    fetchData(COMPS, setAllComps);
-    fetchData(EDITS, setAllEdits);
+    fetchData(COMPS, 5, 'release_date', 'desc', setCompsDiscog);
+    fetchData(EDITS, 5, 'release_date', 'desc', setEditsDiscog);
   }, [yeditorId]);
 
   if (!yeditor) {
@@ -70,7 +84,7 @@ export const Yeditor = () => {
         <div className="max-w-6xl mx-auto px-8 py-8">
           <YeditorHeader yeditor={yeditor} />
 
-          <YeditorStats allComps={allComps} allEdits={allEdits} />
+          <YeditorStats allComps={compsDiscog} allEdits={editsDiscog} />
 
           <FeaturedSection title="Top Comps" icon={faStar} items={compsTop} />
 
@@ -79,8 +93,8 @@ export const Yeditor = () => {
           <DiscographySection
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            allComps={allComps}
-            allEdits={allEdits}
+            allComps={compsDiscog}
+            allEdits={editsDiscog}
           />
 
           <ConnectSection />
