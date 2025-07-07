@@ -5,14 +5,19 @@ import { YeditorPhoto } from '../components/yeditor/YeditorPhoto';
 import { CompShelf } from '../components/CompShelf';
 import { Helmet } from 'react-helmet';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
-import { ERAS } from '../../utils/eras';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faDiscord,
   faTwitter,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
-import { getDateFromTimestamp } from '../../utils/firestoreHandling';
+import {
+  faCompactDisc,
+  faFire,
+  faStar,
+  faUsers,
+  faWrench
+} from '@fortawesome/free-solid-svg-icons';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -160,7 +165,9 @@ export const Yeditor = () => {
                 Comps
               </div>
               <div className="absolute top-4 right-4 text-3xl opacity-20">
-                <i className="fas fa-compact-disc"></i>
+                <span>
+                  <FontAwesomeIcon icon={faCompactDisc} />
+                </span>
               </div>
             </div>
 
@@ -172,7 +179,9 @@ export const Yeditor = () => {
                 Edits
               </div>
               <div className="absolute top-4 right-4 text-3xl opacity-20">
-                <i className="fas fa-wrench"></i>
+                <span>
+                  <FontAwesomeIcon icon={faWrench} />
+                </span>
               </div>
             </div>
 
@@ -184,7 +193,9 @@ export const Yeditor = () => {
                 Collabs
               </div>
               <div className="absolute top-4 right-4 text-3xl opacity-20">
-                <i className="fas fa-users"></i>
+                <span>
+                  <FontAwesomeIcon icon={faUsers} />
+                </span>
               </div>
             </div>
 
@@ -196,7 +207,9 @@ export const Yeditor = () => {
                 Avg Rating
               </div>
               <div className="absolute top-4 right-4 text-3xl opacity-20">
-                <i className="fas fa-star"></i>
+                <span>
+                  <FontAwesomeIcon icon={faStar} />
+                </span>
               </div>
             </div>
           </div>
@@ -205,7 +218,9 @@ export const Yeditor = () => {
           <section className="mb-16">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-4">
-                <i className="fas fa-star text-purple-400"></i>
+                <span>
+                  <FontAwesomeIcon icon={faStar} />
+                </span>
                 Top Comps
               </h2>
               <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-blue-400 mx-auto rounded-full"></div>
@@ -225,10 +240,12 @@ export const Yeditor = () => {
           <section className="mb-16">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-4">
-                <i className="fas fa-fire text-orange-400"></i>
+                <span>
+                  <FontAwesomeIcon icon={faFire} />
+                </span>
                 Top Edits
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-400 mx-auto rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-blue-400 mx-auto rounded-full"></div>
             </div>
 
             <div className="flex justify-center">
