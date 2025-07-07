@@ -1,24 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { CompShelf } from '../components/CompShelf';
 import { Meteor } from 'meteor/meteor';
 import { searchableName } from '/imports/utils/stringUtils';
-import {
-  COMPS,
-  EDITS,
-  YEDITORS
-} from '../../api/collections/AvailableCollections';
-import { YeditorItem } from '../components/YeditorItem';
+import { COMPS } from '../../api/collections/AvailableCollections';
 
 /**
  * UI for the Search page
  */
 export const Search = () => {
-  const [comps, setComps] = useState([]);
-  const [edits, setEdits] = useState([]);
-  const [yeditors, setYeditors] = useState([]);
-
   // Get search term from url
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('q') ?? '';
@@ -28,74 +19,34 @@ export const Search = () => {
 
   // Hydration problems can occur when the client renders data before server-side rendering can finish.
   // If this happens, make the client-side rendering dependent on isMounted being true.
+  // In this case, we need it for displaying the search term itself.
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
+    console.log('search page mounted');
   }, []);
 
-  // Define your Meteor call function directly
-  const loadMoreSearchResults = (collection, lastId, onSuccess, onError) => {
-    Meteor.call(
-      'getSearchResults',
-      {
-        collection: collection,
-        searchTerm: searchableName(searchTerm),
-        era: eraFilter,
-        tags: tagFilters,
-        artistId: artistFilter,
-        lastId: lastId
-      },
-      (err, result) => {
-        if (err) {
-          onError(err);
-        } else {
-          onSuccess(result);
-        }
-      }
-    );
-  };
-
-  // Define your objects after the loadNext function
-  const compsObj = {
-    collection: COMPS,
-    state: comps,
-    setState: setComps
-  };
-  const editsObj = {
-    collection: EDITS,
-    state: edits,
-    setState: setEdits
-  };
-  const yeditorsObj = {
-    collection: YEDITORS,
-    state: yeditors,
-    setState: setYeditors
-  };
-  const objects = [compsObj, editsObj, yeditorsObj];
-
-  useEffect(() => {
-    // TODO abstract this to just calling the same thing as loadNext but with no lastId
-    // On first component render, get items with no 'lastItem'
-    objects.forEach(type => {
+  // Create a function that captures current search context
+  const createLoadMoreFunc = useCallback(
+    (collection, lastId, onSuccess, onError) => {
       Meteor.call(
         'getSearchResults',
         {
-          collection: type.collection,
+          collection,
           searchTerm: searchableName(searchTerm),
           era: eraFilter,
           tags: tagFilters,
-          artistId: artistFilter
+          artistId: artistFilter,
+          lastId
         },
         (err, result) => {
-          if (err) {
-            console.error('Failed to fetch results:', err);
-          } else {
-            type.setState(Array.from(result));
-          }
+          if (err) onError(err);
+          else onSuccess(result);
         }
       );
-    });
-  }, [searchParams]);
+    },
+    [searchTerm, eraFilter, tagFilters, artistFilter]
+  );
 
   return (
     <>
@@ -107,37 +58,33 @@ export const Search = () => {
           <h1 className="text-xl font-bold mb-2">
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-          <CompShelf
-            items={comps}
-            loadMoreFunc={loadMoreSearchResults}
-            obj={compsObj}
-          />
+          <CompShelf onLoadMore={createLoadMoreFunc} collection={COMPS} />
           {/* Edits Shelf */}
-          <h1 className="text-xl font-bold mb-2">
-            Edits matching {isMounted ? `"${searchTerm}"` : ''}
-          </h1>
-          <CompShelf
-            items={edits}
-            loadMoreFunc={loadMoreSearchResults}
-            obj={editsObj}
-          />
-          {/* Yeditors Shelf */}
-          {/* (don't display if searching for an era, as yeditors don't have eras) */}
-          {/* TODO could somehow change the getSearchResults Meteor method (or its calling logic) to only look for yeditors if yeditorsShelfRef exists.
-           TODO this would be more maintainable than manually checking for eraFilter in the Method */}
-          {!eraFilter && (
-            <>
-              <h1 className="text-xl font-bold mb-2">
-                Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
-              </h1>
-              <CompShelf
-                ItemComponent={YeditorItem}
-                items={yeditors}
-                loadMoreFunc={loadMoreSearchResults}
-                obj={yeditorsObj}
-              />
-            </>
-          )}
+          {/*<h1 className="text-xl font-bold mb-2">*/}
+          {/*  Edits matching {isMounted ? `"${searchTerm}"` : ''}*/}
+          {/*</h1>*/}
+          {/*<CompShelf*/}
+          {/*  items={edits}*/}
+          {/*  loadMoreFunc={loadMoreSearchResults}*/}
+          {/*  obj={editsObj}*/}
+          {/*/>*/}
+          {/*/!* Yeditors Shelf *!/*/}
+          {/*/!* (don't display if searching for an era, as yeditors don't have eras) *!/*/}
+          {/*/!* TODO could somehow change the getSearchResults Meteor method (or its calling logic) to only look for yeditors if yeditorsShelfRef exists.*/}
+          {/* TODO this would be more maintainable than manually checking for eraFilter in the Method *!/*/}
+          {/*{!eraFilter && (*/}
+          {/*  <>*/}
+          {/*    <h1 className="text-xl font-bold mb-2">*/}
+          {/*      Yeditors matching {isMounted ? `"${searchTerm}"` : ''}*/}
+          {/*    </h1>*/}
+          {/*    <CompShelf*/}
+          {/*      ItemComponent={YeditorItem}*/}
+          {/*      items={yeditors}*/}
+          {/*      loadMoreFunc={loadMoreSearchResults}*/}
+          {/*      obj={yeditorsObj}*/}
+          {/*    />*/}
+          {/*  </>*/}
+          {/*)}*/}
         </div>
       </div>
     </>

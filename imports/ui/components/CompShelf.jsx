@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 
@@ -18,16 +18,34 @@ import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
  */
 export const CompShelf = ({
   ItemComponent = CompItem,
-  items = [],
-  loadMoreFunc = null,
-  obj,
+  onLoadMore,
+  collection,
   defaultWidth = 5,
   centerItems = false,
   skipBackEnabled = true,
   loadMoreEnabled = true
 }) => {
-  // Destructure obj
-  const { collection, state = items, setState } = obj || {};
+  const [items, setItems] = useState([]);
+
+  // Load initial data when onLoadMore function changes
+  useEffect(() => {
+    setItems([]); // Clear existing items
+    setIsLoading(true);
+
+    onLoadMore(
+      collection,
+      null, // No lastId for initial load
+      result => {
+        setItems(result);
+        setIsLoading(false);
+      },
+      error => {
+        console.error('Failed to load initial data:', error);
+        setIsLoading(false);
+      }
+    );
+  }, [onLoadMore, collection]);
+
   // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
   const shelfWidth = 200 * defaultWidth + 8 * 4 + 16 + 8 + 16 + 8;
   // Get the ref of the scrollable container inside, for use in scrolling to start/end
@@ -62,35 +80,25 @@ export const CompShelf = ({
    * Loads the next few comps and scrolls to show them
    */
   const loadNext = () => {
-    if (!loadMoreFunc) {
-      console.log('a');
-      scrollToEnd(containerRef);
-      return;
-    }
-    const lastId = state[state.length - 1]?.id;
-    if (!lastId || isLoading) return;
+    if (isLoading || items.length === 0) return;
 
     setIsLoading(true);
+    const lastId = items[items.length - 1]?.id;
 
-    // Call the meteor function directly
-    loadMoreFunc(
+    onLoadMore(
       collection,
       lastId,
       result => {
-        // Success handler
-        setState(prev => {
-          const newData = [...prev, ...result];
-          // Scroll to newly loaded items
-          setTimeout(() => {
-            scrollToEnd(containerRef);
-            setIsLoading(false);
-          }, 100); // Delay to ensure DOM is updated
-          return newData;
-        });
+        setItems(prev => [...prev, ...result]);
+        setIsLoading(false);
+        // Scroll to newly loaded items
+        setTimeout(() => {
+          scrollToEnd(containerRef);
+          setIsLoading(false);
+        }, 100); // Delay to ensure DOM is updated
       },
       error => {
-        // Error handler
-        console.error('Failed to fetch next results:', error);
+        console.error('Failed to load more:', error);
         setIsLoading(false);
       }
     );
@@ -139,7 +147,7 @@ export const CompShelf = ({
           ))}
         </div>
 
-        {/* Load Next button  TODO make these conditional on some flag */}
+        {/* Load Next button */}
         {loadMoreEnabled && (
           <div className="shelf-item flex-shrink-0 flex items-center">
             <button
