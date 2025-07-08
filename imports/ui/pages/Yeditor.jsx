@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { faFire, faStar } from '@fortawesome/free-solid-svg-icons';
+import { Meteor } from 'meteor/meteor';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
+import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 
+import { useMeteorLoader } from '../../hooks/useMeteorLoader';
+import { ConnectSection } from '../components/yeditor/ConnectSection';
+import { DiscographySection } from '../components/yeditor/DiscographySection';
+import { FeaturedSection } from '../components/yeditor/FeaturedSection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
-import { FeaturedSection } from '../components/yeditor/FeaturedSection';
-import { DiscographySection } from '../components/yeditor/DiscographySection';
-import { ConnectSection } from '../components/yeditor/ConnectSection';
-import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();

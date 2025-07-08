@@ -4,19 +4,6 @@ import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 import { YEDITORS } from '../../api/collections/AvailableCollections';
 import { YeditorItem } from './YeditorItem';
 
-/**
- *
- * A shelf displaying Items.
-
- * @param onLoadMore - the function to be mapped to the 'next' button (optional)
- * @param collection - the collection to draw data from
- * @param defaultWidth - number of items wide the shelf should be by default (any more requires scrolling) (optional)
- * @param centerItems - true if you want to center the items, false if you want them aligned to the start of the container
- * @param skipBackEnabled - true if you want a button for going to the start of the container, false otherwise
- * @param loadMoreEnabled - true if you want a button to load more and go to the end of the container, false otherwise
- * @returns {JSX.Element}
- * @constructor
- */
 export const CompShelf = ({
   onLoadMore,
   collection,
@@ -102,7 +89,7 @@ export const CompShelf = ({
         setIsLoading(false);
         // Scroll to newly loaded items
         setTimeout(() => {
-          scrollToEnd(containerRef);
+          scrollToEnd();
           setIsLoading(false);
         }, 100); // Delay to ensure DOM is updated
       },
