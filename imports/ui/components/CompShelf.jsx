@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
+import { YEDITORS } from '../../api/collections/AvailableCollections';
+import { YeditorItem } from './YeditorItem';
 
 /**
  *
  * A shelf displaying Items.
- * @param ItemComponent - the Item component to be displayed (default CompItem)
- * @param items - an array of objects containing item data, to be mapped onto individual Item components
- * @param loadMoreFunc - the function to be mapped to the 'next' button (optional)
- * @param obj - object containing `collection`, `state` and `setState` for querying and managing the items (optional)
+
+ * @param onLoadMore - the function to be mapped to the 'next' button (optional)
+ * @param collection - the collection to draw data from
  * @param defaultWidth - number of items wide the shelf should be by default (any more requires scrolling) (optional)
  * @param centerItems - true if you want to center the items, false if you want them aligned to the start of the container
  * @param skipBackEnabled - true if you want a button for going to the start of the container, false otherwise
@@ -17,7 +18,6 @@ import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
  * @constructor
  */
 export const CompShelf = ({
-  ItemComponent = CompItem,
   onLoadMore,
   collection,
   defaultWidth = 5,
@@ -25,7 +25,16 @@ export const CompShelf = ({
   skipBackEnabled = true,
   loadMoreEnabled = true
 }) => {
+  // Store the data for items to display in an array
   const [items, setItems] = useState([]);
+
+  // Vary the type of thing displayed (CompItem, YeditorItem) based on the collection
+  let ItemComponent;
+  if (collection === YEDITORS) {
+    ItemComponent = YeditorItem;
+  } else {
+    ItemComponent = CompItem;
+  }
 
   // Load initial data when onLoadMore function changes
   useEffect(() => {
