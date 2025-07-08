@@ -31,8 +31,11 @@ export const Search = () => {
   }, []);
 
   // Create a function that captures current search context
-  const createLoadMoreFunc = useCallback(
-    (collection, lastId, onSuccess, onError) => {
+  const onLoadMore = useCallback(
+    params => {
+      console.log('Received params:', params);
+      const { collection, lastId, onSuccess, onError } = params;
+
       Meteor.call(
         'getSearchResults',
         {
@@ -62,12 +65,22 @@ export const Search = () => {
           <h1 className="text-xl font-bold mb-2">
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-          <CompShelf onLoadMore={createLoadMoreFunc} collection={COMPS} />
+          <CompShelf
+            onLoadMore={onLoadMore}
+            collection={COMPS}
+            skipBackEnabled={true}
+            loadMoreEnabled={true}
+          />
           {/*Edits Shelf */}
           <h1 className="text-xl font-bold mb-2">
             Edits matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
-          <CompShelf onLoadMore={createLoadMoreFunc} collection={EDITS} />
+          <CompShelf
+            onLoadMore={onLoadMore}
+            collection={EDITS}
+            skipBackEnabled={true}
+            loadMoreEnabled={true}
+          />
           {/* Yeditors Shelf */}
           {/* (don't display if searching for an era, as yeditors don't have eras) */}
           {/* TODO could somehow change the getSearchResults Meteor method (or its calling logic) to only look for yeditors if yeditorsShelfRef exists.
@@ -78,8 +91,10 @@ export const Search = () => {
                 Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
               </h1>
               <CompShelf
-                onLoadMore={createLoadMoreFunc}
+                onLoadMore={onLoadMore}
                 collection={YEDITORS}
+                skipBackEnabled={true}
+                loadMoreEnabled={true}
               />
             </>
           )}

@@ -22,8 +22,8 @@ export const CompShelf = ({
   collection,
   defaultWidth = 5,
   centerItems = false,
-  skipBackEnabled = true,
-  loadMoreEnabled = true
+  skipBackEnabled = false,
+  loadMoreEnabled = false
 }) => {
   // Store the data for items to display in an array
   const [items, setItems] = useState([]);
@@ -41,18 +41,18 @@ export const CompShelf = ({
     setItems([]); // Clear existing items
     setIsLoading(true);
 
-    onLoadMore(
-      collection,
-      null, // No lastId for initial load
-      result => {
+    onLoadMore({
+      collection: collection,
+      lastId: null, // No lastId for initial load
+      onSuccess: result => {
         setItems(result);
         setIsLoading(false);
       },
-      error => {
+      onError: error => {
         console.error('Failed to load initial data:', error);
         setIsLoading(false);
       }
-    );
+    });
   }, [onLoadMore, collection]);
 
   // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
@@ -94,10 +94,10 @@ export const CompShelf = ({
     setIsLoading(true);
     const lastId = items[items.length - 1]?.id;
 
-    onLoadMore(
-      collection,
-      lastId,
-      result => {
+    onLoadMore({
+      collection: collection,
+      lastId: lastId,
+      onSuccess: result => {
         setItems(prev => [...prev, ...result]);
         setIsLoading(false);
         // Scroll to newly loaded items
@@ -106,11 +106,11 @@ export const CompShelf = ({
           setIsLoading(false);
         }, 100); // Delay to ensure DOM is updated
       },
-      error => {
+      onError: error => {
         console.error('Failed to load more:', error);
         setIsLoading(false);
       }
-    );
+    });
   };
 
   return (
