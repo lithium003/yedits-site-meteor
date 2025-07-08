@@ -14,39 +14,7 @@ import { ConnectSection } from '../components/yeditor/ConnectSection';
 export const Yeditor = () => {
   const { yeditorId } = useParams();
   const [yeditor, setYeditor] = useState(null);
-  const [compsTop, setCompsTop] = useState([]);
-  const [editsTop, setEditsTop] = useState([]);
-  const [compsDiscog, setCompsDiscog] = useState([]);
-  const [editsDiscog, setEditsDiscog] = useState([]);
   const [activeTab, setActiveTab] = useState('comps');
-
-  const fetchData = (
-    collection,
-    numResults,
-    orderField,
-    orderDirection,
-    callback,
-    lastId = null
-  ) => {
-    Meteor.call(
-      'getYeditorWorks',
-      {
-        collection: collection,
-        numResults: 5,
-        yeditorId: yeditorId,
-        orderField: orderField,
-        orderDirection: orderDirection,
-        lastId: lastId
-      },
-      (err, res) => {
-        if (err) {
-          console.error(`Error fetching ${collection}:`, err);
-        } else {
-          callback(res);
-        }
-      }
-    );
-  };
 
   useEffect(() => {
     Meteor.call('getYeditor', yeditorId, (err, res) => {
@@ -56,18 +24,6 @@ export const Yeditor = () => {
         setYeditor(res);
       }
     });
-  }, [yeditorId]);
-
-  useEffect(() => {
-    console.log('yeditorId: ', yeditorId);
-
-    // Get top 5 for featured sections
-    fetchData(COMPS, 5, 'rating', 'desc', setCompsTop);
-    fetchData(EDITS, 5, 'rating', 'desc', setEditsTop);
-
-    // Get all items for complete discography section
-    fetchData(COMPS, 5, 'release_date', 'desc', setCompsDiscog);
-    fetchData(EDITS, 5, 'release_date', 'desc', setEditsDiscog);
   }, [yeditorId]);
 
   /**
@@ -136,7 +92,7 @@ export const Yeditor = () => {
         <div className="max-w-6xl mx-auto px-8 py-8">
           <YeditorHeader yeditor={yeditor} />
 
-          <YeditorStats allComps={compsDiscog} allEdits={editsDiscog} />
+          <YeditorStats />
 
           {/* TODO passing onLoadMore and collection through 2 levels like this is kinda prop drilling */}
           <FeaturedSection
