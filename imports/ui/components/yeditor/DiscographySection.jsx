@@ -2,13 +2,9 @@ import React from 'react';
 import { SectionHeader } from '../SectionHeader';
 import { TabButton } from '../TabButton';
 import { CompShelf } from '../CompShelf';
+import { COMPS, EDITS } from '../../../api/collections/AvailableCollections';
 
-export const DiscographySection = ({
-  activeTab,
-  setActiveTab,
-  allComps,
-  allEdits
-}) => (
+export const DiscographySection = ({ activeTab, setActiveTab, onLoadMore }) => (
   <section className="mb-16">
     <SectionHeader title="Complete Discography" />
 
@@ -36,7 +32,8 @@ export const DiscographySection = ({
     <div className="flex justify-center">
       {activeTab === 'comps' && (
         <CompShelf
-          items={allComps}
+          onLoadMore={onLoadMore}
+          collection={COMPS}
           defaultWidth={5}
           skipBackEnabled={true}
           loadMoreEnabled={true}
@@ -45,7 +42,8 @@ export const DiscographySection = ({
 
       {activeTab === 'edits' && (
         <CompShelf
-          items={allEdits}
+          onLoadMore={onLoadMore}
+          collection={EDITS}
           defaultWidth={5}
           skipBackEnabled={true}
           loadMoreEnabled={true}
@@ -54,7 +52,8 @@ export const DiscographySection = ({
 
       {activeTab === 'collabs' && (
         <CompShelf
-          items={allEdits}
+          onLoadMore={onLoadMore}
+          collection={EDITS}
           defaultWidth={5}
           skipBackEnabled={true}
           loadMoreEnabled={true}

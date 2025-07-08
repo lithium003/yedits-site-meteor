@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
-import { faStar, faFire } from '@fortawesome/free-solid-svg-icons';
+import { faFire, faStar } from '@fortawesome/free-solid-svg-icons';
 
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
@@ -70,6 +70,58 @@ export const Yeditor = () => {
     fetchData(EDITS, 5, 'release_date', 'desc', setEditsDiscog);
   }, [yeditorId]);
 
+  /**
+   * Function that loads results for a CompShelf.
+   * To be passed as a prop. CompShelf provides `collection` and `lastId` parameters itself.
+   * @type {(function(*): void)|*}
+   */
+  const loadTop = useCallback(
+    ({ collection, lastId, onSuccess, onError }) => {
+      Meteor.call(
+        'getYeditorWorks',
+        {
+          collection: collection,
+          numResults: 5,
+          yeditorId: yeditorId,
+          orderField: 'rating',
+          orderDirection: 'desc',
+          lastId: lastId
+        },
+        (err, result) => {
+          if (err) onError(err);
+          else onSuccess(result);
+        }
+      );
+    },
+    [yeditorId]
+  );
+
+  /**
+   * Function that loads results for a CompShelf.
+   * To be passed as a prop. CompShelf provides `collection` and `lastId` parameters itself.
+   * @type {(function(*): void)|*}
+   */
+  const loadDiscog = useCallback(
+    ({ collection, lastId, onSuccess, onError }) => {
+      Meteor.call(
+        'getYeditorWorks',
+        {
+          collection: collection,
+          numResults: 5,
+          yeditorId: yeditorId,
+          orderField: 'release_date',
+          orderDirection: 'desc',
+          lastId: lastId
+        },
+        (err, result) => {
+          if (err) onError(err);
+          else onSuccess(result);
+        }
+      );
+    },
+    [yeditorId]
+  );
+
   if (!yeditor) {
     return <div>Loading...</div>;
   }
@@ -86,15 +138,25 @@ export const Yeditor = () => {
 
           <YeditorStats allComps={compsDiscog} allEdits={editsDiscog} />
 
-          <FeaturedSection title="Top Comps" icon={faStar} items={compsTop} />
+          {/* TODO passing onLoadMore and collection through 2 levels like this is kinda prop drilling */}
+          <FeaturedSection
+            title="Top Comps"
+            icon={faStar}
+            onLoadMore={loadTop}
+            collection={COMPS}
+          />
 
-          <FeaturedSection title="Top Edits" icon={faFire} items={editsTop} />
+          <FeaturedSection
+            title="Top Edits"
+            icon={faFire}
+            onLoadMore={loadTop}
+            collection={EDITS}
+          />
 
           <DiscographySection
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-            allComps={compsDiscog}
-            allEdits={editsDiscog}
+            onLoadMore={loadDiscog}
           />
 
           <ConnectSection />

@@ -30,12 +30,13 @@ export const Search = () => {
     console.log('search page mounted');
   }, []);
 
-  // Create a function that captures current search context
-  const onLoadMore = useCallback(
-    params => {
-      console.log('Received params:', params);
-      const { collection, lastId, onSuccess, onError } = params;
-
+  /**
+   * Function that loads results for a CompShelf.
+   * To be passed as a prop. CompShelf provides `collection` and `lastId` parameters itself.
+   * @type {(function(*): void)|*}
+   */
+  const loadResults = useCallback(
+    ({ collection, lastId, onSuccess, onError }) => {
       Meteor.call(
         'getSearchResults',
         {
@@ -66,7 +67,7 @@ export const Search = () => {
             Comps matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
           <CompShelf
-            onLoadMore={onLoadMore}
+            onLoadMore={loadResults}
             collection={COMPS}
             skipBackEnabled={true}
             loadMoreEnabled={true}
@@ -76,7 +77,7 @@ export const Search = () => {
             Edits matching {isMounted ? `"${searchTerm}"` : ''}
           </h1>
           <CompShelf
-            onLoadMore={onLoadMore}
+            onLoadMore={loadResults}
             collection={EDITS}
             skipBackEnabled={true}
             loadMoreEnabled={true}
@@ -91,7 +92,7 @@ export const Search = () => {
                 Yeditors matching {isMounted ? `"${searchTerm}"` : ''}
               </h1>
               <CompShelf
-                onLoadMore={onLoadMore}
+                onLoadMore={loadResults}
                 collection={YEDITORS}
                 skipBackEnabled={true}
                 loadMoreEnabled={true}
