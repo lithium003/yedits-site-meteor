@@ -1,17 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { CompShelf } from '../components/CompShelf';
-import { Meteor } from 'meteor/meteor';
+import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 
 export const Home = () => {
   // Create a function to pass to the Top 5 Comps shelf to give itself data
-  const loadTop5Comps = useCallback(({ onSuccess, onError }) => {
-    Meteor.call('getTop5Comps', {}, (err, result) => {
-      if (err) onError(err);
-      else onSuccess(result);
-    });
-  }, []);
+  const loadTop5Comps = useMeteorLoader('getTop5Comps', {}, []);
 
   return (
     <>

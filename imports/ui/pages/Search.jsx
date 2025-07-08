@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { CompShelf } from '../components/CompShelf';
-import { Meteor } from 'meteor/meteor';
 import { searchableName } from '/imports/utils/stringUtils';
 import {
   COMPS,
   EDITS,
   YEDITORS
 } from '../../api/collections/AvailableCollections';
+import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 
 /**
  * UI for the Search page
@@ -35,23 +35,13 @@ export const Search = () => {
    * To be passed as a prop. CompShelf provides `collection` and `lastId` parameters itself.
    * @type {(function(*): void)|*}
    */
-  const loadResults = useCallback(
-    ({ collection, lastId, onSuccess, onError }) => {
-      Meteor.call(
-        'getSearchResults',
-        {
-          collection,
-          searchTerm: searchableName(searchTerm),
-          era: eraFilter,
-          tags: tagFilters,
-          artistId: artistFilter,
-          lastId
-        },
-        (err, result) => {
-          if (err) onError(err);
-          else onSuccess(result);
-        }
-      );
+  const loadResults = useMeteorLoader(
+    'getSearchResults',
+    {
+      searchTerm: searchableName(searchTerm),
+      era: eraFilter,
+      tags: tagFilters,
+      artistId: artistFilter
     },
     [searchTerm, eraFilter, tagFilters, artistFilter]
   );

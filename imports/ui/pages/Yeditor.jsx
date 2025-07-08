@@ -10,6 +10,7 @@ import { YeditorStats } from '../components/yeditor/YeditorStats';
 import { FeaturedSection } from '../components/yeditor/FeaturedSection';
 import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { ConnectSection } from '../components/yeditor/ConnectSection';
+import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -31,23 +32,13 @@ export const Yeditor = () => {
    * To be passed as a prop. CompShelf provides `collection` and `lastId` parameters itself.
    * @type {(function(*): void)|*}
    */
-  const loadTop = useCallback(
-    ({ collection, lastId, onSuccess, onError }) => {
-      Meteor.call(
-        'getYeditorWorks',
-        {
-          collection: collection,
-          numResults: 5,
-          yeditorId: yeditorId,
-          orderField: 'rating',
-          orderDirection: 'desc',
-          lastId: lastId
-        },
-        (err, result) => {
-          if (err) onError(err);
-          else onSuccess(result);
-        }
-      );
+  const loadTop = useMeteorLoader(
+    'getYeditorWorks',
+    {
+      numResults: 5,
+      yeditorId: yeditorId,
+      orderField: 'rating',
+      orderDirection: 'desc'
     },
     [yeditorId]
   );
