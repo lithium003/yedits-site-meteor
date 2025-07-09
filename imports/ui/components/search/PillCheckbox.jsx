@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const PillCheckbox = ({
-  label = '',
+  label = null,
   type = 'tag',
   checked = true,
   onChange = () => {},

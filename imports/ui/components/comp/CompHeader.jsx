@@ -1,5 +1,8 @@
 import React from 'react';
 import { PillCheckbox } from '../search/PillCheckbox';
+import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 export const CompHeader = ({ comp }) => (
   <section className="text-center mb-8 w-full ">
@@ -35,6 +38,31 @@ export const CompHeader = ({ comp }) => (
           />
           <PillCheckbox
             label={comp.artist || 'Unknown Artist'}
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+          />
+          <PillCheckbox
+            label={
+              getDateFromTimestamp(comp.release_date)
+                .getFullYear()
+                .toString() || 'Unknown Artist'
+            }
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+          />
+          <PillCheckbox
+            label={
+              <span className="text-sm">
+                <FontAwesomeIcon icon={faStar} />
+                {comp.rating}
+              </span>
+            }
             type="tag"
             activeColor="bg-blue-500"
             inactiveColor="bg-gray-300"
