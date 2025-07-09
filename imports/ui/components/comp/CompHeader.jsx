@@ -12,6 +12,18 @@ export const CompHeader = ({ comp }) => (
           />
         </div>
       </div>
+
+      <div className="flex-1 self-start text-left ">
+        <h1 className="text-7xl font-black bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent leading-tight">
+          {comp.name}
+        </h1>
+        <p className="text-3xl font-bold text-indigo-300 mb-2">
+          {comp.yeditor_name || 'Unknown Yeditor'}
+        </p>
+        <p className="text-xl text-gray-300 mb-6 max-w-2xl">
+          {comp.description || 'A collection of amazing edits and comps'}
+        </p>
+      </div>
     </div>
   </section>
 );

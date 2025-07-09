@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListOl } from '@fortawesome/free-solid-svg-icons';
 
 export const Tracklist = ({ comp, highlightEditId }) => {
-  const { name, yeditor, yeditor_name, art_path, length } = comp;
+  const { length } = comp;
   const [edits, setEdits] = useState(null);
   const [loading, setLoading] = useState(true);
 

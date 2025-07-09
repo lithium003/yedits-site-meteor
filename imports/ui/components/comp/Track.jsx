@@ -17,7 +17,6 @@ export const Track = ({ edit, highlight }) => {
   return (
     <>
       <div
-        /* eslint-disable indent */
         className={`
         flex items-center justify-between
         text-white font-mono
@@ -29,7 +28,6 @@ export const Track = ({ edit, highlight }) => {
             : highlight && 'border-l-4 border-yellow-500'
         }
         `}
-        /* eslint-enable indent */
         // Current marker and Highlight marker have to be mutually exclusive
         // or else Highlight can override Current marker.
         onClick={handlePlay}
