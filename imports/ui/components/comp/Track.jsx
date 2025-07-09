@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAudioPlayerContext } from '../../contexts/AudioPlayerContext';
+import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const Track = ({ edit, highlight }) => {
   const { id, filepath, number, name, length } = edit;

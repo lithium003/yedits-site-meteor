@@ -2,8 +2,8 @@ import { Helmet } from 'react-helmet';
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { CompInfo } from '../components/CompInfo';
-import { Tracklist } from '../components/Tracklist';
+import { CompInfo } from '../components/comp/CompInfo';
+import { Tracklist } from '../components/comp/Tracklist';
 
 export const Comp = () => {
   const { compId } = useParams();
