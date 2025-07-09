@@ -1,4 +1,5 @@
 import React from 'react';
+import { PillCheckbox } from '../search/PillCheckbox';
 
 export const CompHeader = ({ comp }) => (
   <section className="text-center mb-8 w-full ">
@@ -23,6 +24,24 @@ export const CompHeader = ({ comp }) => (
         <p className="text-xl text-gray-300 mb-6 max-w-2xl">
           {comp.description || 'A collection of amazing edits and comps'}
         </p>
+        <div>
+          <PillCheckbox
+            label={comp.era || 'Unknown Era'}
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+          />
+          <PillCheckbox
+            label={comp.artist || 'Unknown Artist'}
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+          />
+        </div>
       </div>
     </div>
   </section>

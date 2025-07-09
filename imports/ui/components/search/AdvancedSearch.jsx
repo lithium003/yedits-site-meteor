@@ -137,6 +137,7 @@ export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
                 <PillCheckbox
                   key={tag}
                   label={tag}
+                  type="checkbox"
                   checked={filters.tagsFilter.includes(tag)}
                   onChange={e =>
                     filters.setTagsFilter(
