@@ -104,5 +104,29 @@ Meteor.methods({
         'Failed to fetch recently added'
       );
     }
+  },
+
+  async getSpotlightedYeditorId() {
+    try {
+      const doc = await db.collection('config').doc('yeditor_spotlight').get();
+
+      if (!doc) {
+        throw new Meteor.Error('not-found', 'No spotlighted Yeditor found');
+      }
+
+      const data = doc.data();
+
+      if (data.art_path) {
+        data.art_path = convertPath(data.art_path);
+      }
+
+      return data.id_1;
+    } catch (error) {
+      console.error('Error fetching spotlighted Yeditor:', error);
+      throw new Meteor.Error(
+        'firebase-error',
+        'Failed to fetch spotlighted Yeditor'
+      );
+    }
   }
 });
