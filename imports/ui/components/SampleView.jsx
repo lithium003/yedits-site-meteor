@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
+// @ts-ignore
 import { useSubscribeSuspense } from 'meteor/communitypackages:react-router-ssr';
+// @ts-ignore
 import { useFind } from 'meteor/react-meteor-data/suspense';
 
 // Mongo Collections
