@@ -6,9 +6,10 @@ import { useParams } from 'react-router-dom';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
+import { CompShelf } from '../components/CompShelf';
+import { FeaturedSection } from '../components/FeaturedSection';
 import { ConnectSection } from '../components/yeditor/ConnectSection';
 import { DiscographySection } from '../components/yeditor/DiscographySection';
-import { FeaturedSection } from '../components/yeditor/FeaturedSection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
 
@@ -85,20 +86,12 @@ export const Yeditor = () => {
 
           <YeditorStats />
 
-          {/* TODO passing onLoadMore and collection through 2 levels like this is kinda prop drilling */}
-          <FeaturedSection
-            title="Top Comps"
-            icon={faStar}
-            onLoadMore={loadTop}
-            collection={COMPS}
-          />
-
-          <FeaturedSection
-            title="Top Edits"
-            icon={faFire}
-            onLoadMore={loadTop}
-            collection={EDITS}
-          />
+          <FeaturedSection title="Top Comps" icon={faStar}>
+            <CompShelf onLoadMore={loadTop} collection={COMPS} />
+          </FeaturedSection>
+          <FeaturedSection title="Top Edits" icon={faFire}>
+            <CompShelf onLoadMore={loadTop} collection={EDITS} />
+          </FeaturedSection>
 
           <DiscographySection
             activeTab={activeTab}
