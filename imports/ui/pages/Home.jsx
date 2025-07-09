@@ -4,12 +4,13 @@ import { Helmet } from 'react-helmet';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 import { CompShelf } from '../components/CompShelf';
-import { SectionHeader } from '../components/SectionHeader';
 import { FeaturedSection } from '../components/FeaturedSection';
 
 export const Home = () => {
   // Create a function to pass to the Top 5 Comps shelf to give itself data
   const loadTopWorks = useMeteorLoader('getTopWorks', {}, []);
+  const loadNewReleases = useMeteorLoader('getNewReleases', {}, []);
+  const loadRecentlyAdded = useMeteorLoader('getRecentlyAdded', {}, []);
 
   return (
     <>
@@ -21,6 +22,14 @@ export const Home = () => {
           <h1 className="text-6xl font-bold my-2 text-center ">
             Welcome to Yedits.net!
           </h1>
+          <FeaturedSection title="New Releases" icon="faNewspaper">
+            <CompShelf onLoadMore={loadNewReleases} collection={COMPS} />
+          </FeaturedSection>
+
+          <FeaturedSection title="Recently Added" icon="faPlus">
+            <CompShelf onLoadMore={loadRecentlyAdded} collection={COMPS} />
+          </FeaturedSection>
+
           <FeaturedSection title="Top Comps" icon="faStar">
             <CompShelf onLoadMore={loadTopWorks} collection={COMPS} />
           </FeaturedSection>
