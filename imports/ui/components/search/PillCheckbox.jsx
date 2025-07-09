@@ -8,7 +8,8 @@ export const PillCheckbox = ({
   activeColor = 'bg-blue-500',
   inactiveColor = 'bg-gray-300',
   textColor = 'text-white',
-  className = ''
+  className = '',
+  pillClassName = ''
 }) => {
   return (
     <>
@@ -27,6 +28,7 @@ export const PillCheckbox = ({
         px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-in-out
         ${checked ? `${activeColor} ${textColor}` : `${inactiveColor} text-gray-600`}
         hover:shadow-md transform hover:scale-105
+        ${pillClassName}
         `}
         >
           {label}

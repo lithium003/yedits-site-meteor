@@ -2,7 +2,7 @@ import React from 'react';
 import { PillCheckbox } from '../search/PillCheckbox';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
 
 export const CompHeader = ({ comp }) => (
   <section className="text-center mb-8 w-full ">
@@ -24,10 +24,10 @@ export const CompHeader = ({ comp }) => (
         <p className="text-3xl font-bold text-indigo-300 mb-2">
           {comp.yeditor_name || 'Unknown Yeditor'}
         </p>
-        <p className="text-xl text-gray-300 mb-6 max-w-2xl">
+        <p className="text-xl text-gray-300 mb-2 max-w-2xl">
           {comp.description || 'A collection of amazing edits and comps'}
         </p>
-        <div>
+        <div className="mb-2">
           <PillCheckbox
             label={comp.era || 'Unknown Era'}
             type="tag"
@@ -68,6 +68,40 @@ export const CompHeader = ({ comp }) => (
             inactiveColor="bg-gray-300"
             textColor="text-white"
             className="px-0.5"
+          />
+        </div>
+        <div className="mb-2">
+          <PillCheckbox
+            label={
+              <span className="text-sm">
+                <FontAwesomeIcon icon={faPlay} />
+                "Play All"
+              </span>
+            }
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+            pillClassName="text-2xl px-6 py-3"
+          />
+          <PillCheckbox
+            label="Download"
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+            pillClassName="text-2xl px-6 py-3"
+          />
+          <PillCheckbox
+            label="Share"
+            type="tag"
+            activeColor="bg-blue-500"
+            inactiveColor="bg-gray-300"
+            textColor="text-white"
+            className="px-0.5"
+            pillClassName="text-2xl px-6 py-3"
           />
         </div>
       </div>
