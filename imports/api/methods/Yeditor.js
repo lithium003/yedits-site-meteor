@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { db } from '/server/Firestore';
-import { YEDITORS, COMPS, EDITS } from '../collections/AvailableCollections';
-import { convertPath } from '/server/Firestore';
+import { COMPS, YEDITORS } from '../collections/AvailableCollections';
+import { convertPath, db } from '/server/Firestore';
 
 Meteor.methods({
   async getYeditor(id) {

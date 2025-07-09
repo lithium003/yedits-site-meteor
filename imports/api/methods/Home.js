@@ -1,7 +1,6 @@
 const { Meteor } = require('meteor/meteor');
+import { convertPath, db } from '/server/Firestore';
 import { COMPS } from '../collections/AvailableCollections';
-import { db } from '/server/Firestore';
-import { convertPath } from '/server/Firestore';
 
 Meteor.methods({
   async getTopWorks({ collection: collection = COMPS }) {

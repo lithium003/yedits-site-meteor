@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { SampleCollection } from '/imports/api/collections/Sample';
+import { SampleCollection } from '../collections/Sample';
 
 // Define Meteor Methods for SampleCollection (client-side calls)
 Meteor.methods({
