@@ -16,6 +16,7 @@ export const CompShelf = ({
   const [items, setItems] = useState([]);
 
   // Vary the type of thing displayed (CompItem, YeditorItem) based on the collection
+  /** @type {React.ComponentType<{ data: any }>} */
   let ItemComponent;
   if (collection === YEDITORS) {
     ItemComponent = YeditorItem;
