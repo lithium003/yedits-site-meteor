@@ -1,8 +1,8 @@
-import { Helmet } from 'react-helmet';
-import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
-import { CompInfo } from '../components/comp/CompInfo';
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { CompHeader } from '../components/comp/CompHeader';
 import { Tracklist } from '../components/comp/Tracklist';
 
 export const Comp = () => {
@@ -32,8 +32,12 @@ export const Comp = () => {
       <Helmet>
         <title>{comp.name} - Yedits</title>
       </Helmet>
-      <CompInfo comp={comp} />
-      <Tracklist comp={comp} highlightEditId={highlightEditId} />
+      <div className="min-h-screen text-white ">
+        <div className="max-w-6xl mx-auto px-8 py-8 bg-purple-800">
+          <CompHeader comp={comp} />
+          <Tracklist comp={comp} highlightEditId={highlightEditId} />
+        </div>
+      </div>
     </>
   );
 };
