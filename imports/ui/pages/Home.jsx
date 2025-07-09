@@ -29,6 +29,8 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
+    if (!spotlightedYeditorId) return; // Don't call if id is empty
+
     Meteor.call('getYeditor', spotlightedYeditorId, (err, res) => {
       if (err) {
         console.error('Error fetching yeditor:', err);
