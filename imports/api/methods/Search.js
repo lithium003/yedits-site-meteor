@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Meteor } from 'meteor/meteor';
 import {
   ARTISTS,
@@ -45,7 +46,6 @@ Meteor.methods({
         }
       }
 
-      /* eslint-disable indent */
       switch (collection) {
         case COMPS:
           query = query
@@ -78,7 +78,6 @@ Meteor.methods({
           console.error(`Error fetching results for ${collection}`);
         // throw new Meteor.Error('firebase-error', 'Failed to fetch results');
       }
-      /* eslint-enable indent */
 
       // We need the actual document ID, but we modify its elements when we return them as a list.
       // TODO: Find a way to keep the doc so we don't have to get() it again
