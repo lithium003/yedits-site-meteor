@@ -12,11 +12,7 @@ export const YeditorHeader = ({ yeditor }) => (
     <div className="flex items-center justify-center gap-12 max-w-5xl">
       <div className="relative">
         <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-purple-500">
-          <YeditorPhoto
-            yeditor={yeditor}
-            size="256"
-            className="w-full h-full object-cover"
-          />
+          <YeditorPhoto yeditor={yeditor} size="256" />
         </div>
       </div>
 

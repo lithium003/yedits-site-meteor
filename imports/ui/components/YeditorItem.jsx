@@ -5,7 +5,7 @@ import { YeditorPhoto } from './yeditor/YeditorPhoto';
 /**
  * An Item representing a Yeditor.
  * @param yeditor - the Yeditor data object
- * @returns {JSX.Element}
+ * @returns JSX
  * @constructor
  */
 export const YeditorItem = ({ data }) => {
@@ -14,7 +14,7 @@ export const YeditorItem = ({ data }) => {
   return (
     <>
       <div className="w-[200px] flex flex-col items-center justify-center space-y-2">
-        <YeditorPhoto yeditor={data} size={200} className="mb-1" />
+        <YeditorPhoto yeditor={data} size={200} />
         <Link
           to={pageLink}
           className="text-center text-md font-bold truncate mb-0 w-full"

@@ -31,7 +31,7 @@ export const NavBar = () => (
       </div>
       <div className="flex-1 flex justify-center items-center">
         <div className="w-full max-w-md">
-          <SearchBar className="w-full" />
+          <SearchBar />
         </div>
       </div>
 
