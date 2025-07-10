@@ -43,7 +43,7 @@ export const Tracklist = ({ comp, highlightEditId }) => {
             <span className="pl-4 text-2xl font-bold">Tracklist</span>
           </div>
 
-          <span>
+          <span className="text-[#A2A2EE]">
             {edits.length} Tracks &middot; {length} &middot; 320kbps{' '}
           </span>
         </div>
