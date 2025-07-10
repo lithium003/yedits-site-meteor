@@ -25,8 +25,9 @@ export const Track = ({ edit, highlight }) => {
 
   return (
     <>
-      <div
-        className={`
+      <div className="relative">
+        <div
+          className={`
         flex items-center justify-between
         text-white
         hover:bg-gray-700 cursor-pointer
@@ -37,24 +38,25 @@ export const Track = ({ edit, highlight }) => {
             : highlight && 'border-l-4 border-yellow-500'
         }
         `}
-        // Current marker and Highlight marker have to be mutually exclusive
-        // or else Highlight can override Current marker.
-        onClick={handlePlay}
-      >
-        <span className="w-8 text-center">{number}</span>
-        <span className="flex-1 px-4 truncate">{name}</span>
-        <div className="flex items-center text-[#A2A2EE] text-right">
-          <span className="w-16 px-4">{length}</span>
-          <button
-            className="hover:text-white flex items-center justify-center"
-            onClick={handleOptionsClick}
-          >
-            <RiMoreFill />
-          </button>
+          // Current marker and Highlight marker have to be mutually exclusive
+          // or else Highlight can override Current marker.
+          onClick={handlePlay}
+        >
+          <span className="w-8 text-center">{number}</span>
+          <span className="flex-1 px-4 truncate">{name}</span>
+          <div className="flex items-center text-[#A2A2EE] text-right">
+            <span className="w-16 px-4">{length}</span>
+            <button
+              className="hover:text-white flex items-center justify-center"
+              onClick={handleOptionsClick}
+            >
+              <RiMoreFill />
+            </button>
+          </div>
+          {optionsOpen && (
+            <TrackOptions edit={edit} onClose={() => setOptionsOpen(false)} />
+          )}
         </div>
-        {optionsOpen && (
-          <TrackOptions edit={edit} onClose={() => setOptionsOpen(false)} />
-        )}
       </div>
     </>
   );
