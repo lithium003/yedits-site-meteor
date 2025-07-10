@@ -33,7 +33,7 @@ export const Comp = () => {
         <title>{comp.name} - Yedits</title>
       </Helmet>
       <div className="min-h-screen text-white ">
-        <div className="max-w-6xl mx-auto px-8 py-8 bg-purple-800">
+        <div className="max-w-6xl mx-auto px-8 py-8 ">
           <CompHeader comp={comp} />
           <Tracklist comp={comp} highlightEditId={highlightEditId} />
         </div>

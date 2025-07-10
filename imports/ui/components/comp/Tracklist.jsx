@@ -34,8 +34,8 @@ export const Tracklist = ({ comp, highlightEditId }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center mb-4 rounded-xl px-4 py-2 border-green-800 border-4 bg-gray-500">
-        <div className="bg-gray-800 flex w-full justify-between items-center px-4 py-2">
+      <div className="flex flex-col items-center mb-4 rounded-xl px-4 py-2 border-1 border-purple-600 ">
+        <div className="flex w-full justify-between items-center px-4 py-2">
           <div className="flex items-center">
             <span className="w-8 text-2xl text-purple-500 text-center">
               <FontAwesomeIcon icon={faListOl} />
@@ -47,7 +47,7 @@ export const Tracklist = ({ comp, highlightEditId }) => {
             {edits.length} Tracks &middot; {length} &middot; 320kbps{' '}
           </span>
         </div>
-        <div className="flex flex-col border-2 border-pink-900  w-full">
+        <div className="flex flex-col border-t-1 border-purple-600 w-full">
           {edits.map(edit => (
             <Track
               key={edit.id}

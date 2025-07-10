@@ -13,7 +13,7 @@ export const CompHeader = ({ comp }) => {
   return (
     <>
       <section className="text-center mb-8 w-full ">
-        <div className="flex items-start justify-center gap-12 border-4 border-purple-600 rounded-4xl px-8 py-6">
+        <div className="flex items-start justify-center gap-12 border-t-4 border-purple-600 rounded-4xl px-8 py-6">
           {/* Comp Art */}
           <div className="mt-4 w-64 h-64 rounded-xl overflow-hidden">
             <img
