@@ -19,9 +19,9 @@ export const Track = ({ edit, highlight }) => {
       <div
         className={`
         flex items-center justify-between
-        text-white font-mono
+        text-white
         hover:bg-gray-700 cursor-pointer
-        rounded px-4 py-2 
+        rounded px-4 py-4 
         ${
           id === currentTrack.id
             ? 'border-l-4 border-red-500'
