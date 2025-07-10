@@ -1,8 +1,12 @@
+import {
+  faDownload,
+  faPlay,
+  faShareAlt,
+  faStar
+} from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { PillCheckbox } from '../search/PillCheckbox';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
 
 export const CompHeader = ({ comp }) => {
   const [description, setDescription] = useState('a');
@@ -60,12 +64,8 @@ export const CompHeader = ({ comp }) => {
                 className="px-0.5"
               />
               <PillCheckbox
-                label={
-                  <span className="text-sm">
-                    <FontAwesomeIcon icon={faStar} />
-                    {comp.rating}
-                  </span>
-                }
+                label={comp.rating.toFixed(1) || '-'}
+                icon={faStar}
                 type="tag"
                 activeColor="bg-blue-500"
                 inactiveColor="bg-gray-300"
@@ -75,12 +75,8 @@ export const CompHeader = ({ comp }) => {
             </div>
             <div className="mb-2">
               <PillCheckbox
-                label={
-                  <span className="text-sm">
-                    <FontAwesomeIcon icon={faPlay} />
-                    Play All
-                  </span>
-                }
+                label="Play All"
+                icon={faPlay}
                 onClick={() => {
                   setDescription('An amazing comp with a lot of great edits');
                 }}
@@ -93,6 +89,7 @@ export const CompHeader = ({ comp }) => {
               />
               <PillCheckbox
                 label="Download"
+                icon={faDownload}
                 onClick={() => {
                   setDescription(
                     'Community comp envisioning what GAJ would sound like if it were a B-side to MBDTF and as release ready as possible while still being creative'
@@ -107,6 +104,7 @@ export const CompHeader = ({ comp }) => {
               />
               <PillCheckbox
                 label="Share"
+                icon={faShareAlt}
                 onClick={() => {
                   setDescription(
                     'LP6 comp containing various reworks and recreations of songs based on established and newly surfaced material from the era along with samples from the movie American Psycho inspired by BSB Dantes BAP comp.	'

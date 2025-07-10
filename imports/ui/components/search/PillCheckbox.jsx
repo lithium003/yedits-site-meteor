@@ -1,11 +1,13 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 export const PillCheckbox = ({
   label = null,
+  icon = null,
   type = 'tag',
   checked = true,
   onChange = () => {},
-  onClick = () => {},
+  onClick = null,
   activeColor = 'bg-blue-500',
   inactiveColor = 'bg-gray-300',
   textColor = 'text-white',
@@ -15,7 +17,7 @@ export const PillCheckbox = ({
   return (
     <>
       <label
-        className={`inline-flex items-center cursor-pointer ${className}`}
+        className={`inline-flex items-center cursor-pointer ${onClick && 'hover:brightness-80'} ${className}`}
         onClick={onClick}
       >
         {type === 'checkbox' && (
@@ -35,6 +37,14 @@ export const PillCheckbox = ({
         ${pillClassName}
         `}
         >
+          {icon && (
+            <>
+              <span className="">
+                <FontAwesomeIcon icon={icon} />
+              </span>{' '}
+              {/* Space between */}
+            </>
+          )}
           {label}
         </span>
       </label>
