@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
+import { RiMoreFill } from 'react-icons/ri';
+import { TrackOptions } from './TrackOptions';
 
 export const Track = ({ edit, highlight }) => {
   const { id, filepath, number, name, length } = edit;
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
+
+  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const handlePlay = () => {
     setCurrentTrack(edit);
@@ -12,6 +16,11 @@ export const Track = ({ edit, highlight }) => {
 
   const handleAddToQueue = () => {
     setQueue([...queue, edit]);
+  };
+
+  const handleOptionsClick = e => {
+    e.stopPropagation();
+    setOptionsOpen(prev => !prev);
   };
 
   return (
@@ -34,7 +43,18 @@ export const Track = ({ edit, highlight }) => {
       >
         <span className="w-8 text-center">{number}</span>
         <span className="flex-1 px-4 truncate">{name}</span>
-        <span className="w-16 text-right text-[#A2A2EE] px-4">{length}</span>
+        <div className="flex items-center text-[#A2A2EE] text-right">
+          <span className="w-16 px-4">{length}</span>
+          <button
+            className="hover:text-white flex items-center justify-center"
+            onClick={handleOptionsClick}
+          >
+            <RiMoreFill />
+          </button>
+        </div>
+        {optionsOpen && (
+          <TrackOptions edit={edit} onClose={() => setOptionsOpen(false)} />
+        )}
       </div>
     </>
   );
