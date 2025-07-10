@@ -5,6 +5,7 @@ export const PillCheckbox = ({
   type = 'tag',
   checked = true,
   onChange = () => {},
+  onClick = () => {},
   activeColor = 'bg-blue-500',
   inactiveColor = 'bg-gray-300',
   textColor = 'text-white',
@@ -13,7 +14,10 @@ export const PillCheckbox = ({
 }) => {
   return (
     <>
-      <label className={`inline-flex items-center cursor-pointer ${className}`}>
+      <label
+        className={`inline-flex items-center cursor-pointer ${className}`}
+        onClick={onClick}
+      >
         {type === 'checkbox' && (
           <input
             type="checkbox"
