@@ -12,6 +12,7 @@ export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
         onClick={e => e.stopPropagation()}
       >
         <div className="flex flex-col space-y-2">
+          {/* TODO abstract this to its own component */}
           <button
             onClick={playNext}
             className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"

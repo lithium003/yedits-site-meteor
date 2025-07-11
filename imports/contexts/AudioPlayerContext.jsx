@@ -13,6 +13,7 @@ export const AudioPlayerProvider = ({ children, tracks }) => {
   const progressBarRef = useRef(null);
 
   const contextValue = {
+    trackIndex,
     currentTrack,
     setCurrentTrack,
     audioRef,

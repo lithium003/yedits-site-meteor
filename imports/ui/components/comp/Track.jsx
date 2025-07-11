@@ -11,10 +11,13 @@ export const Track = ({
   onClose
 }) => {
   const { id, number, name, length } = edit;
-  const { currentTrack, setCurrentTrack, queue, setQueue } =
+  const { trackIndex, currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
 
+  // TODO: Figure out what to do with previous tracks in the queue.
   const play = () => {
+    const nextIndex = trackIndex + 1;
+    setQueue(queue.slice(0, nextIndex)); // Clear upcoming tracks in the queue before playing a new track. Keep previous tracks.
     setCurrentTrack(edit);
   };
 
@@ -29,7 +32,13 @@ export const Track = ({
 
   // Track Options
   const playNext = () => {
-    setQueue([edit, ...queue]);
+    const nextIndex = trackIndex + 1;
+    const newQueue = [
+      ...queue.slice(0, nextIndex),
+      edit,
+      ...queue.slice(nextIndex)
+    ];
+    setQueue(newQueue);
     onClose();
   };
 
