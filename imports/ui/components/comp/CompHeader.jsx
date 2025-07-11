@@ -4,10 +4,10 @@ import {
   faShareAlt,
   faStar
 } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { PillCheckbox } from '../search/PillCheckbox';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
-import { Link } from 'react-router-dom';
 
 export const CompHeader = ({ comp }) => {
   return (

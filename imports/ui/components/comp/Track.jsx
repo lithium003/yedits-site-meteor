@@ -10,7 +10,7 @@ export const Track = ({
   onOptionsToggle,
   onClose
 }) => {
-  const { id, filepath, number, name, length } = edit;
+  const { id, number, name, length } = edit;
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
 
@@ -58,7 +58,13 @@ export const Track = ({
             </button>
           </div>
         </div>
-        {optionsOpen && <TrackOptions onClose={onClose} edit={edit} />}
+        {optionsOpen && (
+          <TrackOptions
+            onClose={onClose}
+            edit={edit}
+            handleAddToQueue={handleAddToQueue}
+          />
+        )}
       </div>
     </>
   );
