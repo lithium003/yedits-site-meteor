@@ -8,6 +8,7 @@ export const Tracklist = ({ comp, highlightEditId }) => {
   const { length } = comp;
   const [edits, setEdits] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openOptionsTrackId, setOpenOptionsTrackId] = useState(null);
 
   useEffect(() => {
     const getEditsData = async () => {
@@ -23,6 +24,10 @@ export const Tracklist = ({ comp, highlightEditId }) => {
 
     getEditsData();
   }, [comp]);
+
+  const handleOptionsToggle = trackId => {
+    setOpenOptionsTrackId(prev => (prev === trackId ? null : trackId));
+  };
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -53,6 +58,9 @@ export const Tracklist = ({ comp, highlightEditId }) => {
               key={edit.id}
               edit={edit}
               highlight={edit.id === highlightEditId}
+              optionsOpen={openOptionsTrackId === edit.id}
+              onOptionsToggle={() => handleOptionsToggle(edit.id)}
+              onClose={() => setOpenOptionsTrackId(null)}
             />
           ))}
         </div>

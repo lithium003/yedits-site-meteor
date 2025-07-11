@@ -6,7 +6,7 @@ export const NavBar = () => (
   <>
     <nav
       className="
-    sticky top-0 z-[1000]
+    sticky top-0 z-50
     flex items-center
     bg-[#2c2c2d] px-4 py-2
     "

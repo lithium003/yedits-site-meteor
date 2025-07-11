@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { RiMoreFill } from 'react-icons/ri';
 import { TrackOptions } from './TrackOptions';
 
-export const Track = ({ edit, highlight }) => {
+export const Track = ({
+  edit,
+  highlight,
+  optionsOpen,
+  onOptionsToggle,
+  onClose
+}) => {
   const { id, filepath, number, name, length } = edit;
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
-
-  const [optionsOpen, setOptionsOpen] = useState(false);
 
   const handlePlay = () => {
     setCurrentTrack(edit);
@@ -20,7 +24,7 @@ export const Track = ({ edit, highlight }) => {
 
   const handleOptionsClick = e => {
     e.stopPropagation();
-    setOptionsOpen(prev => !prev);
+    onOptionsToggle();
   };
 
   return (
@@ -53,10 +57,8 @@ export const Track = ({ edit, highlight }) => {
               <RiMoreFill />
             </button>
           </div>
-          {optionsOpen && (
-            <TrackOptions edit={edit} onClose={() => setOptionsOpen(false)} />
-          )}
         </div>
+        {optionsOpen && <TrackOptions onClose={onClose} edit={edit} />}
       </div>
     </>
   );
