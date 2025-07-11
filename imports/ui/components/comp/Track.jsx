@@ -14,17 +14,28 @@ export const Track = ({
   const { currentTrack, setCurrentTrack, queue, setQueue } =
     useAudioPlayerContext();
 
-  const handlePlay = () => {
+  const play = () => {
     setCurrentTrack(edit);
-  };
-
-  const handleAddToQueue = () => {
-    setQueue([...queue, edit]);
   };
 
   const handleOptionsClick = e => {
     e.stopPropagation();
     onOptionsToggle();
+  };
+
+  // Track Options
+  const playNext = () => {
+    setQueue([edit, ...queue]);
+  };
+
+  const playLast = () => {
+    setQueue([...queue, edit]);
+  };
+
+  const share = () => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?h=${edit.id}`;
+    navigator.clipboard.writeText(shareUrl);
+    alert('Share URL copied to clipboard!');
   };
 
   return (
@@ -44,7 +55,7 @@ export const Track = ({
         `}
           // Current marker and Highlight marker have to be mutually exclusive
           // or else Highlight can override Current marker.
-          onClick={handlePlay}
+          onClick={play}
         >
           <span className="w-8 text-center">{number}</span>
           <span className="flex-1 px-4 truncate">{name}</span>
@@ -61,8 +72,9 @@ export const Track = ({
         {optionsOpen && (
           <TrackOptions
             onClose={onClose}
-            edit={edit}
-            handleAddToQueue={handleAddToQueue}
+            playNext={playNext}
+            playLast={playLast}
+            share={share}
           />
         )}
       </div>

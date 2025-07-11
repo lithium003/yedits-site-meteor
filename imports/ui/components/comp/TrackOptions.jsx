@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TrackOptions = ({ edit, onClose, handleAddToQueue }) => {
+export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
   return (
     <>
       {/* Full-screen invisible background */}
@@ -13,16 +13,25 @@ export const TrackOptions = ({ edit, onClose, handleAddToQueue }) => {
       >
         <div className="flex flex-col space-y-2">
           <button
-            onClick={handleAddToQueue}
+            onClick={playNext}
             className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
           >
-            Add to Queue
+            Play Next
+          </button>
+          <button
+            onClick={playLast}
+            className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
+          >
+            Play Last
+          </button>
+          <button
+            onClick={share}
+            className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
+          >
+            Share
           </button>
           <button className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer">
             Download
-          </button>
-          <button className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer">
-            Share
           </button>
         </div>
       </div>
