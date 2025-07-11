@@ -8,7 +8,7 @@ export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
 
       {/* Options menu */}
       <div
-        className="track-options absolute top-full left-0 right-0 mt-2 bg-[#1c1c1d] rounded-lg p-4 shadow-lg z-70 cursor-default"
+        className="track-options absolute bottom-4 right-8 mb-2 bg-[#1c1c1d] rounded-lg p-1 shadow-lg z-70 w-48"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex flex-col space-y-2">

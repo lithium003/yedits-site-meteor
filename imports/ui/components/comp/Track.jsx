@@ -18,6 +18,10 @@ export const Track = ({
     setCurrentTrack(edit);
   };
 
+  /**
+   * Handle click on the options button (...)
+   * @param {React.MouseEvent<HTMLButtonElement>} e
+   */
   const handleOptionsClick = e => {
     e.stopPropagation();
     onOptionsToggle();
@@ -26,15 +30,18 @@ export const Track = ({
   // Track Options
   const playNext = () => {
     setQueue([edit, ...queue]);
+    onClose();
   };
 
   const playLast = () => {
     setQueue([...queue, edit]);
+    onClose();
   };
 
   const share = () => {
     const shareUrl = `${window.location.origin}${window.location.pathname}?h=${edit.id}`;
     navigator.clipboard.writeText(shareUrl);
+    onClose();
     alert('Share URL copied to clipboard!');
   };
 
