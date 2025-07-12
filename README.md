@@ -18,13 +18,13 @@ filling out the three relevant strings from your Firestore .json key.
     }
   }
 }
+```
 
 ## Start
 ```
 meteor npm run start
 ```
 
-```
 ## Lint
 
 ```
