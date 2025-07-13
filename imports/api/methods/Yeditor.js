@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Meteor } from 'meteor/meteor';
 import { COMPS, YEDITORS } from '../collections/AvailableCollections';
 import { convertPath, db } from '/server/Firestore';
@@ -31,8 +33,12 @@ Meteor.methods({
   }) {
     try {
       console.log('COLLECTION IN BACKEND:', collection);
-      let query = db
-        .collection(collection)
+      let query = db.collection(collection);
+
+      if (collection === COMPS) {
+        query = query.where('standalone_edit', '==', false);
+      }
+      query = query
         .where('yeditor', '==', yeditorId)
         .orderBy(orderField, orderDirection)
         .limit(numResults);

@@ -1,3 +1,4 @@
+// @ts-nocheck
 const { Meteor } = require('meteor/meteor');
 import { convertPath, db } from '/server/Firestore';
 import { COMPS } from '../collections/AvailableCollections';
@@ -5,11 +6,13 @@ import { COMPS } from '../collections/AvailableCollections';
 Meteor.methods({
   async getTopWorks({ collection: collection = COMPS }) {
     try {
-      const snapshot = await db
-        .collection(collection)
-        .orderBy('rating', 'desc')
-        .limit(10)
-        .get();
+      let query = db.collection(collection);
+      // Filter out standalone edits if necessary
+      if (collection === COMPS) {
+        query = query.where('standalone_edit', '==', false);
+      }
+      query = query.orderBy('rating', 'desc').limit(10);
+      const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -38,11 +41,13 @@ Meteor.methods({
 
   async getNewReleases({ collection: collection = COMPS }) {
     try {
-      const snapshot = await db
-        .collection(collection)
-        .orderBy('release_date', 'desc')
-        .limit(10)
-        .get();
+      let query = db.collection(collection);
+      // Filter out standalone edits if necessary
+      if (collection === COMPS) {
+        query = query.where('standalone_edit', '==', false);
+      }
+      query = query.orderBy('release_date', 'desc').limit(10);
+      const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -72,11 +77,14 @@ Meteor.methods({
   async getRecentlyAdded({ collection: collection = COMPS }) {
     try {
       // TODO eventually filter out recently released
-      const snapshot = await db
-        .collection(collection)
-        .orderBy('added_date', 'desc')
-        .limit(10)
-        .get();
+
+      let query = db.collection(collection);
+      // Filter out standalone edits if necessary
+      if (collection === COMPS) {
+        query = query.where('standalone_edit', '==', false);
+      }
+      query = query.orderBy('added_date', 'desc').limit(10);
+      const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -115,10 +123,6 @@ Meteor.methods({
       }
 
       const data = doc.data();
-
-      if (data.art_path) {
-        data.art_path = convertPath(data.art_path);
-      }
 
       return data.id_1;
     } catch (error) {
