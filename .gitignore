@@ -2,4 +2,9 @@ node_modules/
 .vscode
 .idea/
 settings.json
+settings-test.json
 /public/music/
+/public/music-test/
+/static/
+/.music/*
+!/.music/foo.txt
