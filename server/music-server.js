@@ -1,11 +1,11 @@
-import fs from 'fs';
 import { WebApp } from 'meteor/webapp';
-import path from 'path';
 import { Meteor } from 'meteor/meteor';
+import fs from 'fs';
+import path from 'path';
 
 const musicPath = path.resolve(process.cwd(), '../../../../../.music');
+console.log('change detected in music-server.js');
 
-// Function to get content type based on file extension
 function getContentType(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   const types = {
@@ -24,15 +24,20 @@ function getContentType(filePath) {
   return types[ext] || 'application/octet-stream';
 }
 
-WebApp.connectHandlers.use('/music', (req, res, next) => {
+function isAudioFile(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  console.log(`Checking extension: "${ext}"`); // Debug line
+  return ['.mp3', '.wav', '.ogg', '.m4a', '.flac'].includes(ext);
+}
+
+WebApp.connectHandlers.use('/static/music', (req, res, next) => {
+  console.log(`=== MUSIC ROUTE HIT: ${req.url} ===`); // Add this first
+
   const filePath = path.join(musicPath, req.url);
 
-  console.log('Requested URL:', req.url);
-  console.log('Full file path:', filePath);
-  console.log('File exists:', fs.existsSync(filePath));
-
-  // Security check
   if (!filePath.startsWith(musicPath)) {
+    console.log('Security check failed');
+
     res.writeHead(403);
     res.end('Forbidden');
     return;
@@ -41,9 +46,29 @@ WebApp.connectHandlers.use('/music', (req, res, next) => {
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
-    const range = req.headers.range;
     const contentType = getContentType(filePath);
 
+    // Debug logging
+    console.log(`File: ${filePath}`);
+    console.log(`Extension: ${path.extname(filePath)}`);
+    console.log(`Is audio file: ${isAudioFile(filePath)}`);
+    console.log(`Content type: ${contentType}`);
+
+    // For images, serve directly (faster)
+    if (!isAudioFile(filePath)) {
+      console.log(`Serving image: ${filePath}`);
+      const imageCacheLengthSeconds = 24 * 60 * 60; // 24 hours
+      res.writeHead(200, {
+        'Content-Length': fileSize,
+        'Content-Type': contentType,
+        'Cache-Control': `public, max-age=60` // Cache for 1 year
+      });
+      fs.createReadStream(filePath).pipe(res);
+      return;
+    }
+
+    // For audio files, handle range requests
+    const range = req.headers.range;
     if (range) {
       const parts = range.replace(/bytes=/, '').split('-');
       const start = parseInt(parts[0], 10);
@@ -61,12 +86,12 @@ WebApp.connectHandlers.use('/music', (req, res, next) => {
     } else {
       res.writeHead(200, {
         'Content-Length': fileSize,
-        'Content-Type': contentType
+        'Content-Type': contentType,
+        'Accept-Ranges': 'bytes'
       });
       fs.createReadStream(filePath).pipe(res);
     }
   } else {
-    console.log('File not found or not a file');
     res.writeHead(404);
     res.end('Not found');
   }
