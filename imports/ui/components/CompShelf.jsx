@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CompItem } from './CompItem';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 import { YEDITORS } from '../../api/collections/AvailableCollections';
+import { CompItem } from './CompItem';
+import { CompItemSkeleton } from './skeletons/CompItemSkeleton';
 import { YeditorItem } from './YeditorItem';
 
 export const CompShelf = ({
@@ -12,6 +13,9 @@ export const CompShelf = ({
   skipBackEnabled = false,
   loadMoreEnabled = false
 }) => {
+  // Keep track of when new items are loading
+  const [isLoading, setIsLoading] = useState(true);
+
   // Store the data for items to display in an array
   const [items, setItems] = useState([]);
 
@@ -35,6 +39,7 @@ export const CompShelf = ({
       onSuccess: result => {
         setItems(result);
         setIsLoading(false);
+        console.log('Initial shelf data loaded:', result);
       },
       onError: error => {
         console.error('Failed to load initial data:', error);
@@ -47,8 +52,7 @@ export const CompShelf = ({
   const shelfWidth = 200 * defaultWidth + 8 * 4 + 16 + 8 + 16 + 8;
   // Get the ref of the scrollable container inside, for use in scrolling to start/end
   const containerRef = useRef(null);
-  // Keep track of when new items are loading
-  const [isLoading, setIsLoading] = useState(false);
+
   /**
    * Scroll to start of CompShelf
    */
@@ -134,14 +138,26 @@ export const CompShelf = ({
             [&::-webkit-scrollbar-thumb:hover]:bg-gray-600
             `}
         >
-          {items.map(item => (
-            <div
-              className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
-              key={item.id}
-            >
-              <ItemComponent data={item} />
-            </div>
-          ))}
+          {isLoading
+            ? // Show multiple skeletons while loading
+              Array(5)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
+                    key={`skeleton-${index}`}
+                  >
+                    <CompItemSkeleton />
+                  </div>
+                ))
+            : items.map(item => (
+                <div
+                  className="shelf-item flex-shrink-0 first:ml-0 last:mr-0 ml-2 mr-2"
+                  key={item.id}
+                >
+                  <ItemComponent data={item} />
+                </div>
+              ))}
         </div>
 
         {/* Load Next button */}
