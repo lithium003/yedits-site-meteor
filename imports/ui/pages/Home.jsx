@@ -15,9 +15,9 @@ import { FeaturedSection } from '../components/FeaturedSection';
 
 export const Home = () => {
   // Get the current spotlighted Yeditor
-  const [spotlightedYeditorId, setSpotlightedYeditorId] = useState('');
   const [spotlightedYeditor, setSpotlightedYeditor] = useState(null);
 
+  // TODO this is so slow
   useEffect(() => {
     Meteor.call('getSpotlightedYeditor', (err, res) => {
       if (err) {
@@ -39,7 +39,7 @@ export const Home = () => {
       orderField: 'rating',
       orderDirection: 'desc'
     },
-    [spotlightedYeditor.id]
+    [spotlightedYeditor]
   );
   return (
     <>

@@ -3,6 +3,8 @@ const { Meteor } = require('meteor/meteor');
 import { convertPath, db } from '/server/Firestore';
 import { COMPS } from '../collections/AvailableCollections';
 
+const shelfLimit = 5;
+
 Meteor.methods({
   async getTopWorks({ collection: collection = COMPS }) {
     try {
@@ -11,7 +13,7 @@ Meteor.methods({
       if (collection === COMPS) {
         query = query.where('standalone_edit', '==', false);
       }
-      query = query.orderBy('rating', 'desc').limit(10);
+      query = query.orderBy('rating', 'desc').limit(shelfLimit);
       const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
@@ -46,7 +48,7 @@ Meteor.methods({
       if (collection === COMPS) {
         query = query.where('standalone_edit', '==', false);
       }
-      query = query.orderBy('release_date', 'desc').limit(10);
+      query = query.orderBy('release_date', 'desc').limit(shelfLimit);
       const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
@@ -83,7 +85,7 @@ Meteor.methods({
       if (collection === COMPS) {
         query = query.where('standalone_edit', '==', false);
       }
-      query = query.orderBy('added_date', 'desc').limit(10);
+      query = query.orderBy('added_date', 'desc').limit(shelfLimit);
       const snapshot = await query.get();
 
       const results = snapshot.docs.map(doc => {
