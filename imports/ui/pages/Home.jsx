@@ -19,26 +19,14 @@ export const Home = () => {
   const [spotlightedYeditor, setSpotlightedYeditor] = useState(null);
 
   useEffect(() => {
-    Meteor.call('getSpotlightedYeditorId', (err, res) => {
-      if (err) {
-        console.error('Error fetching yeditor:', err);
-      } else {
-        setSpotlightedYeditorId(res);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!spotlightedYeditorId) return; // Don't call if id is empty
-
-    Meteor.call('getYeditor', spotlightedYeditorId, (err, res) => {
+    Meteor.call('getSpotlightedYeditor', (err, res) => {
       if (err) {
         console.error('Error fetching yeditor:', err);
       } else {
         setSpotlightedYeditor(res);
       }
     });
-  }, [spotlightedYeditorId]);
+  }, []);
 
   const loadTopWorks = useMeteorLoader('getTopWorks', {}, []);
   const loadNewReleases = useMeteorLoader('getNewReleases', {}, []);
@@ -47,11 +35,11 @@ export const Home = () => {
     'getYeditorWorks',
     {
       numResults: 5,
-      yeditorId: spotlightedYeditorId,
+      yeditorId: spotlightedYeditor?.id || '',
       orderField: 'rating',
       orderDirection: 'desc'
     },
-    [spotlightedYeditorId]
+    [spotlightedYeditor.id]
   );
   return (
     <>

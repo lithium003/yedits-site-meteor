@@ -114,17 +114,17 @@ Meteor.methods({
     }
   },
 
-  async getSpotlightedYeditorId() {
+  // In your Meteor methods (Home.js)
+  async getSpotlightedYeditor() {
     try {
       const doc = await db.collection('config').doc('yeditor_spotlight').get();
-
-      if (!doc) {
+      if (!doc.exists)
         throw new Meteor.Error('not-found', 'No spotlighted Yeditor found');
-      }
-
-      const data = doc.data();
-
-      return data.id_1;
+      const spotlightId = doc.data().id_1;
+      const yeditorDoc = await db.collection('yeditors').doc(spotlightId).get();
+      if (!yeditorDoc.exists)
+        throw new Meteor.Error('not-found', 'Yeditor not found');
+      return { id: spotlightId, ...yeditorDoc.data() };
     } catch (error) {
       console.error('Error fetching spotlighted Yeditor:', error);
       throw new Meteor.Error(

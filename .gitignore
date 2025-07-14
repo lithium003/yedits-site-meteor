@@ -3,8 +3,11 @@ node_modules/
 .idea/
 settings.json
 settings-test.json
+settings-yedits.json
 /public/music/
 /public/music-test/
 /static/
 /.music/*
 !/.music/foo.txt
+/.music-yedits
+/.music-test
