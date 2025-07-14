@@ -29,6 +29,8 @@ export const Controls = () => {
   const [isRepeat, setIsRepeat] = useState(false);
   const playAnimationRef = useRef(null);
 
+  const { filepath = '' } = currentTrack || {};
+
   const updateProgress = useCallback(() => {
     if (audioRef.current && progressBarRef.current && duration) {
       const currentTime = audioRef.current.currentTime;
@@ -95,6 +97,7 @@ export const Controls = () => {
 
   const handlePrevious = useCallback(() => {
     setTrackIndex(prev => {
+      // TODO should shuffle backward be random?
       const newIndex = isShuffle
         ? Math.floor(Math.random() * queue.length)
         : prev === 0
@@ -103,7 +106,7 @@ export const Controls = () => {
       setCurrentTrack(queue[newIndex]);
       return newIndex;
     });
-  }, [isShuffle, setCurrentTrack, setTrackIndex]);
+  }, [isShuffle, setCurrentTrack, setTrackIndex, queue]);
 
   const handleNext = useCallback(() => {
     setTrackIndex(prev => {
@@ -139,7 +142,7 @@ export const Controls = () => {
     <>
       <div className="flex gap-4 items-center">
         <audio
-          src={currentTrack.filepath}
+          src={filepath}
           ref={audioRef}
           onLoadedMetadata={onLoadedMetadata}
         />

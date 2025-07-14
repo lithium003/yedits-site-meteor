@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { createContext, useContext, useRef, useState } from 'react';
 
 const AudioPlayerContext = createContext(undefined);
-export const AudioPlayerProvider = ({ children, tracks }) => {
+export const AudioPlayerProvider = ({ children, tracks = [] }) => {
   const [queue, setQueue] = useState(tracks);
   const [trackIndex, setTrackIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);

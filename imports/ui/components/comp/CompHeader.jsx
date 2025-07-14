@@ -9,7 +9,17 @@ import { Link } from 'react-router-dom';
 import { PillCheckbox } from '../search/PillCheckbox';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 
-export const CompHeader = ({ comp }) => {
+import { useAudioPlayerContext } from '/imports/contexts/AudioPlayerContext';
+
+export const CompHeader = ({ comp, edits = [] }) => {
+  const { setQueue, setCurrentTrack, setTrackIndex } = useAudioPlayerContext();
+
+  const playAll = () => {
+    setQueue(edits);
+    setCurrentTrack(edits[0]);
+    setTrackIndex(0);
+  };
+
   return (
     <>
       <section className="text-center mb-8 w-full ">
@@ -78,7 +88,7 @@ export const CompHeader = ({ comp }) => {
               <PillCheckbox
                 label="Play All"
                 icon={faPlay}
-                onClick={() => {}}
+                onClick={playAll}
                 type="tag"
                 activeColor="bg-blue-500"
                 inactiveColor="bg-gray-300"

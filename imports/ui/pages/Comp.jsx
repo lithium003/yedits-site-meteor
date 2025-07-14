@@ -8,6 +8,8 @@ import { Tracklist } from '../components/comp/Tracklist';
 export const Comp = () => {
   const { compId } = useParams();
   const [comp, setComp] = useState(null);
+  const [edits, setEdits] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Highlighted Edit
   const [searchParams] = useSearchParams();
@@ -23,6 +25,22 @@ export const Comp = () => {
     });
   }, [compId]);
 
+  // TODO why is it like this
+  useEffect(() => {
+    const getEditsData = async () => {
+      try {
+        const res = await Meteor.callAsync('getCompEdits', compId);
+        setEdits(res);
+      } catch (err) {
+        console.error('Error fetching comp:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getEditsData();
+  }, [compId]);
+
   if (!comp) {
     return <h1 className="text-red-500">Comp not found</h1>;
   }
@@ -34,8 +52,12 @@ export const Comp = () => {
       </Helmet>
       <div className="min-h-screen text-white ">
         <div className="max-w-6xl mx-auto px-8 py-8 ">
-          <CompHeader comp={comp} />
-          <Tracklist comp={comp} highlightEditId={highlightEditId} />
+          <CompHeader comp={comp} edits={edits} />
+          <Tracklist
+            comp={comp}
+            edits={edits}
+            highlightEditId={highlightEditId}
+          />
         </div>
       </div>
     </>

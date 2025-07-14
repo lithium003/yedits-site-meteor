@@ -4,34 +4,18 @@ import { Track } from './Track';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListOl } from '@fortawesome/free-solid-svg-icons';
 
-export const Tracklist = ({ comp, highlightEditId }) => {
+export const Tracklist = ({ comp, edits, highlightEditId }) => {
   const { length } = comp;
-  const [edits, setEdits] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [openOptionsTrackId, setOpenOptionsTrackId] = useState(null);
-
-  useEffect(() => {
-    const getEditsData = async () => {
-      try {
-        const res = await Meteor.callAsync('getCompEdits', comp.id);
-        setEdits(res);
-      } catch (err) {
-        console.error('Error fetching comp:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getEditsData();
-  }, [comp]);
 
   const handleOptionsToggle = trackId => {
     setOpenOptionsTrackId(prev => (prev === trackId ? null : trackId));
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
+  // if (loading) {
+  //   return <h1>Loading...</h1>;
+  // }
 
   if (!edits) {
     return <h1 className="text-red-500">Comp not found</h1>;

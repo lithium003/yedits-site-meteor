@@ -11,14 +11,21 @@ export const Track = ({
   onClose
 }) => {
   const { id, number, name, length } = edit;
-  const { trackIndex, currentTrack, setCurrentTrack, queue, setQueue } =
-    useAudioPlayerContext();
+  const {
+    trackIndex,
+    currentTrack = '',
+    setCurrentTrack,
+    setTrackIndex,
+    queue,
+    setQueue
+  } = useAudioPlayerContext();
 
-  // TODO: Figure out what to do with previous tracks in the queue.
   const play = () => {
     const nextIndex = trackIndex + 1;
-    setQueue(queue.slice(0, nextIndex)); // Clear upcoming tracks in the queue before playing a new track. Keep previous tracks.
+    const prevTracks = queue.slice(0, nextIndex);
+    setQueue([...prevTracks, edit]); // Clear upcoming tracks in the queue before playing a new track. Keep previous tracks.
     setCurrentTrack(edit);
+    setTrackIndex(nextIndex);
   };
 
   /**
@@ -64,7 +71,7 @@ export const Track = ({
         hover:bg-gray-700 cursor-pointer
         rounded px-4 py-4 
         ${
-          id === currentTrack.id
+          id === (currentTrack?.id || '')
             ? 'border-l-4 border-red-500'
             : highlight && 'border-l-4 border-yellow-500'
         }
