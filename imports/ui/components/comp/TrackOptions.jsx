@@ -1,4 +1,5 @@
 import React from 'react';
+import { TrackOption } from './TrackOption';
 
 export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
   return (
@@ -13,27 +14,10 @@ export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
       >
         <div className="flex flex-col space-y-2">
           {/* TODO abstract this to its own component */}
-          <button
-            onClick={playNext}
-            className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
-          >
-            Play Next
-          </button>
-          <button
-            onClick={playLast}
-            className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
-          >
-            Play Last
-          </button>
-          <button
-            onClick={share}
-            className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer"
-          >
-            Share
-          </button>
-          <button className="text-left hover:bg-gray-700 p-2 rounded cursor-pointer">
-            Download
-          </button>
+          <TrackOption label="Play Next" onClick={playNext} />
+          <TrackOption label="Play Last" onClick={playLast} />
+          <TrackOption label="Share" onClick={share} />
+          <TrackOption label="Download" onClick={() => {}} />
         </div>
       </div>
     </>
