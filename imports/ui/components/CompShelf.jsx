@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
+import {
+  RiArrowLeftDoubleLine,
+  RiArrowRightDoubleLine,
+  RiLoader2Line
+} from 'react-icons/ri';
 import { YEDITORS } from '../../api/collections/AvailableCollections';
 import { CompItem } from './CompItem';
 import { CompItemSkeleton } from './skeletons/CompItemSkeleton';
@@ -13,8 +17,12 @@ export const CompShelf = ({
   skipBackEnabled = false,
   loadMoreEnabled = false
 }) => {
-  // Keep track of when new items are loading
-  const [isLoading, setIsLoading] = useState(true);
+  // Keep track of initial load
+  const [loading, setLoading] = useState(true);
+  // Keep track of when new items are loading.
+  // Needs to be separate from initial load to avoid turning CompShelves
+  // back into skeletons when loading more items and breaking the scroll position.
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Store the data for items to display in an array
   const [items, setItems] = useState([]);
@@ -31,19 +39,19 @@ export const CompShelf = ({
   // Load initial data when onLoadMore function changes
   useEffect(() => {
     setItems([]); // Clear existing items
-    setIsLoading(true);
+    setLoading(true);
 
     onLoadMore({
       collection: collection,
       lastId: null, // No lastId for initial load
       onSuccess: result => {
         setItems(result);
-        setIsLoading(false);
+        setLoading(false);
         console.log('Initial shelf data loaded:', result);
       },
       onError: error => {
         console.error('Failed to load initial data:', error);
-        setIsLoading(false);
+        setLoading(false);
       }
     });
   }, [onLoadMore, collection]);
@@ -81,9 +89,9 @@ export const CompShelf = ({
    * Loads the next few comps and scrolls to show them
    */
   const loadNext = () => {
-    if (isLoading || items.length === 0) return;
+    if (items.length === 0) return;
 
-    setIsLoading(true);
+    setLoadingMore(true);
     const lastId = items[items.length - 1]?.id;
 
     onLoadMore({
@@ -91,16 +99,16 @@ export const CompShelf = ({
       lastId: lastId,
       onSuccess: result => {
         setItems(prev => [...prev, ...result]);
-        setIsLoading(false);
+        setLoadingMore(false);
         // Scroll to newly loaded items
         setTimeout(() => {
           scrollToEnd();
-          setIsLoading(false);
+          setLoadingMore(false);
         }, 100); // Delay to ensure DOM is updated
       },
       onError: error => {
         console.error('Failed to load more:', error);
-        setIsLoading(false);
+        setLoadingMore(false);
       }
     });
   };
@@ -138,8 +146,8 @@ export const CompShelf = ({
             [&::-webkit-scrollbar-thumb:hover]:bg-gray-600
             `}
         >
-          {isLoading
-            ? // Show multiple skeletons while loading
+          {loading
+            ? // Show multiple skeletons while initally loading
               Array(5)
                 .fill(0)
                 .map((_, index) => (
@@ -167,7 +175,11 @@ export const CompShelf = ({
               onClick={loadNext}
               className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
             >
-              <RiArrowRightDoubleLine />
+              {loadingMore ? (
+                <RiLoader2Line className="animate-pulse" />
+              ) : (
+                <RiArrowRightDoubleLine />
+              )}
             </button>
           </div>
         )}
