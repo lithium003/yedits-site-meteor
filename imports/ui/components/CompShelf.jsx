@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  RiArrowLeftDoubleLine,
-  RiArrowRightDoubleLine,
-  RiLoader2Line
-} from 'react-icons/ri';
+import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
 import { YEDITORS } from '../../api/collections/AvailableCollections';
 import { CompItem } from './CompItem';
+import { ShelfButton } from './ShelfButton';
 import { CompItemSkeleton } from './skeletons/CompItemSkeleton';
 import { YeditorItem } from './YeditorItem';
 
@@ -118,16 +115,11 @@ export const CompShelf = ({
       <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 py-3 px-2 bg-black/50 rounded-xl">
         {/* Scroll to Start button TODO turn these into components and pass the function/icon*/}
         {skipBackEnabled && (
-          <div className="shelf-item flex-shrink-0 flex items-center">
-            <button
-              onClick={scrollToStart}
-              className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
-            >
-              <RiArrowLeftDoubleLine />
-            </button>
-          </div>
+          <ShelfButton onClick={scrollToStart} loadingMore={false}>
+            <RiArrowLeftDoubleLine />
+          </ShelfButton>
         )}
-
+        {/* Scrollable container for items */}
         <div
           ref={containerRef}
           style={{ width: `${shelfWidth}px` }}
@@ -170,18 +162,9 @@ export const CompShelf = ({
 
         {/* Load Next button */}
         {loadMoreEnabled && (
-          <div className="shelf-item flex-shrink-0 flex items-center">
-            <button
-              onClick={loadNext}
-              className="h-[120px] w-[16px] bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white/50 hover:text-white/75 transition-colors"
-            >
-              {loadingMore ? (
-                <RiLoader2Line className="animate-pulse" />
-              ) : (
-                <RiArrowRightDoubleLine />
-              )}
-            </button>
-          </div>
+          <ShelfButton onClick={loadNext} loadingMore={loadingMore}>
+            <RiArrowRightDoubleLine />
+          </ShelfButton>
         )}
       </div>
     </>
