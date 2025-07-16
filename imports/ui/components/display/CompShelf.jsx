@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from 'react-icons/ri';
-import { YEDITORS } from '../../api/collections/AvailableCollections';
+import { YEDITORS } from '../../../api/collections/AvailableCollections';
+import { CompItemSkeleton } from '../skeletons/CompItemSkeleton';
 import { CompItem } from './CompItem';
 import { ShelfButton } from './ShelfButton';
-import { CompItemSkeleton } from './skeletons/CompItemSkeleton';
 import { YeditorItem } from './YeditorItem';
 
 export const CompShelf = ({

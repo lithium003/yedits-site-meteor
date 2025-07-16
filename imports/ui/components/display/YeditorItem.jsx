@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { YeditorPhoto } from './yeditor/YeditorPhoto';
+import { YeditorPhoto } from '../yeditor/YeditorPhoto';
 
 /**
  * An Item representing a Yeditor.

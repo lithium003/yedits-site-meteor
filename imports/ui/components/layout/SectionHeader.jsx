@@ -1,5 +1,5 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 
 export const SectionHeader = ({ title, icon = null, showDivider = true }) => (
   <div className="text-center mb-8">

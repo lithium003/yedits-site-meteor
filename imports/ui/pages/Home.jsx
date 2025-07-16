@@ -10,8 +10,8 @@ import {
 import { Meteor } from 'meteor/meteor';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
-import { CompShelf } from '../components/CompShelf';
-import { FeaturedSection } from '../components/FeaturedSection';
+import { CompShelf } from '../components/display/CompShelf';
+import { FeaturedSection } from '../components/layout/FeaturedSection';
 
 export const Home = () => {
   // Get the current spotlighted Yeditor

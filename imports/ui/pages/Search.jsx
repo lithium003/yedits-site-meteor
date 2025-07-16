@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { CompShelf } from '../components/CompShelf';
-import { searchableName } from '/imports/utils/stringUtils';
 import {
   COMPS,
   EDITS,
   YEDITORS
 } from '../../api/collections/AvailableCollections';
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
+import { CompShelf } from '../components/display/CompShelf';
+import { searchableName } from '/imports/utils/stringUtils';
 
 /**
  * UI for the Search page

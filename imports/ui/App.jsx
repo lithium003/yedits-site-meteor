@@ -2,9 +2,9 @@ import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
 // JSX UI
-import { NavBar } from '/imports/ui/components/NavBar';
-import { Fallback } from '/imports/ui/components/Fallback';
+import { NavBar } from './components/layout/NavBar';
 import { AudioPlayer } from './components/player/AudioPlayer';
+import { Fallback } from '/imports/ui/components/Fallback';
 
 export const App = () => (
   <>

@@ -1,11 +1,12 @@
 import React from 'react';
 import { YeditorPhoto } from './YeditorPhoto';
-import { SocialButton } from '../SocialButton';
+
 import {
   faDiscord,
   faTwitter,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { SocialButton } from './SocialButton';
 
 export const YeditorHeader = ({ yeditor }) => (
   <section className="text-center mb-8">

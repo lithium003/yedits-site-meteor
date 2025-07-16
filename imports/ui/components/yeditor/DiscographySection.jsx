@@ -1,8 +1,8 @@
 import React from 'react';
-import { SectionHeader } from '../SectionHeader';
-import { TabButton } from '../TabButton';
-import { CompShelf } from '../CompShelf';
 import { COMPS, EDITS } from '../../../api/collections/AvailableCollections';
+import { CompShelf } from '../display/CompShelf';
+import { SectionHeader } from '../layout/SectionHeader';
+import { TabButton } from '../layout/TabButton';
 
 export const DiscographySection = ({ activeTab, setActiveTab, onLoadMore }) => (
   <section className="mb-16">

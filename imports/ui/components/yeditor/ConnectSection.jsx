@@ -1,7 +1,7 @@
-import React from 'react';
-import { SectionHeader } from '../SectionHeader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { SectionHeader } from '../layout/SectionHeader';
 
 export const ConnectSection = () => (
   <section className="text-center">

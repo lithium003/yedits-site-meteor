@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
-import { CompShelf } from '../components/CompShelf';
-import { FeaturedSection } from '../components/FeaturedSection';
+import { CompShelf } from '../components/display/CompShelf';
+import { FeaturedSection } from '../components/layout/FeaturedSection';
 import { ConnectSection } from '../components/yeditor/ConnectSection';
 import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
