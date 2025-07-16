@@ -55,7 +55,7 @@ export const CompHeader = ({ comp, edits = [] }) => {
                 className="px-0.5"
               />
               <PillCheckbox
-                label={comp.artist || 'Unknown Artist'}
+                label={comp.artist_name || 'Unknown Artist'}
                 type="tag"
                 activeColor="bg-blue-500"
                 inactiveColor="bg-gray-300"

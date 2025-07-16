@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { RiMoreFill } from 'react-icons/ri';
+import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { TrackOptions } from './TrackOptions';
 
 export const Track = ({
@@ -10,7 +10,7 @@ export const Track = ({
   onOptionsToggle,
   onClose
 }) => {
-  const { id, number, name, length } = edit;
+  const { id, track_number, name, length } = edit;
   const {
     trackIndex,
     currentTrack = '',
@@ -80,7 +80,7 @@ export const Track = ({
           // or else Highlight can override Current marker.
           onClick={play}
         >
-          <span className="w-8 text-center">{number}</span>
+          <span className="w-8 text-center">{track_number}</span>
           <span className="flex-1 px-4 truncate">{name}</span>
           <div className="flex items-center text-[#A2A2EE] text-right">
             <span className="w-16 px-4">{length}</span>

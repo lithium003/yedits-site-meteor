@@ -117,13 +117,15 @@ Meteor.methods({
       const query = db.collection(ARTISTS).get();
       const snapshot = await query;
       // noinspection UnnecessaryLocalVariableJS
-      const results = snapshot.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          ...data
-        };
-      });
+      const results = snapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data
+          };
+        })
+        .filter(artist => artist.name);
       return results;
     } catch (error) {
       console.error(`Error fetching list of all artists: ${error}`);

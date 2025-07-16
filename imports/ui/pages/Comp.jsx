@@ -10,10 +10,32 @@ export const Comp = () => {
   const [comp, setComp] = useState(null);
   const [edits, setEdits] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [adminMode, setAdminMode] = useState(true); // TODO eventually connect to account
 
   // Highlighted Edit
   const [searchParams] = useSearchParams();
   const highlightEditId = searchParams.get('h') ?? '';
+
+  // Convert Tracknums
+  const covertTracknums = () => {
+    Meteor.call('convertTracknums', compId, (err, res) => {
+      if (err) {
+        console.error('Error converting tracknums:', err);
+      } else {
+        console.log('Tracknums converted successfully:', res);
+      }
+    });
+  };
+
+  const addCompArtistNameField = () => {
+    Meteor.call('addCompArtistNameField', compId, (err, res) => {
+      if (err) {
+        console.error('Error adding artist name field:', err);
+      } else {
+        console.log('Artist name field added successfully:', res);
+      }
+    });
+  };
 
   useEffect(() => {
     Meteor.call('getComp', compId, (err, res) => {
@@ -53,6 +75,22 @@ export const Comp = () => {
       <div className="min-h-screen text-white ">
         <div className="max-w-6xl mx-auto px-8 py-8 ">
           <CompHeader comp={comp} edits={edits} />
+          {adminMode && (
+            <div className="flex gap-4 mb-4">
+              <span
+                className="hover:bg-amber-300 hover:cursor-pointer"
+                onClick={covertTracknums}
+              >
+                Convert Tracknums
+              </span>
+              <span
+                className="hover:bg-amber-400 hover:cursor-pointer"
+                onClick={addCompArtistNameField}
+              >
+                Add Artist Name
+              </span>
+            </div>
+          )}
           <Tracklist
             comp={comp}
             edits={edits}

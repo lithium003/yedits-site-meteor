@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { RiCloseLargeFill } from 'react-icons/ri';
 import { ERAS } from '../../../utils/eras';
+import { searchableName } from '../../../utils/stringUtils';
 import { tags } from '../../../utils/tags';
 import { PillCheckbox } from './PillCheckbox';
-import { searchableName } from '../../../utils/stringUtils';
-import { RiCloseLargeFill } from 'react-icons/ri';
 
 export const AdvancedSearch = ({ allArtists, filters, onClose, onSubmit }) => {
   useEffect(() => {
