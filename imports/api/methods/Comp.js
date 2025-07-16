@@ -4,11 +4,15 @@ import {
   COMPS,
   EDITS
 } from '/imports/api/collections/AvailableCollections';
-import { db } from '/server/Firestore';
-import { convertPath } from '/server/Firestore';
 import { searchableName } from '/imports/utils/stringUtils';
+import { convertPath, db } from '/server/Firestore';
 
 Meteor.methods({
+  /**
+   * Gets a comp object by its ID.
+   * @param {*} id
+   * @returns
+   */
   async getComp(id) {
     try {
       const doc = await db.collection(COMPS).doc(id).get();
@@ -31,6 +35,14 @@ Meteor.methods({
     }
   },
 
+  /**
+   * Gets an array of all edits in a comp by its ID, ordered by track number.
+   * @param {string} id
+   * @returns {Promise<Array>} An array of edits in the comp.
+   * @throws {Meteor.Error} If an error occurs during the operation.
+   * @throws {Meteor.Error} If the comp with the given ID does not exist.
+   * @throws {Meteor.Error} If an error occurs while fetching the edits.
+   */
   async getCompEdits(id) {
     try {
       const snapshot = await db
@@ -97,6 +109,13 @@ Meteor.methods({
     }
   },
 
+  /**
+   * Adds a name_search field with a searchable name for all artists.
+   * Makes the artists work with the artist search bar in Advanced Search.
+   *
+   * @returns {Promise<string>} A message indicating success or failure.
+   * @throws {Meteor.Error} If an error occurs during the operation.
+   */
   async addArtistNameSearchField() {
     try {
       const artistsSnapshot = await db.collection(ARTISTS).get();
@@ -122,6 +141,12 @@ Meteor.methods({
     }
   },
 
+  /**
+   * Gets the name of the comp's artist by the id in its `artist` field, and assigns it as `artist_name`.
+   *
+   * @param {*} compId
+   * @returns
+   */
   async addCompArtistNameField(compId) {
     try {
       const compDoc = await db.collection(COMPS).doc(compId).get();
@@ -160,7 +185,46 @@ Meteor.methods({
         `Failed to add artist name field for comp with id ${compId}`
       );
     }
-  }
+  },
 
-  //
+  /**
+   * Gets the name of the ALL comps' artists by the id in its `artist` field, and assigns it as `artist_name`.
+   *
+   * @returns
+   */
+  async addAllCompsArtistNameField() {
+    try {
+      console.log('Adding artist name field to all comps...');
+      const compsSnapshot = await db.collection(COMPS).get();
+      const batch = db.batch();
+
+      for (const doc of compsSnapshot.docs) {
+        const data = doc.data();
+        console.log(`Processing comp ${doc.id} with artist: ${data.artist}`);
+        if (data.artist) {
+          const artistDoc = await db.collection(ARTISTS).doc(data.artist).get();
+          const artistData = artistDoc.data();
+          if (!artistData || !artistData.name) {
+            console.error(
+              `Artist name missing for comp ${doc.id}, artist: ${data.artist}`
+            );
+            continue;
+          }
+          batch.update(doc.ref, { artist_name: artistData.name });
+        }
+      }
+
+      await batch.commit();
+      return 'Artist name search field added to all comps successfully';
+    } catch (error) {
+      console.error(
+        'Error adding artist name search field to all comps:',
+        error
+      );
+      throw new Meteor.Error(
+        'firebase-error',
+        'Failed to add artist name search field to all comps'
+      );
+    }
+  }
 });

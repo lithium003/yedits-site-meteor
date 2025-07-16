@@ -28,7 +28,7 @@ export const Comp = () => {
   };
 
   const addCompArtistNameField = () => {
-    Meteor.call('addCompArtistNameField', compId, (err, res) => {
+    Meteor.call('addCompArtistNameField', (err, res) => {
       if (err) {
         console.error('Error adding artist name field:', err);
       } else {
