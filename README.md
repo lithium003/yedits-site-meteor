@@ -1,28 +1,30 @@
-# Sample Meteor App
+# Yedits Site (Meteor Rewrite)
 
-## Setup
-```
-meteor npm run setup
-```
-```
-meteor npm run start
-```
-### Manual Setup:
+
+### Setup:
 ```
 meteor npm install
 ```
-Create new file called `settings.json` and copy paste the below code into it.
+Obtain a Google Firebase Admin SDK key from the Google Firestore NoSQL database.
+Create new file called `settings.json` and copy paste the below into it,
+filling out the three relevant strings from your Firestore .json key.
 ```
 {
-  "public": {
-    "publicKeyName1": "publicKey1"
-  },
   "private": {
-    "privateKeyName1": "privateKey1",
-  },
-  "privateKeyName2": "privateKey2"
+    "firebase": {
+      "projectId": "",
+      "privateKey": "",
+      "clientEmail": "",
+    }
+  }
 }
 ```
+
+## Start
+```
+meteor npm run start
+```
+
 ## Lint
 
 ```
@@ -49,6 +51,8 @@ imports/
 │   ├── Methods.js          // Consolidates methods imports
 │   ├── Publications.js     // Consolidates publications imports
 │   └── Schemas.js          // Consolidates to Schemas array reuse
+├── contexts/             [Custom React contexts]
+├── hooks/                [Custom React hooks] 
 ├── routes/               [Route definitions] mirrors JSX from ui/
 │   ├── components/
 │   ├── layouts/
@@ -62,7 +66,7 @@ imports/
 ├── utils/                // Utility helper functions          
 └── Router.js             // Router loaded on client & server (SSR)
 private/                <Server Assets>
-public/                 <Client Assets>
+public/                 <Client Assets, Music>
 server/                 [Server-side Code]
 tests/
 └── main.js               // Consolidates Tests
