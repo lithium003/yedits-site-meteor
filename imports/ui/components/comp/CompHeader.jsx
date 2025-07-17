@@ -12,12 +12,16 @@ import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 import { useAudioPlayerContext } from '/imports/contexts/AudioPlayerContext';
 
 export const CompHeader = ({ comp, edits = [] }) => {
-  const { setQueue, setCurrentTrack, setTrackIndex } = useAudioPlayerContext();
+  const { setQueue, setCurrentTrack, setTrackIndex, setIsPlaying } =
+    useAudioPlayerContext();
 
   const playAll = () => {
-    setQueue(edits);
-    setCurrentTrack(edits[0]);
-    setTrackIndex(0);
+    const newQueue = edits;
+    setQueue(newQueue);
+    const newIndex = 0;
+    setTrackIndex(newIndex);
+    setCurrentTrack(newQueue[newIndex]);
+    setIsPlaying(true);
   };
 
   return (
