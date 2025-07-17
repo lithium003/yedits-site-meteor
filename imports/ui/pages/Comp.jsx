@@ -10,7 +10,7 @@ export const Comp = () => {
   const [comp, setComp] = useState(null);
   const [edits, setEdits] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [adminMode, setAdminMode] = useState(true); // TODO eventually connect to account
+  const [adminMode, setAdminMode] = useState(false); // TODO eventually connect to account
 
   // Highlighted Edit
   const [searchParams] = useSearchParams();

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Track } from './Track';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faListOl } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { Track } from './Track';
 
 export const Tracklist = ({ comp, edits, highlightEditId }) => {
   const { length } = comp;
