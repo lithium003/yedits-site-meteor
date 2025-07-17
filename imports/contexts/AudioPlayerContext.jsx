@@ -4,8 +4,8 @@ import React, { createContext, useContext, useRef, useState } from 'react';
 const AudioPlayerContext = createContext(undefined);
 export const AudioPlayerProvider = ({ children, tracks = [] }) => {
   const [queue, setQueue] = useState(tracks);
-  const [trackIndex, setTrackIndex] = useState(0);
-  const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
+  const [trackIndex, setTrackIndex] = useState(null);
+  const [currentTrack, setCurrentTrack] = useState(null);
   const [timeProgress, setTimeProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);

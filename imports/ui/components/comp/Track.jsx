@@ -17,15 +17,23 @@ export const Track = ({
     setCurrentTrack,
     setTrackIndex,
     queue,
-    setQueue
+    setQueue,
+    setIsPlaying
   } = useAudioPlayerContext();
 
+  /**
+   * Plays a track immediately.
+   * Clears upcoming tracks in the queue before playing the new track, keeping previous tracks.
+   */
   const play = () => {
-    const nextIndex = trackIndex + 1;
+    let nextIndex;
+    trackIndex !== null ? (nextIndex = trackIndex + 1) : (nextIndex = 0);
     const prevTracks = queue.slice(0, nextIndex);
-    setQueue([...prevTracks, edit]); // Clear upcoming tracks in the queue before playing a new track. Keep previous tracks.
-    setCurrentTrack(edit);
-    setTrackIndex(nextIndex);
+    const newQueue = [...prevTracks, edit];
+    setQueue(newQueue);
+    setTrackIndex(nextIndex || 0);
+    setCurrentTrack(newQueue[nextIndex]);
+    setIsPlaying(true);
   };
 
   /**
