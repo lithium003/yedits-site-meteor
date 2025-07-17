@@ -1,21 +1,22 @@
 import React from 'react';
 
-import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
+import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const PlayList = () => {
   const {
     queue = [],
     setIsPlaying,
     setCurrentTrack,
+    setTrackIndex,
     trackIndex
   } = useAudioPlayerContext();
-  const handleClick = track => {
+  const handleClick = (track, index) => {
     setCurrentTrack(track);
+    setTrackIndex(index);
     setIsPlaying(true);
   };
-  console.log('Queue:', queue);
-  console.log('Queue type:', typeof queue);
+
   return (
     <>
       <ul className="bg-[#4c4848] text-white max-h-72 overflow-y-auto">
@@ -28,10 +29,10 @@ export const PlayList = () => {
             tabIndex={0}
             onKeyDown={e => {
               if (e.key === 'Enter' || e.key === ' ') {
-                handleClick(track);
+                handleClick(track, index);
               }
             }}
-            onClick={() => handleClick(track)}
+            onClick={() => handleClick(track, index)}
           >
             <div className="w-16 h-16 flex items-center justify-center bg-gray-200 rounded-sm overflow-hidden">
               {track.art_path ? (
