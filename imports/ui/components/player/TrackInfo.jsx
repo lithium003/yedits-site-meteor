@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 import { BsMusicNoteBeamed } from 'react-icons/bs';
+import { useAudioPlayerContext } from '../../../contexts/AudioPlayerContext';
 
 export const TrackInfo = () => {
   const { currentTrack } = useAudioPlayerContext();

@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 
 const musicPath = path.resolve(process.cwd(), '../../../../../.music');
-console.log('change detected in music-server.js');
 
 function getContentType(filePath) {
   const ext = path.extname(filePath).toLowerCase();
@@ -26,17 +25,17 @@ function getContentType(filePath) {
 
 function isAudioFile(filePath) {
   const ext = path.extname(filePath).toLowerCase();
-  console.log(`Checking extension: "${ext}"`); // Debug line
+  // console.log(`Checking extension: "${ext}"`); // Debug line
   return ['.mp3', '.wav', '.ogg', '.m4a', '.flac'].includes(ext);
 }
 
 WebApp.connectHandlers.use('/static/music', (req, res, next) => {
-  console.log(`=== MUSIC ROUTE HIT: ${req.url} ===`); // Add this first
+  // console.log(`=== MUSIC ROUTE HIT: ${req.url} ===`); // Add this first
 
   const filePath = path.join(musicPath, req.url);
 
   if (!filePath.startsWith(musicPath)) {
-    console.log('Security check failed');
+    // console.log('Security check failed');
 
     res.writeHead(403);
     res.end('Forbidden');
@@ -49,19 +48,19 @@ WebApp.connectHandlers.use('/static/music', (req, res, next) => {
     const contentType = getContentType(filePath);
 
     // Debug logging
-    console.log(`File: ${filePath}`);
-    console.log(`Extension: ${path.extname(filePath)}`);
-    console.log(`Is audio file: ${isAudioFile(filePath)}`);
-    console.log(`Content type: ${contentType}`);
+    // console.log(`File: ${filePath}`);
+    // console.log(`Extension: ${path.extname(filePath)}`);
+    // console.log(`Is audio file: ${isAudioFile(filePath)}`);
+    // console.log(`Content type: ${contentType}`);
 
     // For images, serve directly (faster)
     if (!isAudioFile(filePath)) {
-      console.log(`Serving image: ${filePath}`);
+      // console.log(`Serving image: ${filePath}`);
       const imageCacheLengthSeconds = 24 * 60 * 60; // 24 hours
       res.writeHead(200, {
         'Content-Length': fileSize,
         'Content-Type': contentType,
-        'Cache-Control': `public, max-age=60` // Cache for 1 year
+        'Cache-Control': `public, max-age=60` // TODO cache doesn't seem to work?
       });
       fs.createReadStream(filePath).pipe(res);
       return;

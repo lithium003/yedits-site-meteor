@@ -113,7 +113,7 @@ export const CompShelf = ({
   return (
     <>
       <div className="min-h-[284px] flex flex-nowrap w-fit gap-2 py-3 px-2 bg-black/50 rounded-xl">
-        {/* Scroll to Start button TODO turn these into components and pass the function/icon*/}
+        {/* Scroll to Start button */}
         {skipBackEnabled && (
           <ShelfButton onClick={scrollToStart} loadingMore={false}>
             <RiArrowLeftDoubleLine />

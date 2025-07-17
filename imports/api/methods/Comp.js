@@ -50,7 +50,6 @@ Meteor.methods({
         .where('comp', '==', id)
         .orderBy('track_number')
         .get();
-      // TODO turn `number` into an int rather than string so alphabetical sorting works
 
       const edits = snapshot.docs.map(doc => {
         const data = doc.data();

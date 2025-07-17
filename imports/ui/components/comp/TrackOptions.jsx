@@ -13,7 +13,6 @@ export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
         onClick={e => e.stopPropagation()}
       >
         <div className="flex flex-col space-y-2">
-          {/* TODO abstract this to its own component */}
           <TrackOption label="Play Next" onClick={playNext} />
           <TrackOption label="Play Last" onClick={playLast} />
           <TrackOption label="Share" onClick={share} />
