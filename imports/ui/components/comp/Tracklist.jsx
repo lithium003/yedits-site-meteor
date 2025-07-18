@@ -2,6 +2,7 @@ import { faListOl } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Track } from './Track';
+import { TrackSkeleton } from '../skeletons/TrackSkeleton';
 
 export const Tracklist = ({ comp, edits, highlightEditId }) => {
   const { length } = comp;
@@ -16,9 +17,9 @@ export const Tracklist = ({ comp, edits, highlightEditId }) => {
   //   return <h1>Loading...</h1>;
   // }
 
-  if (!edits) {
-    return <h1 className="text-red-500">Comp not found</h1>;
-  }
+  // if (!edits) {
+  //   return <h1 className="text-red-500">Comp not found</h1>;
+  // }
 
   return (
     <>
@@ -32,20 +33,25 @@ export const Tracklist = ({ comp, edits, highlightEditId }) => {
           </div>
 
           <span className="text-[#A2A2EE]">
-            {edits.length} Tracks &middot; {length} &middot; 320kbps{' '}
+            {edits?.length} Tracks &middot; {length || 'abc'} &middot;
+            320kbps{' '}
           </span>
         </div>
         <div className="flex flex-col border-t-1 border-purple-600 w-full">
-          {edits.map(edit => (
-            <Track
-              key={edit.id}
-              edit={edit}
-              highlight={edit.id === highlightEditId}
-              optionsOpen={openOptionsTrackId === edit.id}
-              onOptionsToggle={() => handleOptionsToggle(edit.id)}
-              onClose={() => setOpenOptionsTrackId(null)}
-            />
-          ))}
+          {!edits
+            ? Array(10)
+                .fill(0)
+                .map((_, index) => <TrackSkeleton key={index} />)
+            : edits.map(edit => (
+                <Track
+                  key={edit.id}
+                  edit={edit}
+                  highlight={edit.id === highlightEditId}
+                  optionsOpen={openOptionsTrackId === edit.id}
+                  onOptionsToggle={() => handleOptionsToggle(edit.id)}
+                  onClose={() => setOpenOptionsTrackId(null)}
+                />
+              ))}
         </div>
       </div>
     </>
