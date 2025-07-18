@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { CompHeader } from '../components/comp/CompHeader';
 import { Tracklist } from '../components/comp/Tracklist';
+import { CompHeaderSkeleton } from '../components/skeletons/CompHeaderSkeleton';
 
 export const Comp = () => {
   const { compId } = useParams();
@@ -63,18 +64,19 @@ export const Comp = () => {
     getEditsData();
   }, [compId]);
 
-  if (!comp) {
-    return <h1 className="text-red-500">Comp not found</h1>;
-  }
-
   return (
     <>
       <Helmet>
-        <title>{comp.name} - Yedits</title>
+        <title>{comp ? comp.name : 'Loading...'} - Yedits</title>
       </Helmet>
       <div className="min-h-screen text-white ">
         <div className="max-w-6xl mx-auto px-8 py-8 ">
-          <CompHeader comp={comp} edits={edits} />
+          {!comp ? (
+            <CompHeaderSkeleton />
+          ) : (
+            <CompHeader comp={comp} edits={edits} />
+          )}
+
           {adminMode && (
             <div className="flex gap-4 mb-4">
               <span
@@ -91,11 +93,14 @@ export const Comp = () => {
               </span>
             </div>
           )}
-          <Tracklist
-            comp={comp}
-            edits={edits}
-            highlightEditId={highlightEditId}
-          />
+          {/* TODO have placeholder tracklist */}
+          {comp && (
+            <Tracklist
+              comp={comp}
+              edits={edits}
+              highlightEditId={highlightEditId}
+            />
+          )}
         </div>
       </div>
     </>
