@@ -12,6 +12,7 @@ import { ConnectSection } from '../components/yeditor/ConnectSection';
 import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
+import { YeditorHeaderSkeleton } from '../components/skeletons/YeditorHeaderSkeleton';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -70,20 +71,23 @@ export const Yeditor = () => {
     [yeditorId]
   );
 
-  if (!yeditor) {
-    return <div>Loading...</div>;
-  }
+  // if (!yeditor) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="w-full">
       <Helmet>
-        <title>{yeditor.display_name} - Yedits</title>
+        <title>{yeditor ? yeditor.display_name : 'Loading...'} - Yedits</title>
       </Helmet>
 
       <div className="min-h-screen text-white">
         <div className="max-w-6xl mx-auto px-8 py-8">
-          <YeditorHeader yeditor={yeditor} />
-
+          {!yeditor ? (
+            <YeditorHeaderSkeleton />
+          ) : (
+            <YeditorHeader yeditor={yeditor} />
+          )}
           <YeditorStats />
 
           <FeaturedSection title="Top Comps" icon={faStar}>
