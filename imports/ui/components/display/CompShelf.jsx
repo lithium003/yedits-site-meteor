@@ -43,8 +43,11 @@ export const CompShelf = ({
       lastId: null, // No lastId for initial load
       onSuccess: result => {
         setItems(result);
-        setLoading(false);
         console.log('Initial shelf data loaded:', result);
+        // Delay to ensure images are loaded
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
       },
       onError: error => {
         console.error('Failed to load initial data:', error);
