@@ -35,25 +35,32 @@ export const CompShelf = ({
 
   // Load initial data when onLoadMore function changes
   useEffect(() => {
-    setItems([]); // Clear existing items
+    let isMounted = true; // Prevents updating state when unmounted
+    setItems([]);
     setLoading(true);
 
     onLoadMore({
       collection: collection,
-      lastId: null, // No lastId for initial load
+      lastId: null,
       onSuccess: result => {
-        setItems(result);
-        console.log('Initial shelf data loaded:', result);
+        if (isMounted) {
+          setItems(result);
+          console.log('Loaded initial data:', result);
+        }
         // Delay to ensure images are loaded
         setTimeout(() => {
-          setLoading(false);
+          if (isMounted) setLoading(false);
         }, 100);
       },
       onError: error => {
         console.error('Failed to load initial data:', error);
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     });
+
+    return () => {
+      isMounted = false;
+    };
   }, [onLoadMore, collection]);
 
   // Calculate width: 200px (CompItem width) * 5 + 8px (gap) * 4 + 16px (padding) + 8px (scrollbar) + 16px (idk) + 8px (right padding)
