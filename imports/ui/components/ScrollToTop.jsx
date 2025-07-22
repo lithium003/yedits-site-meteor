@@ -1,16 +1,24 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 
+/**
+ * Custom component that scrolls to the top when navigating to a new route.
+ * Without this, going to a new route keeps the current scroll position.
+ * This can be awkward as you can be sent straight to the bottom of a comp/yeditor page.
+ */
 export const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
 
   useEffect(() => {
-    // Find your main scrollable container
-    const main = document.querySelector('main');
-    if (main) {
-      main.scrollTo(0, 0);
+    if (navigationType === 'PUSH') {
+      const main = document.querySelector('main');
+      if (main) {
+        main.scrollTo(0, 0);
+      }
     }
-  }, [pathname]);
+    // For POP (back/forward), let ScrollRestoration handle it
+  }, [pathname, navigationType]);
 
   return null;
 };
