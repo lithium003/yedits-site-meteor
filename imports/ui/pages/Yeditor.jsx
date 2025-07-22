@@ -13,11 +13,13 @@ import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
 import { YeditorHeaderSkeleton } from '../components/skeletons/YeditorHeaderSkeleton';
+import { ErrorScreen } from '../components/ErrorScreen';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
   const [yeditor, setYeditor] = useState(null);
   const [activeTab, setActiveTab] = useState('comps');
+  const [loadingYeditor, setLoadingYeditor] = useState(true);
 
   useEffect(() => {
     Meteor.call('getYeditor', yeditorId, (err, res) => {
@@ -26,6 +28,7 @@ export const Yeditor = () => {
       } else {
         setYeditor(res);
       }
+      setLoadingYeditor(false);
     });
   }, [yeditorId]);
 
@@ -71,9 +74,9 @@ export const Yeditor = () => {
     [yeditorId]
   );
 
-  // if (!yeditor) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!loadingYeditor && !yeditor) {
+    return <ErrorScreen message="Yeditor not found" />;
+  }
 
   return (
     <div className="w-full">
@@ -83,7 +86,7 @@ export const Yeditor = () => {
 
       <div className="min-h-screen text-white">
         <div className="max-w-6xl mx-auto px-8 py-8">
-          {!yeditor ? (
+          {loadingYeditor ? (
             <YeditorHeaderSkeleton />
           ) : (
             <YeditorHeader yeditor={yeditor} />
