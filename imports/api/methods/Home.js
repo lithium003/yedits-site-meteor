@@ -21,7 +21,7 @@ Meteor.methods({
       let query = db.collection(collection);
       query = removeStandaloneEditComps(query, collection);
       query = query.orderBy('rating', 'desc').limit(shelfLimit);
-      return await getDocsWithConvertedPaths(query, convertPath);
+      return await getDocsWithConvertedPaths(query);
     }, `Failed to fetch top ${collection}`);
   },
 

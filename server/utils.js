@@ -1,14 +1,14 @@
 import { Meteor } from 'meteor/meteor';
+import { convertPath } from './Firestore';
 import { COMPS } from '/imports/api/collections/AvailableCollections';
 
 /**
  * Fetches documents from a Firestore query and converts their path fields
  * from the existing flask-based structure to one that works with the Meteor project structure.
  * @param {*} query The Firestore query to execute
- * @param {*} convertPath The function to convert document paths
  * @returns An array of documents with converted paths
  */
-export async function getDocsWithConvertedPaths(query, convertPath) {
+export async function getDocsWithConvertedPaths(query) {
   const snapshot = await query.get();
   return snapshot.docs.map(doc => {
     const data = doc.data();
@@ -16,6 +16,17 @@ export async function getDocsWithConvertedPaths(query, convertPath) {
     if (data.filepath) data.filepath = convertPath(data.filepath);
     return { id: doc.id, ...data };
   });
+}
+
+export function mapDocWithPaths(doc) {
+  const data = doc.data();
+  if (data.art_path) data.art_path = convertPath(data.art_path);
+  if (data.filepath) data.filepath = convertPath(data.filepath);
+  return { id: doc.id, ...data };
+}
+
+export function mapDocsWithPaths(snapshot) {
+  return snapshot.docs.map(mapDocWithPaths);
 }
 
 /**
