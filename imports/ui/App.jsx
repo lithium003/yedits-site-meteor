@@ -5,11 +5,13 @@ import { Outlet } from 'react-router-dom';
 import { NavBar } from './components/layout/NavBar';
 import { AudioPlayer } from './components/player/AudioPlayer';
 import { Fallback } from '/imports/ui/components/Fallback';
+import { ScrollToTop } from './components/ScrollToTop';
 
 export const App = () => (
   <>
     <div className="h-screen flex flex-col">
       <NavBar />
+      <ScrollToTop />
       <main
         className="flex-1 overflow-y-auto
         [&::-webkit-scrollbar]:w-2
@@ -20,6 +22,7 @@ export const App = () => (
         [&::-webkit-scrollbar-thumb:hover]:bg-gray-600"
       >
         {/* Suspense delays rendering until asynchronous data is ready (SSR) */}
+
         <Suspense fallback={<Fallback />}>
           <Outlet /> {/* Renders the matched child (pages) route here */}
         </Suspense>
