@@ -2,43 +2,19 @@
 const { Meteor } = require('meteor/meteor');
 import { convertPath, db } from '/server/Firestore';
 import { COMPS } from '../collections/AvailableCollections';
+import { getDocsWithConvertedPaths, handleMethod } from '/server/utils';
 
 const shelfLimit = 5;
 
 Meteor.methods({
-  async getTopWorks({ collection: collection = COMPS }) {
-    try {
+  async getTopWorks({ collection = COMPS }) {
+    return handleMethod(async () => {
       let query = db.collection(collection);
-      // Filter out standalone edits if necessary
-      if (collection === COMPS) {
+      if (collection === COMPS)
         query = query.where('standalone_edit', '==', false);
-      }
       query = query.orderBy('rating', 'desc').limit(shelfLimit);
-      const snapshot = await query.get();
-
-      const results = snapshot.docs.map(doc => {
-        const data = doc.data();
-
-        if (data.art_path) {
-          data.art_path = convertPath(data.art_path);
-        }
-
-        if (data.filepath) {
-          data.filepath = convertPath(data.filepath);
-        }
-
-        return {
-          id: doc.id,
-          ...data
-        };
-      });
-
-      // console.log(results); // Or return to client via a Meteor method
-      return results;
-    } catch (error) {
-      console.error('Error fetching top comps:', error);
-      throw new Meteor.Error('firebase-error', 'Failed to fetch top comps');
-    }
+      return await getDocsWithConvertedPaths(query, convertPath);
+    }, `Failed to fetch top ${collection}`);
   },
 
   async getNewReleases({ collection: collection = COMPS }) {
