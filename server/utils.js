@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { COMPS } from '/imports/api/collections/AvailableCollections';
 
 /**
  * Fetches documents from a Firestore query and converts their path fields
@@ -34,4 +35,17 @@ export async function handleMethod(fn, errorMessage, ...args) {
       `${errorMessage}: ${error.message}`
     );
   }
+}
+
+/**
+ * Removes standalone edit comps from the query if the collection is COMPS.
+ * @param {*} query
+ * @param {*} collection
+ * @returns the query with standalone edits removed if the collection is COMPS, the query itself otherwise.
+ */
+export function removeStandaloneEditComps(query, collection) {
+  if (collection === COMPS) {
+    return query.where('standalone_edit', '==', false);
+  }
+  return query;
 }

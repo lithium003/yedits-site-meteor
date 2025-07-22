@@ -2,7 +2,11 @@
 const { Meteor } = require('meteor/meteor');
 import { convertPath, db } from '/server/Firestore';
 import { COMPS } from '../collections/AvailableCollections';
-import { getDocsWithConvertedPaths, handleMethod } from '/server/utils';
+import {
+  getDocsWithConvertedPaths,
+  handleMethod,
+  removeStandaloneEditComps
+} from '/server/utils';
 
 const shelfLimit = 5;
 
@@ -10,8 +14,7 @@ Meteor.methods({
   async getTopWorks({ collection = COMPS }) {
     return handleMethod(async () => {
       let query = db.collection(collection);
-      if (collection === COMPS)
-        query = query.where('standalone_edit', '==', false);
+      query = removeStandaloneEditComps(query, collection);
       query = query.orderBy('rating', 'desc').limit(shelfLimit);
       return await getDocsWithConvertedPaths(query, convertPath);
     }, `Failed to fetch top ${collection}`);
@@ -20,8 +23,7 @@ Meteor.methods({
   async getNewReleases({ collection = COMPS }) {
     return handleMethod(async () => {
       let query = db.collection(collection);
-      if (collection === COMPS)
-        query = query.where('standalone_edit', '==', false); // maybe make this its own function
+      query = removeStandaloneEditComps(query, collection);
       query = query.orderBy('release_date', 'desc').limit(shelfLimit);
       return await getDocsWithConvertedPaths(query, convertPath);
     }, `Failed to fetch new releases for ${collection}`);
