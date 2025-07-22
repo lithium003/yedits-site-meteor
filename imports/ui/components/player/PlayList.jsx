@@ -11,6 +11,7 @@ export const PlayList = () => {
     setTrackIndex,
     trackIndex
   } = useAudioPlayerContext();
+
   const handleClick = (track, index) => {
     setCurrentTrack(track);
     setTrackIndex(index);
@@ -39,7 +40,7 @@ export const PlayList = () => {
                 <img
                   className="w-full h-full object-cover"
                   src={track.art_path}
-                  alt={track.name}
+                  alt={track?.name || 'MISSING TRACK NAME'}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full bg-gray-300 rounded-md">
@@ -50,8 +51,12 @@ export const PlayList = () => {
               )}
             </div>
             <div>
-              <p className="font-bold text-sm">{track.name}</p>
-              <p className="text-sm text-gray-400">{track.yeditor_name}</p>
+              <p className="font-bold text-sm">
+                {track?.name || 'MISSING TRACK NAME'}
+              </p>
+              <p className="text-sm text-gray-400">
+                {track?.yeditor_name || 'MISSING YEDITOR NAME'}
+              </p>
             </div>
           </li>
         ))}
