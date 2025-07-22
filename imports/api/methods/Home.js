@@ -17,39 +17,14 @@ Meteor.methods({
     }, `Failed to fetch top ${collection}`);
   },
 
-  async getNewReleases({ collection: collection = COMPS }) {
-    try {
+  async getNewReleases({ collection = COMPS }) {
+    return handleMethod(async () => {
       let query = db.collection(collection);
-      // Filter out standalone edits if necessary
-      if (collection === COMPS) {
-        query = query.where('standalone_edit', '==', false);
-      }
+      if (collection === COMPS)
+        query = query.where('standalone_edit', '==', false); // maybe make this its own function
       query = query.orderBy('release_date', 'desc').limit(shelfLimit);
-      const snapshot = await query.get();
-
-      const results = snapshot.docs.map(doc => {
-        const data = doc.data();
-
-        if (data.art_path) {
-          data.art_path = convertPath(data.art_path);
-        }
-
-        if (data.filepath) {
-          data.filepath = convertPath(data.filepath);
-        }
-
-        return {
-          id: doc.id,
-          ...data
-        };
-      });
-
-      // console.log(results); // Or return to client via a Meteor method
-      return results;
-    } catch (error) {
-      console.error('Error fetching new releases:', error);
-      throw new Meteor.Error('firebase-error', 'Failed to fetch new releases');
-    }
+      return await getDocsWithConvertedPaths(query, convertPath);
+    }, `Failed to fetch new releases for ${collection}`);
   },
 
   async getRecentlyAdded({ collection: collection = COMPS }) {
