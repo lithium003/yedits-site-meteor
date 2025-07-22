@@ -53,23 +53,25 @@ Meteor.methods({
     }, `Failed to fetch recently added ${collection}`);
   },
 
-  // In your Meteor methods (Home.js)
+  /**
+   * Fetches the spotlighted Yeditor id and fetches its document.
+   * @returns The spotlighted Yeditor document.
+   */
   async getSpotlightedYeditor() {
-    try {
-      const doc = await db.collection('config').doc('yeditor_spotlight').get();
-      if (!doc.exists)
+    return handleMethod(async () => {
+      const configDoc = await db
+        .collection('config')
+        .doc('yeditor_spotlight')
+        .get();
+      if (!configDoc.exists) {
         throw new Meteor.Error('not-found', 'No spotlighted Yeditor found');
-      const spotlightId = doc.data().id_1;
+      }
+      const spotlightId = configDoc.data().id_1;
       const yeditorDoc = await db.collection('yeditors').doc(spotlightId).get();
-      if (!yeditorDoc.exists)
+      if (!yeditorDoc.exists) {
         throw new Meteor.Error('not-found', 'Yeditor not found');
+      }
       return { id: spotlightId, ...yeditorDoc.data() };
-    } catch (error) {
-      console.error('Error fetching spotlighted Yeditor:', error);
-      throw new Meteor.Error(
-        'firebase-error',
-        'Failed to fetch spotlighted Yeditor'
-      );
-    }
+    }, 'Failed to fetch spotlighted Yeditor');
   }
 });
