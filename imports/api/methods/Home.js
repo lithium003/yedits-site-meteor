@@ -11,6 +11,11 @@ import {
 const shelfLimit = 5;
 
 Meteor.methods({
+  /**
+   * Fetches the top works (comps/edits) in the database.
+   * @param {*} collection The Firestore collection to fetch top works from, defaults to COMPS
+   * @returns An array of the top works.
+   */
   async getTopWorks({ collection = COMPS }) {
     return handleMethod(async () => {
       let query = db.collection(collection);
@@ -20,53 +25,32 @@ Meteor.methods({
     }, `Failed to fetch top ${collection}`);
   },
 
+  /**
+   * Fetches the most recently released works (comps/edits) in the database.
+   * @param {*} collection The Firestore collection to fetch new releases from, defaults to COMPS
+   * @returns An array of the most recently released works.
+   */
   async getNewReleases({ collection = COMPS }) {
     return handleMethod(async () => {
       let query = db.collection(collection);
       query = removeStandaloneEditComps(query, collection);
       query = query.orderBy('release_date', 'desc').limit(shelfLimit);
       return await getDocsWithConvertedPaths(query, convertPath);
-    }, `Failed to fetch new releases for ${collection}`);
+    }, `Failed to fetch newly released ${collection}`);
   },
 
-  async getRecentlyAdded({ collection: collection = COMPS }) {
-    try {
-      // TODO eventually filter out recently released
-
+  /**
+   * Fetches the most recently added works (comps/edits) in the database.
+   * @param {*} collection The Firestore collection to fetch recently added works from, defaults to COMPS
+   * @returns An array of the most recently added works.
+   */
+  async getRecentlyAdded({ collection = COMPS }) {
+    return handleMethod(async () => {
       let query = db.collection(collection);
-      // Filter out standalone edits if necessary
-      if (collection === COMPS) {
-        query = query.where('standalone_edit', '==', false);
-      }
+      query = removeStandaloneEditComps(query, collection);
       query = query.orderBy('added_date', 'desc').limit(shelfLimit);
-      const snapshot = await query.get();
-
-      const results = snapshot.docs.map(doc => {
-        const data = doc.data();
-
-        if (data.art_path) {
-          data.art_path = convertPath(data.art_path);
-        }
-
-        if (data.filepath) {
-          data.filepath = convertPath(data.filepath);
-        }
-
-        return {
-          id: doc.id,
-          ...data
-        };
-      });
-
-      // console.log(results); // Or return to client via a Meteor method
-      return results;
-    } catch (error) {
-      console.error('Error fetching recently added:', error);
-      throw new Meteor.Error(
-        'firebase-error',
-        'Failed to fetch recently added'
-      );
-    }
+      return await getDocsWithConvertedPaths(query, convertPath);
+    }, `Failed to fetch recently added ${collection}`);
   },
 
   // In your Meteor methods (Home.js)
