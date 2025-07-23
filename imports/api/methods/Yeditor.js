@@ -2,25 +2,23 @@
 
 import { Meteor } from 'meteor/meteor';
 import { COMPS, YEDITORS } from '../collections/AvailableCollections';
-import { convertPath, db } from '/server/Firestore';
+import { db } from '/server/Firestore';
+import {
+  getDocsWithConvertedPaths,
+  handleMethod,
+  mapDocWithPaths
+} from '/server/utils';
 
 Meteor.methods({
   async getYeditor(id) {
-    try {
+    return handleMethod(async () => {
       const doc = await db.collection(YEDITORS).doc(id).get();
-      const data = doc.data();
-      if (data.art_path) {
-        data.art_path = convertPath(data.art_path);
+      if (!doc.exists) {
+        throw new Meteor.Error('not-found', `Yeditor with id ${id} not found`);
       }
-
-      return {
-        id: doc.id,
-        ...data
-      };
-    } catch (error) {
-      console.error('Error fetching yeditor doc:', error);
-      throw new Meteor.Error('firebase-error', 'Failed to fetch yeditor doc');
-    }
+      const data = mapDocWithPaths(doc);
+      return { id: doc.id, ...data };
+    }, `Failed to fetch yeditor doc with id ${id}`);
   },
 
   async getYeditorWorks({
@@ -31,8 +29,7 @@ Meteor.methods({
     orderDirection = 'desc',
     lastId = null
   }) {
-    try {
-      console.log('COLLECTION IN BACKEND:', collection);
+    return handleMethod(async () => {
       let query = db.collection(collection);
 
       if (collection === COMPS) {
@@ -48,34 +45,7 @@ Meteor.methods({
         query = query.startAfter(lastDoc);
       }
 
-      const snapshot = await query.get();
-      // noinspection UnnecessaryLocalVariableJS
-      const results = snapshot.docs.map(doc => {
-        const data = doc.data();
-
-        if (data.art_path) {
-          data.art_path = convertPath(data.art_path);
-        }
-
-        if (data.filepath) {
-          data.filepath = convertPath(data.filepath);
-        }
-
-        return {
-          id: doc.id,
-          ...data
-        };
-      });
-      return results;
-    } catch (error) {
-      console.error(
-        `Error fetching top ${collection} for yeditor ${yeditorId}:`,
-        error
-      );
-      throw new Meteor.Error(
-        'firebase-error',
-        `Failed to fetch top ${collection} for yeditor ${yeditorId}`
-      );
-    }
+      return await getDocsWithConvertedPaths(query);
+    }, `Failed to fetch top ${collection} for yeditor ${yeditorId}`);
   }
 });
