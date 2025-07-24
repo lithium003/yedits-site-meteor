@@ -78,6 +78,19 @@ export const Track = ({
     alert('Share URL copied to clipboard!');
   };
 
+  const downloadMusicFile = () => {
+    // The filename should be the relative path inside .music, e.g. "foo.mp3"
+    const url = `${edit.filepath}`;
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${edit.name}.mp3`; // This hints to the browser to download instead of open
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    console.log(`Download requested for: ${edit.filepath}`);
+    console.log(edit);
+  };
+
   return (
     <>
       <div className="relative">
@@ -115,6 +128,7 @@ export const Track = ({
             playNext={playNext}
             playLast={playLast}
             share={share}
+            download={downloadMusicFile}
           />
         )}
       </div>

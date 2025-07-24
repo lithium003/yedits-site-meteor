@@ -14,6 +14,9 @@ import { HeaderButton } from './HeaderButton';
 import { HeaderTag } from './HeaderTag';
 import { ERAS } from '/imports/utils/eras';
 
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
+
 export const CompHeader = ({ comp, edits = [] }) => {
   const { setQueue, setCurrentTrack, setTrackIndex, setIsPlaying } =
     useAudioPlayerContext();
@@ -34,6 +37,32 @@ export const CompHeader = ({ comp, edits = [] }) => {
     const shareUrl = `${window.location.origin}${window.location.pathname}`;
     navigator.clipboard.writeText(shareUrl);
     alert('Share URL copied to clipboard!');
+  };
+
+  /**
+   * Downloads all tracks in the comp as a ZIP file.
+   * Uses JSZip to create the ZIP and FileSaver to trigger the download.
+   * TODO: Maybe change this to a server-side solution for performance?
+   */
+  const download = async () => {
+    if (edits.length === 0) {
+      alert('No tracks available for download.');
+      return;
+    }
+    const fullName = `${comp.name} - ${comp.yeditor_name}`;
+    console.log(`Downloading ${fullName} as ZIP...`);
+    const zip = new JSZip();
+
+    // Fetch each file and add to zip
+    for (const track of edits) {
+      const response = await fetch(track.filepath); // e.g., "/static/music/foo.mp3"
+      const blob = await response.blob();
+      zip.file(`${track.name}.mp3`, blob);
+    }
+
+    // Generate zip and trigger download
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    saveAs(zipBlob, `${fullName}.zip`);
   };
 
   const selectedEra = ERAS.find(era => era.name === comp.era);
@@ -71,10 +100,10 @@ export const CompHeader = ({ comp, edits = [] }) => {
                 label={comp.era || 'Unknown Era'}
                 style={
                   selectedEra && {
-                        backgroundColor: selectedEra.style.backgroundColor,
-                        color: selectedEra.style.color,
-                        borderColor: selectedEra.style.borderColor
-                      }
+                    backgroundColor: selectedEra.style.backgroundColor,
+                    color: selectedEra.style.color,
+                    borderColor: selectedEra.style.borderColor
+                  }
                 }
               />
               <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
@@ -94,7 +123,7 @@ export const CompHeader = ({ comp, edits = [] }) => {
               <HeaderButton
                 label="Download"
                 icon={faDownload}
-                onClick={() => {}}
+                onClick={download}
               />
               <HeaderButton label="Share" icon={faShareAlt} onClick={share} />
             </div>

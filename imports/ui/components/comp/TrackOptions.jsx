@@ -1,7 +1,13 @@
 import React from 'react';
 import { TrackOption } from './TrackOption';
 
-export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
+export const TrackOptions = ({
+  onClose,
+  playNext,
+  playLast,
+  share,
+  download
+}) => {
   return (
     <>
       {/* Full-screen invisible background */}
@@ -16,7 +22,7 @@ export const TrackOptions = ({ onClose, playNext, playLast, share }) => {
           <TrackOption label="Play Next" onClick={playNext} />
           <TrackOption label="Play Last" onClick={playLast} />
           <TrackOption label="Share" onClick={share} />
-          <TrackOption label="Download" onClick={() => {}} />
+          <TrackOption label="Download" onClick={download} />
         </div>
       </div>
     </>
