@@ -6,11 +6,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PillCheckbox } from '../search/PillCheckbox';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 
 import { useAudioPlayerContext } from '/imports/contexts/AudioPlayerContext';
 
+import { HeaderButton } from './HeaderButton';
+import { HeaderTag } from './HeaderTag';
 import { ERAS } from '/imports/utils/eras';
 
 export const CompHeader = ({ comp, edits = [] }) => {
@@ -54,12 +55,8 @@ export const CompHeader = ({ comp, edits = [] }) => {
               {comp.desc || 'No description provided.'}
             </p>
             <div className="mb-2">
-              <PillCheckbox
+              <HeaderTag
                 label={comp.era || 'Unknown Era'}
-                type="tag"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
                 style={
                   selectedEra
                     ? {
@@ -70,69 +67,27 @@ export const CompHeader = ({ comp, edits = [] }) => {
                     : {}
                 }
               />
-              <PillCheckbox
-                label={comp.artist_name || 'Unknown Artist'}
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
-              />
-              <PillCheckbox
+              <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
+              <HeaderTag
                 label={
                   getDateFromTimestamp(comp.release_date)
                     .getFullYear()
                     .toString() || 'Unknown Artist'
                 }
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
               />
-              <PillCheckbox
-                label={comp.rating.toFixed(1) || '-'}
-                icon={faStar}
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
-              />
+              <HeaderTag label={comp.rating.toFixed(1) || '-'} icon={faStar} />
             </div>
             <div className="mb-2">
-              <PillCheckbox
-                label="Play All"
-                icon={faPlay}
-                onClick={playAll}
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
-                pillClassName="text-2xl px-6 py-3"
-              />
-              <PillCheckbox
+              <HeaderButton label="Play All" icon={faPlay} onClick={playAll} />
+              <HeaderButton
                 label="Download"
                 icon={faDownload}
                 onClick={() => {}}
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
-                pillClassName="text-2xl px-6 py-3"
               />
-              <PillCheckbox
+              <HeaderButton
                 label="Share"
                 icon={faShareAlt}
                 onClick={() => {}}
-                type="tag"
-                activeColor="bg-blue-500"
-                inactiveColor="bg-gray-300"
-                textColor="text-white"
-                className="px-0.5"
-                pillClassName="text-2xl px-6 py-3"
               />
             </div>
           </div>
