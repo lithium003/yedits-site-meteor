@@ -12,7 +12,8 @@ export const PillCheckbox = ({
   inactiveColor = 'bg-gray-300',
   textColor = 'text-white',
   className = '',
-  pillClassName = ''
+  pillClassName = '',
+  style = {}
 }) => {
   return (
     <>
@@ -36,6 +37,7 @@ export const PillCheckbox = ({
         hover:shadow-md transform hover:scale-105
         ${pillClassName}
         `}
+          style={style}
         >
           {icon && (
             <>

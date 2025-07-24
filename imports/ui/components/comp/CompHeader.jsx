@@ -11,6 +11,8 @@ import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 
 import { useAudioPlayerContext } from '/imports/contexts/AudioPlayerContext';
 
+import { ERAS } from '/imports/utils/eras';
+
 export const CompHeader = ({ comp, edits = [] }) => {
   const { setQueue, setCurrentTrack, setTrackIndex, setIsPlaying } =
     useAudioPlayerContext();
@@ -23,6 +25,8 @@ export const CompHeader = ({ comp, edits = [] }) => {
     setCurrentTrack(newQueue[newIndex]);
     setIsPlaying(true);
   };
+
+  const selectedEra = ERAS.find(era => era.name === comp.era);
 
   return (
     <>
@@ -53,10 +57,18 @@ export const CompHeader = ({ comp, edits = [] }) => {
               <PillCheckbox
                 label={comp.era || 'Unknown Era'}
                 type="tag"
-                activeColor="bg-blue-500"
                 inactiveColor="bg-gray-300"
                 textColor="text-white"
                 className="px-0.5"
+                style={
+                  selectedEra
+                    ? {
+                        backgroundColor: selectedEra.style.backgroundColor,
+                        color: selectedEra.style.color,
+                        borderColor: selectedEra.style.borderColor
+                      }
+                    : {}
+                }
               />
               <PillCheckbox
                 label={comp.artist_name || 'Unknown Artist'}
