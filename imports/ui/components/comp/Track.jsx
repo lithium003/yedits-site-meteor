@@ -46,6 +46,9 @@ export const Track = ({
   };
 
   // Track Options
+  /**
+   * Add this track to the next position in the queue.
+   */
   const playNext = () => {
     const nextIndex = trackIndex + 1;
     const newQueue = [
@@ -57,11 +60,17 @@ export const Track = ({
     onClose();
   };
 
+  /**
+   * Append this track to the end of the queue.
+   */
   const playLast = () => {
     setQueue([...queue, edit]);
     onClose();
   };
 
+  /**
+   * Copies a link to the comp with this track as the highlighted edit.
+   */
   const share = () => {
     const shareUrl = `${window.location.origin}${window.location.pathname}?h=${edit.id}`;
     navigator.clipboard.writeText(shareUrl);

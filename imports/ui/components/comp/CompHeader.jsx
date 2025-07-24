@@ -27,6 +27,15 @@ export const CompHeader = ({ comp, edits = [] }) => {
     setIsPlaying(true);
   };
 
+  /**
+   * Copies the comp URL to the clipboard.
+   */
+  const share = () => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}`;
+    navigator.clipboard.writeText(shareUrl);
+    alert('Share URL copied to clipboard!');
+  };
+
   const selectedEra = ERAS.find(era => era.name === comp.era);
 
   return (
@@ -41,6 +50,7 @@ export const CompHeader = ({ comp, edits = [] }) => {
               className="w-full h-full object-cover"
             />
           </div>
+
           {/* Comp Info */}
           <div className="flex-1 items-start text-left ">
             <h1 className="text-7xl font-black bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent leading-tight">
@@ -54,6 +64,8 @@ export const CompHeader = ({ comp, edits = [] }) => {
             <p className="text-xl text-gray-300 mb-2 max-w-2xl">
               {comp.desc || 'No description provided.'}
             </p>
+
+            {/* Tags */}
             <div className="mb-2">
               <HeaderTag
                 label={comp.era || 'Unknown Era'}
@@ -77,6 +89,8 @@ export const CompHeader = ({ comp, edits = [] }) => {
               />
               <HeaderTag label={comp.rating.toFixed(1) || '-'} icon={faStar} />
             </div>
+
+            {/* Buttons */}
             <div className="mb-2">
               <HeaderButton label="Play All" icon={faPlay} onClick={playAll} />
               <HeaderButton
@@ -84,11 +98,7 @@ export const CompHeader = ({ comp, edits = [] }) => {
                 icon={faDownload}
                 onClick={() => {}}
               />
-              <HeaderButton
-                label="Share"
-                icon={faShareAlt}
-                onClick={() => {}}
-              />
+              <HeaderButton label="Share" icon={faShareAlt} onClick={share} />
             </div>
           </div>
         </div>
