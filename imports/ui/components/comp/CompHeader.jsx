@@ -70,13 +70,11 @@ export const CompHeader = ({ comp, edits = [] }) => {
               <HeaderTag
                 label={comp.era || 'Unknown Era'}
                 style={
-                  selectedEra
-                    ? {
+                  selectedEra && {
                         backgroundColor: selectedEra.style.backgroundColor,
                         color: selectedEra.style.color,
                         borderColor: selectedEra.style.borderColor
                       }
-                    : {}
                 }
               />
               <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
