@@ -1,7 +1,12 @@
 import React from 'react';
 import { PillCheckbox } from '../search/PillCheckbox';
 
-export const HeaderTag = ({ label, style = {}, icon = null }) => {
+export const HeaderTag = ({
+  label,
+  style = {},
+  icon = null,
+  onClick = () => {}
+}) => {
   return (
     <>
       <PillCheckbox
@@ -13,6 +18,7 @@ export const HeaderTag = ({ label, style = {}, icon = null }) => {
         inactiveColor="bg-gray-300"
         textColor="text-white"
         className="px-0.5"
+        onClick={onClick}
       />
     </>
   );

@@ -5,7 +5,7 @@ import {
   faStar
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getDateFromTimestamp } from '/imports/utils/firestoreHandling';
 
 import { useAudioPlayerContext } from '/imports/contexts/AudioPlayerContext';
@@ -66,6 +66,17 @@ export const CompHeader = ({ comp, edits = [] }) => {
   };
 
   const selectedEra = ERAS.find(era => era.name === comp.era);
+  const navigate = useNavigate();
+  /**
+   * Navigates to the search page showing all comps of this comp's era.
+   */
+  const navigateToEraSearch = () => {
+    if (selectedEra) {
+      navigate(
+        `/search?q=&t=Remaster&t=Rework&t=Remix&t=Recreation&t=~&e=${selectedEra.name}`
+      );
+    }
+  };
 
   return (
     <>
@@ -105,6 +116,7 @@ export const CompHeader = ({ comp, edits = [] }) => {
                     borderColor: selectedEra.style.borderColor
                   }
                 }
+                onClick={navigateToEraSearch}
               />
               <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
               <HeaderTag
