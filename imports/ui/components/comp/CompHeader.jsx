@@ -78,6 +78,17 @@ export const CompHeader = ({ comp, edits = [] }) => {
     }
   };
 
+  /**
+   * Navigates to the search page showing all comps of this comp's OG artist.
+   */
+  const navigateToArtistSearch = () => {
+    if (comp.artist) {
+      navigate(
+        `/search?q=&t=Remaster&t=Rework&t=Remix&t=Recreation&t=~&a=${comp.artist}`
+      );
+    }
+  };
+
   return (
     <>
       <section className="text-center mb-8 w-full ">
@@ -118,7 +129,10 @@ export const CompHeader = ({ comp, edits = [] }) => {
                 }
                 onClick={navigateToEraSearch}
               />
-              <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
+              <HeaderTag
+                label={comp.artist_name || 'Unknown Artist'}
+                onClick={navigateToArtistSearch}
+              />
               <HeaderTag
                 label={
                   getDateFromTimestamp(comp.release_date).toLocaleString(
