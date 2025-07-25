@@ -109,9 +109,10 @@ export const CompHeader = ({ comp, edits = [] }) => {
               <HeaderTag label={comp.artist_name || 'Unknown Artist'} />
               <HeaderTag
                 label={
-                  getDateFromTimestamp(comp.release_date)
-                    .getFullYear()
-                    .toString() || 'Unknown Artist'
+                  getDateFromTimestamp(comp.release_date).toLocaleString(
+                    'default',
+                    { day: '2-digit', month: 'short', year: 'numeric' }
+                  ) || 'Unknown Date'
                 }
               />
               <HeaderTag label={comp.rating.toFixed(1) || '-'} icon={faStar} />
