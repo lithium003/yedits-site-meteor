@@ -12,6 +12,7 @@ import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 import { CompShelf } from '../components/display/CompShelf';
 import { FeaturedSection } from '../components/layout/FeaturedSection';
+import { CenteredPage } from '../components/utils/CenteredPage';
 
 export const Home = () => {
   // Get the current spotlighted Yeditor
@@ -49,7 +50,7 @@ export const Home = () => {
       <Helmet>
         <title>Home - Yedits</title>
       </Helmet>
-      <div className="flex justify-center w-full">
+      <CenteredPage>
         <div>
           <h1 className="text-6xl font-bold my-2 text-center ">
             Welcome to Yedits.net!
@@ -78,7 +79,7 @@ export const Home = () => {
             <CompShelf onLoadMore={loadYeditorSpotlight} collection={COMPS} />
           </FeaturedSection>
         </div>
-      </div>
+      </CenteredPage>
     </>
   );
 };

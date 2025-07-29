@@ -8,6 +8,7 @@ import {
 } from '../../api/collections/AvailableCollections';
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 import { CompShelf } from '../components/display/CompShelf';
+import { CenteredPage } from '../components/utils/CenteredPage';
 import { searchableName } from '/imports/utils/stringUtils';
 
 /**
@@ -49,7 +50,7 @@ export const Search = () => {
   return (
     <>
       {/* Horizontally centers the page */}
-      <div className="flex justify-center w-full">
+      <CenteredPage>
         {/* Ensures everything is stacked vertically */}
         <div className="flex flex-col">
           {/* Comps Shelf */}
@@ -90,7 +91,7 @@ export const Search = () => {
             </>
           )}
         </div>
-      </div>
+      </CenteredPage>
     </>
   );
 };

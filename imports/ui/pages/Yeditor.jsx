@@ -4,16 +4,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { COMPS, EDITS } from '../../api/collections/AvailableCollections';
-
 import { useMeteorLoader } from '../../hooks/useMeteorLoader';
 import { CompShelf } from '../components/display/CompShelf';
+import { ErrorScreen } from '../components/error/ErrorScreen';
 import { FeaturedSection } from '../components/layout/FeaturedSection';
+import { YeditorHeaderSkeleton } from '../components/skeletons/YeditorHeaderSkeleton';
+import { CenteredPage } from '../components/utils/CenteredPage';
 import { ConnectSection } from '../components/yeditor/ConnectSection';
 import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
-import { YeditorHeaderSkeleton } from '../components/skeletons/YeditorHeaderSkeleton';
-import { ErrorScreen } from '../components/error/ErrorScreen';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
@@ -79,7 +79,7 @@ export const Yeditor = () => {
   }
 
   return (
-    <div className="w-full">
+    <CenteredPage>
       <Helmet>
         <title>{yeditor ? yeditor.display_name : 'Loading...'} - Yedits</title>
       </Helmet>
@@ -109,6 +109,6 @@ export const Yeditor = () => {
           <ConnectSection />
         </div>
       </div>
-    </div>
+    </CenteredPage>
   );
 };
