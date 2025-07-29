@@ -6,7 +6,7 @@ import { useCustomScrollRestoration } from '../hooks/useCustomScrollRestoration'
 import { NavBar } from './components/layout/NavBar';
 import { AudioPlayer } from './components/player/AudioPlayer';
 import { ScrollToTop } from './components/ScrollToTop';
-import { Fallback } from '/imports/ui/components/Fallback';
+import { Fallback } from './components/error/Fallback';
 
 export const App = () => {
   // Restore main container scroll position when navigating back/forward

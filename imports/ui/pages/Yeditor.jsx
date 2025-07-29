@@ -13,7 +13,7 @@ import { DiscographySection } from '../components/yeditor/DiscographySection';
 import { YeditorHeader } from '../components/yeditor/YeditorHeader';
 import { YeditorStats } from '../components/yeditor/YeditorStats';
 import { YeditorHeaderSkeleton } from '../components/skeletons/YeditorHeaderSkeleton';
-import { ErrorScreen } from '../components/ErrorScreen';
+import { ErrorScreen } from '../components/error/ErrorScreen';
 
 export const Yeditor = () => {
   const { yeditorId } = useParams();
