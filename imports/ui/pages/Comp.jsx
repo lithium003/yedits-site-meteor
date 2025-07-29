@@ -2,8 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { CompAdminPanel } from '../components/comp/CompAdminPanel';
 import { CompHeader } from '../components/comp/CompHeader';
 import { Tracklist } from '../components/comp/Tracklist';
+import { ErrorScreen } from '../components/error/ErrorScreen';
 import { CompHeaderSkeleton } from '../components/skeletons/CompHeaderSkeleton';
 
 export const Comp = () => {
@@ -16,27 +18,6 @@ export const Comp = () => {
   // Highlighted Edit
   const [searchParams] = useSearchParams();
   const highlightEditId = searchParams.get('h') ?? '';
-
-  // Convert Tracknums
-  const covertTracknums = () => {
-    Meteor.call('convertTracknums', compId, (err, res) => {
-      if (err) {
-        console.error('Error converting tracknums:', err);
-      } else {
-        console.log('Tracknums converted successfully:', res);
-      }
-    });
-  };
-
-  const addCompArtistNameField = () => {
-    Meteor.call('addCompArtistNameField', (err, res) => {
-      if (err) {
-        console.error('Error adding artist name field:', err);
-      } else {
-        console.log('Artist name field added successfully:', res);
-      }
-    });
-  };
 
   useEffect(() => {
     Meteor.call('getComp', compId, (err, res) => {
@@ -64,6 +45,10 @@ export const Comp = () => {
     getEditsData();
   }, [compId]);
 
+  if (!loading && !comp) {
+    return <ErrorScreen message="Comp not found" />;
+  }
+
   return (
     <>
       <Helmet>
@@ -74,32 +59,15 @@ export const Comp = () => {
           {!comp ? (
             <CompHeaderSkeleton />
           ) : (
-            <CompHeader comp={comp} edits={edits} />
-          )}
-
-          {adminMode && (
-            <div className="flex gap-4 mb-4">
-              <span
-                className="hover:bg-amber-300 hover:cursor-pointer"
-                onClick={covertTracknums}
-              >
-                Convert Tracknums
-              </span>
-              <span
-                className="hover:bg-amber-400 hover:cursor-pointer"
-                onClick={addCompArtistNameField}
-              >
-                Add Artist Name
-              </span>
-            </div>
-          )}
-          {/* TODO have placeholder tracklist */}
-          {comp && (
-            <Tracklist
-              comp={comp}
-              edits={edits}
-              highlightEditId={highlightEditId}
-            />
+            <>
+              <CompHeader comp={comp} edits={edits} />
+              {adminMode && <CompAdminPanel comp={comp} />}
+              <Tracklist
+                comp={comp}
+                edits={edits}
+                highlightEditId={highlightEditId}
+              />
+            </>
           )}
         </div>
       </div>
