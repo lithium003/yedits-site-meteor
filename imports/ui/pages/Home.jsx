@@ -28,9 +28,11 @@ export const Home = () => {
     });
   }, []);
 
+  // CompShelf loaders
   const loadTopWorks = useMeteorLoader('getTopWorks', {}, []);
   const loadNewReleases = useMeteorLoader('getNewReleases', {}, []);
   const loadRecentlyAdded = useMeteorLoader('getRecentlyAdded', {}, []);
+  // Yeditor Spotlight
   const loadYeditorSpotlight = useMeteorLoader(
     'getYeditorWorks',
     {
@@ -41,10 +43,11 @@ export const Home = () => {
     },
     [spotlightedYeditor]
   );
+
   return (
     <>
       <Helmet>
-        <title>Yedits - Home</title>
+        <title>Home - Yedits</title>
       </Helmet>
       <div className="flex justify-center w-full">
         <div>
