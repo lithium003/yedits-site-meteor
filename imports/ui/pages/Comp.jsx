@@ -19,6 +19,7 @@ export const Comp = () => {
   const [searchParams] = useSearchParams();
   const highlightEditId = searchParams.get('h') ?? '';
 
+  // Get comp data
   useEffect(() => {
     Meteor.call('getComp', compId, (err, res) => {
       if (err) {
@@ -29,20 +30,16 @@ export const Comp = () => {
     });
   }, [compId]);
 
-  // TODO why is it like this
+  // Get all edits for the comp
   useEffect(() => {
-    const getEditsData = async () => {
-      try {
-        const res = await Meteor.callAsync('getCompEdits', compId);
+    Meteor.call('getCompEdits', compId, (err, res) => {
+      if (err) {
+        console.error(`Error fetching edits for comp ${compId}:`, err);
+      } else {
         setEdits(res);
-      } catch (err) {
-        console.error('Error fetching comp:', err);
-      } finally {
-        setLoading(false);
       }
-    };
-
-    getEditsData();
+      setLoading(false);
+    });
   }, [compId]);
 
   if (!loading && !comp) {
