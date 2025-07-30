@@ -11,6 +11,7 @@ import { CompRoutes } from './pages/Comp';
 import { AudioPlayerProvider } from '../contexts/AudioPlayerContext';
 import { SearchRoutes } from './pages/Search';
 import { YeditorRoutes } from './pages/Yeditor';
+import { AboutRoutes } from './pages/About';
 
 // Define Routes for App JSX layout
 export const AppRoutes = [
@@ -28,6 +29,7 @@ export const AppRoutes = [
       ...CompRoutes,
       ...YeditorRoutes,
       ...SearchRoutes,
+      ...AboutRoutes,
       ...NotFoundRoutes // * Last for Page not found
     ]
   }
