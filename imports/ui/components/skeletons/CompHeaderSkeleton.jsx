@@ -1,5 +1,5 @@
 import React from 'react';
-
+// TODO: Maybe modify the component itself to display the skeleton when no data is given? or when 'loading' is given as true? would remove the need to do conditional rendering on the page itself
 export const CompHeaderSkeleton = () => (
   <section className="text-center mb-8 w-full">
     <div className="flex items-start justify-center gap-12 border-t-4 border-purple-600 bg-[#2c2c2d] rounded-4xl px-8 py-6">

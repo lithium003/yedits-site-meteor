@@ -1,9 +1,12 @@
 import React from 'react';
+import { CenteredPage } from '../components/utils/CenteredPage';
 
 export const About = () => {
   return (
     <>
-      <span>about</span>
+      <CenteredPage>
+        <span>About</span>
+      </CenteredPage>
     </>
   );
 };
